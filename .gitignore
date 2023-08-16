@@ -2,9 +2,9 @@
 .gradle
 
 api/.gradle
-paper/.gradle
-paper/crazyrunes/.gradle
+platforms/paper/.gradle
+platforms/paper/crazyrunes/.gradle
 
 api/build
-paper/build
-paper/crazyrunes/build
+platforms/paper/build
+platforms/paper/crazyrunes/build
