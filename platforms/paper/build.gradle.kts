@@ -2,13 +2,21 @@ plugins {
     id("paper-plugin")
 }
 
-dependencies {
-    implementation("net.kyori", "adventure-platform-bukkit", "4.3.0")
+base {
+    archivesName.set("${rootProject.name.lowercase()}-${project.name}-${rootProject.version}")
+}
 
-    api(project(":ruby-api"))
+dependencies {
+    api("net.kyori", "adventure-platform-bukkit", "4.3.0")
+
+    api(project(":api"))
 }
 
 tasks {
+    reobfJar {
+        outputJar.set(file("$buildDir/libs/${rootProject.name.lowercase()}-${project.name}-${rootProject.version}.jar"))
+    }
+
     shadowJar {
         archiveClassifier.set("")
         mergeServiceFiles()

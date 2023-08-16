@@ -17,35 +17,21 @@ listOf(
 listOf(
     "paper",
 
-    "crazyrunes"
+    "runes"
 ).forEach(::includePlatform)
 
 include("platforms")
 
 fun includeProject(name: String) {
     include(name) {
-        this.name = "$lowerCase-$name"
-    }
-}
-
-fun includeModule(name: String) {
-    include(name) {
-        this.name = "$lowerCase-module-$name"
-        this.projectDir = file("modules/$name")
+        this.name = name
     }
 }
 
 fun includePlatform(name: String) {
     include(name) {
-        this.name = "$lowerCase-$name"
+        this.name = name
         this.projectDir = file("platforms/$name")
-    }
-}
-
-fun includePlatformModule(name: String, platform: String) {
-    include(name) {
-        this.name = "$lowerCase-module-$platform-$name"
-        this.projectDir = file("modules/$platform/$name")
     }
 }
 

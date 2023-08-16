@@ -8,3 +8,7 @@ platforms/paper/crazyrunes/.gradle
 api/build
 platforms/paper/build
 platforms/paper/crazyrunes/build
+
+platforms/paper/crazyrunes/run
+!platforms/paper/crazyrunes/run/eula.txt
+!platforms/paper/crazyrunes/run/server.properties
