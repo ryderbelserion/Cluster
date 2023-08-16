@@ -3,12 +3,12 @@
 
 api/.gradle
 platforms/paper/.gradle
-platforms/paper/crazyrunes/.gradle
+platforms/runes/.gradle
 
 api/build
 platforms/paper/build
-platforms/paper/crazyrunes/build
+platforms/runes/build
 
-platforms/paper/crazyrunes/run
-!platforms/paper/crazyrunes/run/eula.txt
-!platforms/paper/crazyrunes/run/server.properties
+platforms/runes/run
+!platforms/runes/run/eula.txt
+!platforms/runes/run/server.properties
