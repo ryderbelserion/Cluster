@@ -1,0 +1,10 @@
+.idea
+.gradle
+
+api/.gradle
+paper/.gradle
+paper/crazyrunes/.gradle
+
+api/build
+paper/build
+paper/crazyrunes/build
