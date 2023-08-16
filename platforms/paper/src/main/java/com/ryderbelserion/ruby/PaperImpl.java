@@ -1,6 +1,9 @@
 package com.ryderbelserion.ruby;
 
 import com.ryderbelserion.ruby.minecraft.RubyImpl;
+import com.ryderbelserion.ruby.minecraft.plugin.Logger;
+import com.ryderbelserion.ruby.minecraft.plugin.Platform;
+import com.ryderbelserion.ruby.minecraft.utils.Adventure;
 import com.ryderbelserion.ruby.plugin.registry.PaperRegistration;
 import net.kyori.adventure.platform.AudienceProvider;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -11,6 +14,8 @@ public class PaperImpl extends RubyImpl {
     private JavaPlugin plugin;
 
     private BukkitAudiences audience;
+    private Adventure adventure;
+    private Logger logger;
 
     public PaperImpl(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -28,6 +33,10 @@ public class PaperImpl extends RubyImpl {
         if (this.audience == null) {
             this.audience = BukkitAudiences.create(this.plugin);
         }
+
+        // Create adventure/logger instance.
+        this.adventure = new Adventure();
+        this.logger = new Logger();
     }
 
     @Override
@@ -48,6 +57,21 @@ public class PaperImpl extends RubyImpl {
     @Override
     public AudienceProvider audience() {
         return this.audience;
+    }
+
+    @Override
+    public Platform.Type platform() {
+        return Platform.Type.PAPER;
+    }
+
+    @Override
+    public Adventure adventure() {
+        return this.adventure;
+    }
+
+    @Override
+    public Logger logger() {
+        return this.logger;
     }
 
     public PaperImpl setPlugin(JavaPlugin plugin) {
