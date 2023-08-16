@@ -14,7 +14,6 @@ class Runes : JavaPlugin() {
         this.paper = PaperImpl(this)
 
         this.paper.enable()
-        this.paper.audience().console().sendMessage(MiniMessage.miniMessage().deserialize("<red>Guten Tag</red>"))
     }
 
     override fun onDisable() {
