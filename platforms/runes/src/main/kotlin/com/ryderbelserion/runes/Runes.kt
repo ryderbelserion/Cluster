@@ -1,7 +1,6 @@
 package com.ryderbelserion.runes
 
 import com.ryderbelserion.ruby.PaperImpl
-import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.plugin.java.JavaPlugin
 
 class Runes : JavaPlugin() {
