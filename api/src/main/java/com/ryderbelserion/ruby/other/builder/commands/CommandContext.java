@@ -14,7 +14,7 @@ public class CommandContext {
 
     private final List<String> args;
     private final Audience audience;
-    private final String label;
+    private String label;
 
     private UUID uuid;
 
@@ -77,6 +77,10 @@ public class CommandContext {
 
     public void updateUUID(UUID uuid) {
         this.uuid = uuid;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public String getLabel() {

@@ -16,15 +16,11 @@ public class PaperCommandContext extends CommandContext {
     private final @NotNull JavaPlugin plugin = this.paper.getPlugin();
 
     private final CommandSender sender;
-    private final List<String> args;
-    private String label;
 
     public PaperCommandContext(CommandSender sender, String label, List<String> args) {
         super(sender, label, args);
 
         this.sender = sender;
-        this.args = args;
-        this.label = label;
     }
 
     public void legacy(String message) {
@@ -44,19 +40,5 @@ public class PaperCommandContext extends CommandContext {
     @Override
     public boolean isPlayer() {
         return this.sender instanceof Player;
-    }
-
-    @Override
-    public List<String> getArgs() {
-        return this.args;
-    }
-
-    @Override
-    public String getLabel() {
-        return this.label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
     }
 }
