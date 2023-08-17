@@ -10,7 +10,8 @@ public interface Platform {
 
         FABRIC("fabric"),
         PAPER("paper"),
-        SPIGOT("spigot");
+        SPIGOT("spigot"),
+        OTHER("other");
 
         private final String serverType;
 

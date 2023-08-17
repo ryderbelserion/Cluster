@@ -1,0 +1,15 @@
+settings:
+  # The type of rune
+  #
+  # Available types: magic
+  rune-type: 'magic'
+  # The ability of the rune.
+  #
+  # Available types: fire
+  rune-ability: 'fire'
+  # Strength related settings for the rune.
+  strength:
+    # How strong is level 1 of the rune?
+    value: 5
+    # When leveled up, how much more damage should be done?
+    per-level: 0.5

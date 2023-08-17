@@ -1,9 +1,9 @@
-package com.ryderbelserion.runes
+package com.ryderbelserion.crazyrunes
 
 import com.ryderbelserion.ruby.PaperImpl
 import org.bukkit.plugin.java.JavaPlugin
 
-class Runes : JavaPlugin() {
+class CrazyRunes : JavaPlugin() {
 
     private lateinit var paper: PaperImpl
 
@@ -13,6 +13,15 @@ class Runes : JavaPlugin() {
         this.paper = PaperImpl(this)
 
         this.paper.enable()
+
+        this.paper.fileUtil().copyFiles(
+            this.dataFolder.toPath().resolve("runes"),
+            "runes",
+            listOf(
+                "fire-rune.yml",
+                "lightning-rune.yml"
+            )
+        )
     }
 
     override fun onDisable() {

@@ -3,7 +3,8 @@ package com.ryderbelserion.ruby;
 import com.ryderbelserion.ruby.minecraft.RubyImpl;
 import com.ryderbelserion.ruby.minecraft.plugin.Logger;
 import com.ryderbelserion.ruby.minecraft.plugin.Platform;
-import com.ryderbelserion.ruby.minecraft.utils.Adventure;
+import com.ryderbelserion.ruby.minecraft.plugin.Adventure;
+import com.ryderbelserion.ruby.minecraft.utils.FileUtil;
 import com.ryderbelserion.ruby.plugin.registry.PaperRegistration;
 import net.kyori.adventure.platform.AudienceProvider;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -15,6 +16,7 @@ public class PaperImpl extends RubyImpl {
 
     private BukkitAudiences audience;
     private Adventure adventure;
+    private FileUtil fileUtil;
     private Logger logger;
 
     public PaperImpl(JavaPlugin plugin) {
@@ -36,7 +38,11 @@ public class PaperImpl extends RubyImpl {
 
         // Create adventure/logger instance.
         this.adventure = new Adventure();
-        this.logger = new Logger();
+        this.logger = new Logger(this.plugin.getName());
+
+        this.fileUtil = new FileUtil();
+
+        if (!this.plugin.getDataFolder().exists()) this.plugin.getDataFolder().mkdirs();
     }
 
     @Override
@@ -70,8 +76,18 @@ public class PaperImpl extends RubyImpl {
     }
 
     @Override
+    public FileUtil fileUtil() {
+        return this.fileUtil;
+    }
+
+    @Override
     public Logger logger() {
         return this.logger;
+    }
+
+    @Override
+    public String prefix() {
+        return "[" + this.plugin.getName() + "]";
     }
 
     public PaperImpl setPlugin(JavaPlugin plugin) {

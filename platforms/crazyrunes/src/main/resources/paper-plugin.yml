@@ -1,0 +1,6 @@
+name: 'CrazyRunes'
+main: 'com.ryderbelserion.crazyrunes.CrazyRunes'
+
+version: '0.1'
+api-version: '1.20'
+description: 'A runes plugin'

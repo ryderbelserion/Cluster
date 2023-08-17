@@ -17,7 +17,7 @@ listOf(
 listOf(
     "paper",
 
-    "runes"
+    "crazyrunes"
 ).forEach(::includePlatform)
 
 include("platforms")

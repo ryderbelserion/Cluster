@@ -1,4 +1,4 @@
-package com.ryderbelserion.ruby.minecraft.utils;
+package com.ryderbelserion.ruby.minecraft.plugin;
 
 import com.ryderbelserion.ruby.minecraft.RubyImpl;
 import com.ryderbelserion.ruby.minecraft.plugin.registry.RubyProvider;
