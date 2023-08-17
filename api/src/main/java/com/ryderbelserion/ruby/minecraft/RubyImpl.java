@@ -21,7 +21,9 @@ public abstract class RubyImpl {
 
     public abstract String getPrefix();
 
-    public void enable() {
+    public abstract boolean isLegacy();
+
+    public void enable(boolean value) {
         RubyRegistration.start(this);
     }
 

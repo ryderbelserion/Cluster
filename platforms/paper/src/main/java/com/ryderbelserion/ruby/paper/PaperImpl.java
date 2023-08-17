@@ -22,6 +22,7 @@ public class PaperImpl extends RubyImpl {
     private JavaPlugin plugin;
     private ItemUtil itemUtil;
     private FileUtil fileUtil;
+    private boolean isLegacy;
     private Logger logger;
 
     public PaperImpl(JavaPlugin plugin) {
@@ -29,9 +30,9 @@ public class PaperImpl extends RubyImpl {
     }
 
     @Override
-    public void enable() {
+    public void enable(boolean value) {
         // Runs the enable method from the inherited class.
-        super.enable();
+        super.enable(this.isLegacy = value);
 
         // Initializes the paper provider.
         PaperRegistration.start(this);
@@ -102,6 +103,11 @@ public class PaperImpl extends RubyImpl {
     @Override
     public String getPrefix() {
         return "[" + this.plugin.getName() + "] ";
+    }
+
+    @Override
+    public boolean isLegacy() {
+        return this.isLegacy;
     }
 
     public PaperImpl setPlugin(JavaPlugin plugin) {
