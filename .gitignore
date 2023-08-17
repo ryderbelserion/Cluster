@@ -3,10 +3,12 @@
 
 api/.gradle
 platforms/paper/.gradle
+platforms/folia/.gradle
 platforms/crazyrunes/.gradle
 
 api/build
 platforms/paper/build
+platforms/folia/build
 platforms/crazyrunes/build
 
 platforms/crazyrunes/run
