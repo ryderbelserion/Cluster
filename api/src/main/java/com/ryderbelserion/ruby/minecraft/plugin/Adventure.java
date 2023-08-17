@@ -25,7 +25,7 @@ public class Adventure {
     }
 
     public void console(String message) {
-        ruby().audience().console().sendMessage(parse(message));
+        ruby().getAudience().console().sendMessage(parse(message));
     }
 
     public void player(Audience audience, String message) {

@@ -33,7 +33,7 @@ public class ComponentBuilder {
     }
 
     private Component parse(String value) {
-        return this.ruby.adventure().parse(value);
+        return this.ruby.getAdventure().parse(value);
     }
 
     public ComponentBuilder hover(String text) {

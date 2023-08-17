@@ -27,7 +27,7 @@ public class CommandContext {
     public void reply(String message) {
         if (empty(message)) return;
 
-        Component component = this.ruby.adventure().parse(message);
+        Component component = this.ruby.getAdventure().parse(message);
 
         this.audience.sendMessage(component);
     }
@@ -41,7 +41,7 @@ public class CommandContext {
     public void send(Audience audience, String message) {
         if (empty(message)) return;
 
-        Component component = this.ruby.adventure().parse(message);
+        Component component = this.ruby.getAdventure().parse(message);
 
         audience.sendMessage(component);
     }
@@ -56,7 +56,7 @@ public class CommandContext {
         return message.isBlank() || message.isEmpty();
     }
 
-    public Audience sender() {
+    public Audience getSender() {
         return this.audience;
     }
 
@@ -65,7 +65,7 @@ public class CommandContext {
     }
 
     public Audience getPlayer() {
-        return this.ruby.audience().player(this.uuid);
+        return this.ruby.getAudience().player(this.uuid);
     }
 
     public boolean hasPermission(String permission) {
@@ -75,7 +75,7 @@ public class CommandContext {
         return true;
     }
 
-    public void uuid(UUID uuid) {
+    public void updateUUID(UUID uuid) {
         this.uuid = uuid;
     }
 
@@ -89,9 +89,9 @@ public class CommandContext {
 
     public void removeArgAt(int point) {
         if (this.args.isEmpty()) {
-            switch (ruby.platform()) {
-                case PAPER, SPIGOT, FABRIC -> this.ruby.logger().error("You did not supply any args to check.");
-                case OTHER -> System.out.println(this.ruby.prefix() + "You did not supply any args to check.");
+            switch (ruby.getPlatform()) {
+                case PAPER, SPIGOT, FABRIC -> this.ruby.getLogger().error("You did not supply any args to check.");
+                case OTHER -> System.out.println(this.ruby.getPrefix() + "You did not supply any args to check.");
             }
 
             return;

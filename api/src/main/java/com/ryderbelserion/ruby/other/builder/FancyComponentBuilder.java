@@ -15,7 +15,7 @@ public class FancyComponentBuilder {
     private final TextComponent.@NotNull Builder builder = Component.text();
 
     private Component parse(String value) {
-        return this.ruby.adventure().parse(value);
+        return this.ruby.getAdventure().parse(value);
     }
 
     public FancyComponentBuilder append(Component component) {

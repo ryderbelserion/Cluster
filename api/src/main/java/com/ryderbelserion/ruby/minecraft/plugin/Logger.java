@@ -31,6 +31,6 @@ public class Logger {
     }
 
     private void send(String message) {
-        this.ruby.audience().console().sendMessage(this.ruby.adventure().parse(message));
+        this.ruby.getAudience().console().sendMessage(this.ruby.getAdventure().parse(message));
     }
 }

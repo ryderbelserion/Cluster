@@ -9,17 +9,17 @@ import net.kyori.adventure.platform.AudienceProvider;
 
 public abstract class RubyImpl {
 
-    public abstract AudienceProvider audience();
+    public abstract AudienceProvider getAudience();
 
-    public abstract Platform.Type platform();
+    public abstract Platform.Type getPlatform();
 
-    public abstract Adventure adventure();
+    public abstract Adventure getAdventure();
 
-    public abstract FileUtil fileUtil();
+    public abstract FileUtil getFileUtil();
 
-    public abstract Logger logger();
+    public abstract Logger getLogger();
 
-    public abstract String prefix();
+    public abstract String getPrefix();
 
     public void enable() {
         RubyRegistration.start(this);

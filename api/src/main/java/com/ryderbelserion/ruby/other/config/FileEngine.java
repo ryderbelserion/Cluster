@@ -30,9 +30,9 @@ public abstract class FileEngine {
 
     public void setGsonBuilder(GsonBuilder gson) {
         if (this.fileType != FileType.JSON) {
-            switch (ruby.platform()) {
-                case PAPER, SPIGOT, FABRIC -> this.ruby.logger().error("You cannot use json if the file type isn't " + FileType.JSON.getName());
-                case OTHER -> System.out.println(this.ruby.prefix() + "You cannot use json if the file type isn't " + FileType.JSON.getName());
+            switch (ruby.getPlatform()) {
+                case PAPER, SPIGOT, FABRIC -> this.ruby.getLogger().error("You cannot use json if the file type isn't " + FileType.JSON.getName());
+                case OTHER -> System.out.println(this.ruby.getPrefix() + "You cannot use json if the file type isn't " + FileType.JSON.getName());
             }
 
             return;

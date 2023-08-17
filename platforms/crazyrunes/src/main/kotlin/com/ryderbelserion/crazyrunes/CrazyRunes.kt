@@ -1,12 +1,10 @@
 package com.ryderbelserion.crazyrunes
 
-import com.google.gson.GsonBuilder
-import com.ryderbelserion.ruby.PaperImpl
-import com.ryderbelserion.ruby.other.config.FileEngine
-import com.ryderbelserion.ruby.other.config.FileManager
-import com.ryderbelserion.ruby.other.config.types.FileType
+import com.ryderbelserion.ruby.paper.PaperImpl
+import com.ryderbelserion.ruby.paper.plugin.builder.commands.PaperCommandContext
+import com.ryderbelserion.ruby.paper.plugin.builder.commands.PaperCommandEngine
+import org.bukkit.command.CommandSender
 import org.bukkit.plugin.java.JavaPlugin
-import java.lang.reflect.Modifier
 
 class CrazyRunes : JavaPlugin() {
 
@@ -19,20 +17,12 @@ class CrazyRunes : JavaPlugin() {
 
         this.paper.enable()
 
-        this.paper.fileUtil().copyFiles(
-            this.dataFolder.toPath().resolve("runes"),
-            "runes",
-            listOf(
-                "fire-rune.yml",
-                "lightning-rune.yml"
-            )
-        )
+        val manager = this.paper.manager
 
-        val files = FileManager()
+        manager.setNamespace("crazyrunes")
 
-        val locations = Locations(this)
-
-        files.addFile(locations)
+        manager.addCommand(RuneBaseCommand())
+        manager.addCommand(RuneAddCommand())
     }
 
     override fun onDisable() {
@@ -40,25 +30,47 @@ class CrazyRunes : JavaPlugin() {
 
         this.paper.disable()
     }
+}
 
-    fun paper(): PaperImpl {
-        return this.paper
+class RuneBaseCommand : PaperCommandEngine("runes", "The base rune command.", "crazyrunes:runes", emptyList()) {
+
+    init {
+        addCommand(RuneAddCommand())
+        addCommand(RuneRemoveCommand())
+
+        addCommand(RunesStatusCommand())
+    }
+
+    override fun perform(context: PaperCommandContext?, args: Array<out String>?) {
+        context?.reply("<red>This is the base command!</red>")
+    }
+
+    override fun tabComplete(sender: CommandSender, alias: String, args: Array<out String>?): MutableList<String> {
+        return handleTabComplete(args?.toList())
     }
 }
 
-class Locations(private val plugin: CrazyRunes) : FileEngine("locations.json", plugin.dataFolder.toPath(), FileType.JSON) {
+class RuneAddCommand : PaperCommandEngine("add", "Add runes to a player!", "crazyrunes:runes add", emptyList()) {
+
+    override fun perform(context: PaperCommandContext?, args: Array<out String>?) {
+        context?.reply("<green>This is the add command!</green>")
+    }
+}
+
+class RuneRemoveCommand : PaperCommandEngine("remove", "Remove runes from a player!", "crazyrunes:runes remove", emptyList()) {
+
+    override fun perform(context: PaperCommandContext?, args: Array<out String>?) {
+        context?.reply("<gold>This is the remove command!</gold>")
+    }
+}
+
+class RunesStatusCommand : PaperCommandEngine("status", "Check the status of runes on a player!", "crazyrunes:runes status", emptyList()) {
 
     init {
-        setGsonBuilder(GsonBuilder().disableHtmlEscaping()
-            .excludeFieldsWithModifiers(Modifier.TRANSIENT)
-            .excludeFieldsWithoutExposeAnnotation())
+        isVisible = false
     }
 
-    override fun load() {
-        this.plugin.paper().logger().info("A second load")
-    }
-
-    override fun save() {
-        this.plugin.paper().logger().info("A second save")
+    override fun perform(context: PaperCommandContext?, args: Array<out String>?) {
+        context?.reply("<blue>This is the status command!</blue>")
     }
 }

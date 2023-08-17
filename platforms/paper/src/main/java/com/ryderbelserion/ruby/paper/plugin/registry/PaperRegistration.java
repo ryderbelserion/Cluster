@@ -1,20 +1,21 @@
-package com.ryderbelserion.ruby.other.registry;
+package com.ryderbelserion.ruby.paper.plugin.registry;
 
-import com.ryderbelserion.ruby.minecraft.RubyImpl;
+import com.ryderbelserion.ruby.paper.PaperImpl;
 import org.jetbrains.annotations.ApiStatus;
+
 import java.lang.reflect.Method;
 
-public class RubyRegistration {
+public class PaperRegistration {
 
     private static final Method start;
     private static final Method stop;
 
     static {
         try {
-            start = RubyProvider.class.getDeclaredMethod("start", RubyImpl.class);
+            start = PaperProvider.class.getDeclaredMethod("start", PaperImpl.class);
             start.setAccessible(true);
 
-            stop = RubyProvider.class.getDeclaredMethod("stop");
+            stop = PaperProvider.class.getDeclaredMethod("stop");
             stop.setAccessible(true);
         } catch (NoSuchMethodException e) {
             throw new ExceptionInInitializerError(e);
@@ -22,11 +23,11 @@ public class RubyRegistration {
     }
 
     @ApiStatus.Internal
-    public static void start(RubyImpl ruby) {
+    public static void start(PaperImpl paper) {
         try {
-            start.invoke(null, ruby);
+            start.invoke(null, paper);
         } catch (Exception exception) {
-            System.out.println("[ERROR] Failed to enable ruby provider");
+            System.out.println("[ERROR] Failed to enable paper provider");
             System.out.println("[ERROR] Reason: " + exception.getMessage());
         }
     }
@@ -36,7 +37,7 @@ public class RubyRegistration {
         try {
             stop.invoke(null);
         } catch (Exception exception) {
-            System.out.println("[ERROR] Failed to disable ruby provider");
+            System.out.println("[ERROR] Failed to disable paper provider");
             System.out.println("[ERROR] Reason: " + exception.getMessage());
         }
     }

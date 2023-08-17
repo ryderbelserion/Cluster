@@ -1,9 +1,13 @@
 package com.ryderbelserion.ruby.other.config;
 
+import com.ryderbelserion.ruby.minecraft.RubyImpl;
 import com.ryderbelserion.ruby.other.config.types.file.JsonFile;
+import com.ryderbelserion.ruby.other.registry.RubyProvider;
 import java.io.File;
 
 public class FileManager implements FileContext {
+
+    private final RubyImpl ruby = RubyProvider.get();
 
     private JsonFile jsonFile;
 
@@ -15,9 +19,12 @@ public class FileManager implements FileContext {
                 this.jsonFile.load();
             }
 
-            case YAML -> System.out.println("Currently not supported.");
-
-            default -> System.out.println("Error");
+            case YAML -> {
+                switch (this.ruby.getPlatform()) {
+                    case PAPER, FABRIC, SPIGOT -> this.ruby.getLogger().info(file.getFileType().getName() + " is not supported yet.");
+                    case OTHER -> System.out.println(this.ruby.getPrefix() + file.getFileType().getName() + " is not supported yet.");
+                }
+            }
         }
     }
 
@@ -29,27 +36,24 @@ public class FileManager implements FileContext {
                 this.jsonFile.save();
             }
 
-            case YAML -> System.out.println("Currently not supported.");
-
-            default -> System.out.println("Error");
+            case YAML -> {
+                switch (this.ruby.getPlatform()) {
+                    case PAPER, FABRIC, SPIGOT -> this.ruby.getLogger().info(file.getFileType().getName() + " is not supported yet.");
+                    case OTHER -> System.out.println(this.ruby.getPrefix() + file.getFileType().getName() + " is not supported yet.");
+                }
+            }
         }
     }
 
     @Override
     public void removeFile(FileEngine file) {
-        switch (file.getFileType()) {
-            case JSON -> {
-                this.jsonFile = new JsonFile(file);
-            }
+        File type = file.getFilePath().toFile();
 
-            case YAML -> System.out.println("Currently not supported.");
-
-            default -> System.out.println("Error");
-        }
+        if (type.exists()) type.delete();
     }
 
     @Override
     public File getFile(FileEngine file) {
-        return null;
+        return file.getNewFile();
     }
 }

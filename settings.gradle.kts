@@ -16,6 +16,7 @@ listOf(
 
 listOf(
     "paper",
+    "folia",
 
     "crazyrunes"
 ).forEach(::includePlatform)

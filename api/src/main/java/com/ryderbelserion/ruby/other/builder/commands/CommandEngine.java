@@ -1,6 +1,6 @@
 package com.ryderbelserion.ruby.other.builder.commands;
 
-public abstract class CommandEngine {
+public interface CommandEngine {
 
     //public abstract void addRequiredArgument(Argument argument);
 
@@ -10,8 +10,8 @@ public abstract class CommandEngine {
 
     //public abstract List<Argument> getOptionalArgs();
 
-    public abstract void setVisible(boolean value);
+    void setVisible(boolean value);
 
-    public abstract boolean isVisible();
+    boolean isVisible();
 
 }

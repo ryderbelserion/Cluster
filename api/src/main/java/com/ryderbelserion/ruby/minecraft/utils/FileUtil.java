@@ -31,9 +31,9 @@ public class FileUtil {
         URL resource = loader.getResource(url);
 
         if (resource == null) {
-            switch (ruby.platform()) {
-                case PAPER, SPIGOT, FABRIC -> this.ruby.logger().error("Failed to find file: " + url);
-                case OTHER -> System.out.println(this.ruby.prefix() + "Failed to find file: " + url);
+            switch (ruby.getPlatform()) {
+                case PAPER, SPIGOT, FABRIC -> this.ruby.getLogger().error("Failed to find file: " + url);
+                case OTHER -> System.out.println(this.ruby.getPrefix() + "Failed to find file: " + url);
             }
 
             return;
@@ -42,9 +42,9 @@ public class FileUtil {
         try {
             grab(resource.openStream(), file);
         } catch (Exception exception) {
-            switch (ruby.platform()) {
-                case PAPER, SPIGOT, FABRIC -> this.ruby.logger().error("Failed to copy file: " + url);
-                case OTHER -> System.out.println(this.ruby.prefix() + "Failed to copy file: " + url);
+            switch (ruby.getPlatform()) {
+                case PAPER, SPIGOT, FABRIC -> this.ruby.getLogger().error("Failed to copy file: " + url);
+                case OTHER -> System.out.println(this.ruby.getPrefix() + "Failed to copy file: " + url);
             }
         }
     }
