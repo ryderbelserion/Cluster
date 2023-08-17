@@ -1,7 +1,7 @@
 package com.ryderbelserion.ruby.minecraft.utils;
 
 import com.ryderbelserion.ruby.minecraft.RubyImpl;
-import com.ryderbelserion.ruby.minecraft.plugin.registry.RubyProvider;
+import com.ryderbelserion.ruby.other.registry.RubyProvider;
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Path;
@@ -33,7 +33,7 @@ public class FileUtil {
         if (resource == null) {
             switch (ruby.platform()) {
                 case PAPER, SPIGOT, FABRIC -> this.ruby.logger().error("Failed to find file: " + url);
-                case OTHER -> System.out.println(this.ruby.prefix() + " Failed to find file: " + url);
+                case OTHER -> System.out.println(this.ruby.prefix() + "Failed to find file: " + url);
             }
 
             return;
@@ -44,7 +44,7 @@ public class FileUtil {
         } catch (Exception exception) {
             switch (ruby.platform()) {
                 case PAPER, SPIGOT, FABRIC -> this.ruby.logger().error("Failed to copy file: " + url);
-                case OTHER -> System.out.println(this.ruby.prefix() + " Failed to copy file: " + url);
+                case OTHER -> System.out.println(this.ruby.prefix() + "Failed to copy file: " + url);
             }
         }
     }

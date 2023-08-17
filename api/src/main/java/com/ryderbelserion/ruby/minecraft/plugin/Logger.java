@@ -1,7 +1,7 @@
 package com.ryderbelserion.ruby.minecraft.plugin;
 
 import com.ryderbelserion.ruby.minecraft.RubyImpl;
-import com.ryderbelserion.ruby.minecraft.plugin.registry.RubyProvider;
+import com.ryderbelserion.ruby.other.registry.RubyProvider;
 import org.jetbrains.annotations.NotNull;
 
 public class Logger {

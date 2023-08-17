@@ -1,7 +1,7 @@
 package com.ryderbelserion.ruby.minecraft.plugin;
 
 import com.ryderbelserion.ruby.minecraft.RubyImpl;
-import com.ryderbelserion.ruby.minecraft.plugin.registry.RubyProvider;
+import com.ryderbelserion.ruby.other.registry.RubyProvider;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;

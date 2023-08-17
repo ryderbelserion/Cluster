@@ -1,4 +1,4 @@
-package com.ryderbelserion.ruby.minecraft.plugin.registry;
+package com.ryderbelserion.ruby.other.registry;
 
 import com.ryderbelserion.ruby.minecraft.RubyImpl;
 import org.jetbrains.annotations.ApiStatus;
