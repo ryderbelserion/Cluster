@@ -23,11 +23,11 @@ public class FoliaRegistration {
     }
 
     @ApiStatus.Internal
-    public static void start(FoliaImpl paper) {
+    public static void start(FoliaImpl folia) {
         try {
-            start.invoke(null, paper);
+            start.invoke(null, folia);
         } catch (Exception exception) {
-            System.out.println("[ERROR] Failed to enable folia provider");
+            System.out.println("[ERROR] Failed to enable folia provider using ruby api");
             System.out.println("[ERROR] Reason: " + exception.getMessage());
         }
     }
@@ -37,7 +37,7 @@ public class FoliaRegistration {
         try {
             stop.invoke(null);
         } catch (Exception exception) {
-            System.out.println("[ERROR] Failed to disable folia provider");
+            System.out.println("[ERROR] Failed to disable folia provider using ruby api");
             System.out.println("[ERROR] Reason: " + exception.getMessage());
         }
     }

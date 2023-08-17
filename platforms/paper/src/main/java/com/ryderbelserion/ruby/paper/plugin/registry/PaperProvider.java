@@ -11,7 +11,7 @@ public class PaperProvider {
     public static @NotNull PaperImpl get() {
         PaperImpl instance = PaperProvider.paper;
 
-        if (instance == null) throw new RuntimeException("Failed to utilize paper provider. Did it get enabled?");
+        if (instance == null) throw new RuntimeException("Failed to utilize paper provider using ruby api. Did it get enabled?");
 
         return paper;
     }

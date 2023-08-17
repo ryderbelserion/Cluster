@@ -11,7 +11,7 @@ public class FoliaProvider {
     public static @NotNull FoliaImpl get() {
         FoliaImpl instance = FoliaProvider.paper;
 
-        if (instance == null) throw new RuntimeException("Failed to utilize paper provider. Did it get enabled?");
+        if (instance == null) throw new RuntimeException("Failed to utilize folia provider using ruby api. Did it get enabled?");
 
         return paper;
     }

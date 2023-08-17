@@ -7,9 +7,7 @@ base {
 }
 
 dependencies {
-    api("net.kyori", "adventure-platform-bukkit", "4.3.0")
-
-    api(project(":api"))
+    api(project(":paper"))
 }
 
 tasks {

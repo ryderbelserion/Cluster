@@ -27,7 +27,7 @@ public class PaperRegistration {
         try {
             start.invoke(null, paper);
         } catch (Exception exception) {
-            System.out.println("[ERROR] Failed to enable paper provider");
+            System.out.println("[ERROR] Failed to enable paper provider using ruby api");
             System.out.println("[ERROR] Reason: " + exception.getMessage());
         }
     }
@@ -37,7 +37,7 @@ public class PaperRegistration {
         try {
             stop.invoke(null);
         } catch (Exception exception) {
-            System.out.println("[ERROR] Failed to disable paper provider");
+            System.out.println("[ERROR] Failed to disable paper provider using ruby api");
             System.out.println("[ERROR] Reason: " + exception.getMessage());
         }
     }
