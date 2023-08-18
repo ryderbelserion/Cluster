@@ -16,7 +16,21 @@ dependencies {
     compileOnly("net.kyori", "adventure-api", "4.14.0")
 }
 
+val component: SoftwareComponent = components["java"]
+
 tasks {
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                groupId = rootProject.group.toString()
+                artifactId = "${rootProject.name.lowercase()}-${project.name.lowercase()}-api"
+                version = rootProject.version.toString()
+
+                from(component)
+            }
+        }
+    }
+
     shadowJar {
         archiveClassifier.set("")
         mergeServiceFiles()

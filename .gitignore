@@ -1,17 +1,14 @@
 .gradle
 .idea
 
-api/build
+paper/.gradle
+paper/build
+
+folia/.gradle
+folia/build
+
 api/.gradle
+api/build
 
 buildSrc/.gradle
 buildSrc/build
-
-platforms/crazyrunes/.gradle
-platforms/crazyrunes/build
-
-platforms/folia/.gradle
-platforms/folia/build
-
-platforms/paper/.gradle
-platforms/paper/build

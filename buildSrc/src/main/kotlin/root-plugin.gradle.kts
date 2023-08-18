@@ -1,7 +1,8 @@
 plugins {
-    `java-library`
-
     id("com.github.johnrengelman.shadow")
+
+    `maven-publish`
+    `java-library`
 }
 
 repositories {
@@ -18,5 +19,26 @@ tasks {
     compileJava {
         options.encoding = Charsets.UTF_8.name()
         options.release.set(17)
+    }
+}
+
+
+val isSnapshot = rootProject.version.toString().contains("snapshot")
+
+publishing {
+    repositories {
+        maven {
+            credentials {
+                this.username = System.getenv("gradle_username")
+                this.password = System.getenv("gradle_password")
+            }
+
+            if (isSnapshot) {
+                url = uri("https://repo.crazycrew.us/snapshots/")
+                return@maven
+            }
+
+            url = uri("https://repo.crazycrew.us/releases/")
+        }
     }
 }
