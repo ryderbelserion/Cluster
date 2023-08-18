@@ -1,16 +1,17 @@
-.idea
 .gradle
-
-api/.gradle
-platforms/paper/.gradle
-platforms/folia/.gradle
-platforms/crazyrunes/.gradle
+.idea
 
 api/build
-platforms/paper/build
-platforms/folia/build
+api/.gradle
+
+buildSrc/.gradle
+buildSrc/build
+
+platforms/crazyrunes/.gradle
 platforms/crazyrunes/build
 
-platforms/crazyrunes/run
-!platforms/crazyrunes/run/eula.txt
-!platforms/crazyrunes/run/server.properties
+platforms/folia/.gradle
+platforms/folia/build
+
+platforms/paper/.gradle
+platforms/paper/build

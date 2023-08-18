@@ -8,35 +8,10 @@ pluginManagement {
 
 rootProject.name = "Ruby"
 
-val lowerCase = rootProject.name.lowercase()
-
 listOf(
-    "api"
-).forEach(::includeProject)
-
-listOf(
-    "paper",
+    "api",
     "folia",
-
-    "crazyrunes"
-).forEach(::includePlatform)
-
-include("platforms")
-
-fun includeProject(name: String) {
-    include(name) {
-        this.name = name
-    }
-}
-
-fun includePlatform(name: String) {
-    include(name) {
-        this.name = name
-        this.projectDir = file("platforms/$name")
-    }
-}
-
-fun include(name: String, block: ProjectDescriptor.() -> Unit) {
-    include(name)
-    project(":$name").apply(block)
+    "paper"
+).forEach {
+    include(it)
 }
