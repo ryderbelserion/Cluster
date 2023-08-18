@@ -35,7 +35,7 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
 
     private final @NotNull PaperImpl paper = PaperProvider.get();
 
-    private final ItemUtil items = this.paper.getItemUtils();
+    private final @NotNull ItemUtil items = this.paper.getItemUtils();
 
     private final GsonComponentSerializer gson = GsonComponentSerializer.gson();
 

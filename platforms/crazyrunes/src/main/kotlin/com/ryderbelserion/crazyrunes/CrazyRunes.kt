@@ -1,16 +1,13 @@
 package com.ryderbelserion.crazyrunes
 
 import com.ryderbelserion.ruby.other.builder.commands.args.Argument
-import com.ryderbelserion.ruby.other.builder.commands.args.types.DoubleArgument
 import com.ryderbelserion.ruby.other.builder.commands.args.types.IntArgument
 import com.ryderbelserion.ruby.other.builder.commands.args.types.LongArgument
 import com.ryderbelserion.ruby.paper.PaperImpl
 import com.ryderbelserion.ruby.paper.plugin.builder.commands.PaperCommandContext
 import com.ryderbelserion.ruby.paper.plugin.builder.commands.PaperCommandEngine
 import com.ryderbelserion.ruby.paper.plugin.builder.commands.args.types.PlayerArgument
-import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 
 class CrazyRunes : JavaPlugin() {

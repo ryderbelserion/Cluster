@@ -4,12 +4,13 @@ import com.ryderbelserion.ruby.paper.PaperImpl;
 import com.ryderbelserion.ruby.other.builder.commands.args.ArgumentType;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PlayerArgument extends ArgumentType {
 
-    private final PaperImpl paper = PaperProvider.get();
+    private final @NotNull PaperImpl paper = PaperProvider.get();
 
     @Override
     public List<String> getPossibleValues() {

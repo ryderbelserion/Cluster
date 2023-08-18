@@ -5,12 +5,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 public class ItemNbt {
 
-    private final JavaPlugin plugin;
+    private final @NotNull JavaPlugin plugin;
 
-    public ItemNbt(JavaPlugin plugin) {
+    public ItemNbt(@NotNull JavaPlugin plugin) {
         this.plugin = plugin;
     }
 
