@@ -6,22 +6,22 @@ import java.util.List;
 
 public class IntArgument extends ArgumentType {
 
-    private final int numberCap;
+    private final int cap;
 
-    public IntArgument(Integer numberCap) {
-        if (numberCap == null) {
-            this.numberCap = 100;
+    public IntArgument(int cap) {
+        if (cap <= 0) {
+            this.cap = 100;
             return;
         }
 
-        this.numberCap = numberCap;
+        this.cap = cap;
     }
 
     @Override
     public List<String> getPossibleValues() {
         List<String> numbers = new ArrayList<>();
 
-        for (int value = 1; value <= this.numberCap; value += 1) numbers.add(String.valueOf(value));
+        for (int value = 1; value <= this.cap; value += 1) numbers.add(String.valueOf(value));
 
         return numbers;
     }

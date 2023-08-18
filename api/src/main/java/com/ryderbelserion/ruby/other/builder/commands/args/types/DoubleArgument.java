@@ -7,15 +7,15 @@ import java.util.List;
 
 public class DoubleArgument extends ArgumentType {
 
-    private final int numberCap;
+    private final double cap;
 
-    public DoubleArgument(Integer numberCap) {
-        if (numberCap == null) {
-            this.numberCap = 100;
+    public DoubleArgument(double cap) {
+        if (cap <= 0.0) {
+            this.cap = 100.0;
             return;
         }
 
-        this.numberCap = numberCap;
+        this.cap = cap;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class DoubleArgument extends ArgumentType {
 
         DecimalFormat decimalFormat = new DecimalFormat("0.0");
 
-        for (double value = 0.1; value <= this.numberCap; value += 0.1) {
+        for (double value = 0.1; value <= this.cap; value += 0.1) {
             String formattedNumber = decimalFormat.format(value);
             numbers.add(formattedNumber);
         }

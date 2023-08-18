@@ -1,17 +1,18 @@
 package com.ryderbelserion.ruby.other.builder.commands.args.types;
 
 import com.ryderbelserion.ruby.other.builder.commands.args.ArgumentType;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FloatArgument extends ArgumentType {
+public class LongArgument extends ArgumentType {
 
-    private final float cap;
+    private final long cap;
 
-    public FloatArgument(float cap) {
-        if (cap <= 0f) {
-            this.cap = 100f;
+    public LongArgument(long cap) {
+        if (cap <= 0L) {
+            this.cap = 100L;
             return;
         }
 
@@ -22,11 +23,8 @@ public class FloatArgument extends ArgumentType {
     public List<String> getPossibleValues() {
         List<String> numbers = new ArrayList<>();
 
-        DecimalFormat decimalFormat = new DecimalFormat("0.0f");
-
-        for (float value = 0.1f; value <= this.cap; value += 0.1f) {
-            String formattedValue = decimalFormat.format(value);
-            numbers.add(formattedValue);
+        for (float value = 1L; value <= this.cap; value += 1L) {
+            numbers.add(String.valueOf(value));
         }
 
         return numbers;
