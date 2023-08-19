@@ -26,13 +26,4 @@ tasks {
             }
         }
     }
-
-    reobfJar {
-        outputJar.set(file("$buildDir/libs/${rootProject.name.lowercase()}-${project.name}-${rootProject.version}.jar"))
-    }
-
-    shadowJar {
-        archiveClassifier.set("")
-        mergeServiceFiles()
-    }
 }

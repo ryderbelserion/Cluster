@@ -16,4 +16,8 @@ tasks {
     assemble {
         dependsOn(reobfJar)
     }
+
+    reobfJar {
+        outputJar.set(file("$buildDir/libs/${rootProject.name.lowercase()}-${project.name}-${rootProject.version}.jar"))
+    }
 }

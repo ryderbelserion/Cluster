@@ -30,9 +30,4 @@ tasks {
             }
         }
     }
-
-    shadowJar {
-        archiveClassifier.set("")
-        mergeServiceFiles()
-    }
 }
