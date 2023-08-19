@@ -181,11 +181,23 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
         return this.subCommands.contains(command);
     }
 
-    public void addRequiredArgument(Argument argument) {
-        this.requiredArgs.add(argument);
+    public List<PaperCommandEngine> getCommands(PaperCommandEngine command) {
+        return Collections.unmodifiableList(command.subCommands);
     }
 
-    public void addOptionalArgument(Argument argument) {
-        this.optionalArgs.add(argument);
+    public List<Argument> getOptionalArgs(PaperCommandEngine command) {
+        return command.requiredArgs;
+    }
+
+    public List<Argument> getRequiredArgs(PaperCommandEngine command) {
+        return command.optionalArgs;
+    }
+
+    public void addRequiredArgument(PaperCommandEngine command, Argument argument) {
+        command.requiredArgs.add(argument);
+    }
+
+    public void addOptionalArgument(PaperCommandEngine command, Argument argument) {
+        command.optionalArgs.add(argument);
     }
 }

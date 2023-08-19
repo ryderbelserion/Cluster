@@ -1,11 +1,15 @@
 package com.ryderbelserion.ruby.paper.plugin.builder.commands;
 
+import com.ryderbelserion.ruby.other.builder.commands.args.Argument;
 import com.ryderbelserion.ruby.paper.PaperImpl;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
+import org.bukkit.command.Command;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.codehaus.plexus.util.cli.Arg;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -32,7 +36,26 @@ public class PaperCommandManager {
     }
 
     public void removeCommand(PaperCommandEngine command) {
+        if (!hasCommand(command.getName())) return;
 
+        Command map = this.plugin.getServer().getCommandMap().getCommand(command.getName());
+
+        if (map != null) map.unregister(this.plugin.getServer().getCommandMap());
+
+        if (!command.getCommands(command).isEmpty()) {
+            command.getCommands(command).forEach(other -> {
+                List<Argument> optional = command.getOptionalArgs(other);
+                List<Argument> required = command.getRequiredArgs(other);
+
+                if (!optional.isEmpty()) optional.clear();
+
+                if (!required.isEmpty()) required.clear();
+            });
+
+            command.removeCommand(command);
+        }
+
+        this.commands.remove(command.getName());
     }
 
     public boolean hasCommand(String label) {
@@ -40,32 +63,14 @@ public class PaperCommandManager {
     }
 
     private void add(PaperCommandEngine command) {
-        if (hasCommand(command.getName())) {
-            this.paper.getLogger().info("Label: " + command.getLabel());
-            this.paper.getLogger().info("Name: " + command.getName());
-
-            return;
-        }
+        if (hasCommand(command.getName())) return;
 
         if (!command.isVisible()) {
-            this.paper.getLogger().info("Label: " + command.getLabel());
-            this.paper.getLogger().info("Name: " + command.getName());
-
-            this.paper.getLogger().info("Visibility Status: " + command.isVisible());
-
-            if (hasCommand(command.getName())) {
-                this.paper.getLogger().info("Command exists so we must remove it.");
-                removeCommand(command);
-            }
-
+            if (hasCommand(command.getName())) removeCommand(command);
             return;
         }
 
         this.commands.put(command.getName(), command);
-
-        this.paper.getLogger().info("Command Map Size: " + this.commands.size());
-
-        this.paper.getLogger().info("Command Name: " + command.getName() + " : " + command.getLabel());
 
         // Add it to the command map.
         this.plugin.getServer().getCommandMap().register(this.namespace, command);
