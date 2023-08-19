@@ -3,5 +3,5 @@ plugins {
 }
 
 rootProject.group = "com.ryderbelserion.ruby"
-rootProject.version = "1.1"
+rootProject.version = "1.2"
 rootProject.description = "A java framework"

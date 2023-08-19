@@ -6,17 +6,12 @@ import com.ryderbelserion.ruby.other.builder.commands.CommandEngine;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public abstract class PaperCommandEngine extends Command implements CommandEngine {
 
     private final @NotNull PaperImpl paper = PaperProvider.get();
-
-    private final @NotNull JavaPlugin plugin = this.paper.getPlugin();
-
-    private final @NotNull PaperCommandManager manager = this.paper.getManager();
 
     private final LinkedList<PaperCommandEngine> subCommands = new LinkedList<>();
 
@@ -50,22 +45,19 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
             }
         }
 
-        //if (!validation(context)) return;
+        if (!validate(context)) return;
 
         perform(context, args);
     }
 
-    private boolean validation(PaperCommandContext context) {
+    private boolean validate(PaperCommandContext context) {
         if (context.getArgs().size() < this.requiredArgs.size()) {
-            context.reply("You are a few hairs short.");
-            //TODO() Add format
+            context.reply(this.paper.getMessageKey().tooFewArgs());
             return false;
         }
 
-        if (context.getArgs().size() > this.requiredArgs.size() + this.optionalArgs.size()
-        || context.getArgs().size() > this.requiredArgs.size()) {
-            context.reply("You are a spicy beaver.");
-            //TODO() Add format
+        if (context.getArgs().size() > this.requiredArgs.size() + this.optionalArgs.size() || context.getArgs().size() > this.requiredArgs.size()) {
+            context.reply(this.paper.getMessageKey().tooManyArgs());
             return false;
         }
 
