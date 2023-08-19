@@ -1,19 +1,14 @@
 package com.ryderbelserion.ruby.paper.plugin.items;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import com.ryderbelserion.ruby.paper.PaperImpl;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
 import com.ryderbelserion.ruby.paper.utils.ItemUtil;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.block.Banner;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
@@ -22,13 +17,9 @@ import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
-import org.bukkit.util.Consumer;
 import org.jetbrains.annotations.NotNull;
-import java.lang.reflect.Field;
-import java.net.MalformedURLException;
-import java.net.URL;
+
 import java.util.*;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("unchecked")
 public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
@@ -37,18 +28,17 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
 
     private final @NotNull ItemUtil items = this.paper.getItemUtil();
 
-    private final GsonComponentSerializer gson = GsonComponentSerializer.gson();
+    private final @NotNull SkullCreator skullCreator = this.paper.getSkullCreator();
 
     // Core.
     private ItemStack itemStack;
     private ItemMeta itemMeta;
 
+    private String displayName;
+
     private Material material;
 
     private int damage;
-
-    // Custom Lore.
-    private Field lore_field;
 
     // Custom Model Data.
     private boolean hasCustomModelData;
@@ -56,9 +46,10 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
     private int customModelData;
 
     // Custom Heads.
+    private String player;
+    private boolean isHash;
+    private boolean isURL;
     private boolean isHead;
-    private Field profile;
-    private String texture;
 
     // Potions
     private boolean isPotion;
@@ -89,11 +80,13 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
     private boolean hideFlags;
     private boolean isGlowing;
 
+    // Lore.
+    private List<String> lore;
+
     protected BaseItemBuilder() {
         this.itemStack = null;
         this.itemMeta = null;
         this.material = Material.AIR;
-        this.lore_field = null;
 
         this.trimMaterial = null;
         this.trimPattern = null;
@@ -101,9 +94,9 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
         this.hasCustomModelData = false;
         this.customModelData = 0;
 
+        this.isHash = false;
+        this.isURL = false;
         this.isHead = false;
-        this.profile = null;
-        this.texture = "";
 
         this.isPotion = false;
         this.potionColor = Color.WHITE;
@@ -127,19 +120,12 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
         this.isGlowing = false;
 
         this.hideFlags = false;
+
+        this.lore = Collections.emptyList();
     }
 
     protected BaseItemBuilder(ItemStack itemStack) {
         this.itemStack = itemStack;
-
-        try {
-            Class<?> metaClass = this.items.craftClass("inventory.CraftMetaItem");
-
-            this.lore_field = metaClass.getDeclaredField("lore");
-            this.lore_field.setAccessible(true);
-        } catch (NoSuchFieldException | ClassNotFoundException exception) {
-            this.paper.getLogger().warn("Failed to make the lore field accessible as it was not found. Perhaps an invalid item was supplied?");
-        }
 
         this.material = itemStack.getType();
 
@@ -162,42 +148,29 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
         this.itemMeta = itemStack.hasItemMeta() ? itemStack.getItemMeta() : Bukkit.getServer().getItemFactory().getItemMeta(this.material);
     }
 
-    public Base setDisplayName(Component displayName) {
-        this.itemMeta.displayName(displayName.decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE));
+    public Base setDisplayName(String displayName) {
+        this.displayName = displayName;
         return (Base) this;
     }
 
-    public Base setLore(Component ... lore) {
-        return setLore(Arrays.asList(lore));
-    }
+    public Base setLore(List<String> lore) {
+        if (lore != null) {
+            this.lore.clear();
 
-    public Base setLore(List<Component> lore) {
-        List<String> jsonLore = lore.stream().filter(Objects::nonNull).map(this.gson::serialize).toList();
-
-        try {
-            this.lore_field.set(this.itemMeta, jsonLore);
-        } catch (IllegalAccessException exception) {
-            this.paper.getLogger().warn("Failed to set lore: " + exception.getMessage());
+            this.lore.addAll(lore);
         }
 
         return (Base) this;
     }
 
-    public Base addLore(Consumer<List<Component>> lore) {
-        List<Component> components;
+    public List<Component> getColoredLore() {
+        List<Component> coloredLore = new ArrayList<>();
 
-        try {
-            List<String> jsonLore = (List<String>) this.lore_field.get(this.itemMeta);
-
-            components = (jsonLore == null) ? new ArrayList<>() : jsonLore.stream().map(this.gson::deserialize).collect(Collectors.toList());
-        } catch (Exception exception) {
-            components = new ArrayList<>();
-
-            this.paper.getLogger().warn("Failed to add lore: " + exception.getMessage());
+        for (String line : this.lore) {
+            coloredLore.add(this.paper.getAdventure().parse(line));
         }
 
-        lore.accept(components);
-        return (Base) this;
+        return coloredLore;
     }
 
     public Base setAmount(int amount) {
@@ -249,8 +222,13 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
         return (Base) this;
     }
 
-    public Base setTexture(String texture) {
-        this.texture = texture;
+    public Base setPlayerName(String playerName) {
+        this.player = playerName;
+
+        if (player != null && player.length() > 16) {
+            this.isHash = true;
+            this.isURL = player.startsWith("http");
+        }
 
         return (Base) this;
     }
@@ -406,15 +384,26 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
 
     public ItemStack build() {
         if (this.material != Material.AIR) {
-            if (this.isHead) {
-                // Set the field to accessible.
-                exposeField();
-
-                setPlayerTexture(this.texture);
+            if (this.isHead) { // Has to go 1st due to it removing all data when finished.
+                if (this.isHash) { // Sauce: https://github.com/deanveloper/SkullCreator
+                    if (this.isURL) {
+                        this.skullCreator.itemWithUrl(this.itemStack, player);
+                    } else {
+                        this.skullCreator.itemWithBase64(this.itemStack, player);
+                    }
+                }
             }
 
+            ItemMeta meta = this.itemMeta;
+
+            List<Component> newLore = getColoredLore();
+
+            if (!newLore.isEmpty()) meta.lore(getColoredLore());
+
+            this.itemMeta.displayName(this.paper.getAdventure().parse(this.displayName));
+
             if (this.isPotion || this.isTippedArrow && (this.potionType != null || this.potionColor != null)) {
-                PotionMeta potionMeta = (PotionMeta) this.itemMeta;
+                PotionMeta potionMeta = (PotionMeta) meta;
 
                 if (this.potionType != null) potionMeta.setBasePotionData(new PotionData(this.potionType));
 
@@ -423,28 +412,28 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
                 this.setItemMeta(potionMeta);
             }
 
-            if (this.itemMeta instanceof Damageable) {
+            if (meta instanceof Damageable) {
                 if (this.damage >= 1) {
                     if (this.damage >= this.itemStack.getType().getMaxDurability()) {
-                        ((Damageable) this.itemMeta).setDamage(this.itemStack.getType().getMaxDurability());
+                        ((Damageable) meta).setDamage(this.itemStack.getType().getMaxDurability());
                     } else {
-                        ((Damageable) this.itemMeta).setDamage(this.damage);
+                        ((Damageable) meta).setDamage(this.damage);
                     }
                 }
             }
 
             if (this.isLeather && this.armorColor != null) {
-                LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) this.itemMeta;
+                LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) meta;
                 leatherArmorMeta.setColor(this.armorColor);
             }
 
             if (this.isBanner && !this.patterns.isEmpty()) {
-                BannerMeta bannerMeta = (BannerMeta) this.itemMeta;
+                BannerMeta bannerMeta = (BannerMeta) meta;
                 bannerMeta.setPatterns(this.patterns);
             }
 
             if (this.isShield && !this.patterns.isEmpty()) {
-                BlockStateMeta shieldMeta = (BlockStateMeta) this.itemMeta;
+                BlockStateMeta shieldMeta = (BlockStateMeta) meta;
                 Banner banner = (Banner) shieldMeta.getBlockState();
 
                 banner.setPatterns(this.patterns);
@@ -453,11 +442,11 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
                 shieldMeta.setBlockState(banner);
             }
 
-            if (this.hasCustomModelData) this.itemMeta.setCustomModelData(this.customModelData);
+            if (this.hasCustomModelData) meta.setCustomModelData(this.customModelData);
 
-            if (this.hideFlags) this.itemMeta.addItemFlags(ItemFlag.values());
+            if (this.hideFlags) meta.addItemFlags(ItemFlag.values());
 
-            this.itemMeta.setUnbreakable(this.isDurable);
+            meta.setUnbreakable(this.isDurable);
 
             addGlow();
         } else {
@@ -473,34 +462,6 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
         this.itemMeta.addItemFlags(itemFlag);
     }
 
-    private void setPlayerTexture(String texture) {
-        this.texture = texture;
-
-        Player player = Bukkit.getServer().getPlayer(this.texture);
-
-        if (player != null) {
-            setOwner(player);
-            return;
-        }
-
-        if (this.texture.startsWith("http")) {
-            setTexture(convert(this.texture), UUID.randomUUID());
-            return;
-        }
-
-        setTexture(this.texture, UUID.randomUUID());
-    }
-
-    private void setOwner(OfflinePlayer player) {
-        if (this.items.isPlayerSkull(this.material)) return;
-
-        SkullMeta skullMeta = (SkullMeta) this.getItemMeta();
-
-        skullMeta.setOwningPlayer(player);
-
-        this.setItemMeta(skullMeta);
-    }
-
     private void addGlow() {
         if (this.isGlowing) {
             if (this.itemMeta.hasEnchants()) return;
@@ -509,25 +470,6 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
 
             this.setItemMeta(this.itemMeta);
         }
-    }
-
-    private void exposeField() {
-        if (this.items.isPlayerSkull(this.material)) return;
-
-        Field field;
-
-        try {
-            SkullMeta skullMeta = (SkullMeta) this.items.skull().getItemMeta();
-            field = skullMeta.getClass().getDeclaredField("profile");
-
-            field.setAccessible(true);
-        } catch (NoSuchFieldException exception) {
-            this.paper.getLogger().warn("Failed to make the meta field for profile accessible as it was not found. Perhaps an invalid item meta or field supplied?");
-
-            field = null;
-        }
-
-        this.profile = field;
     }
 
     private boolean isValidInteger(String value) {
@@ -635,40 +577,6 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
         }
 
         return null;
-    }
-
-    private void setTexture(String texture, UUID uuid) {
-        if (this.items.isPlayerSkull(this.material)) return;
-
-        if (this.profile == null) return;
-
-        SkullMeta skullMeta = (SkullMeta) this.itemMeta;
-        GameProfile gameProfile = new GameProfile(uuid, null);
-
-        gameProfile.getProperties().put("textures", new Property("textures", texture));
-
-        try {
-            this.profile.set(skullMeta, gameProfile);
-        } catch (Exception exception) {
-            this.paper.getLogger().warn("Failed to set the meta & game profile. Perhaps an invalid texture?");
-            this.paper.getLogger().warn("Current Input: " + texture + ".");
-        }
-
-        setItemMeta(skullMeta);
-    }
-
-    private String convert(String url) {
-        URL actualLink;
-
-        try {
-            actualLink = new URL(url);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-
-        String encode = "{\"textures\":{\"SKIN\":{\"url\":\"" + actualLink + "\"}}}";
-
-        return Base64.getEncoder().encodeToString(encode.getBytes());
     }
 
     // Protected getters for extended builders.

@@ -7,6 +7,7 @@ import com.ryderbelserion.ruby.minecraft.plugin.Adventure;
 import com.ryderbelserion.ruby.minecraft.utils.FileUtil;
 import com.ryderbelserion.ruby.paper.plugin.builder.commands.PaperCommandManager;
 import com.ryderbelserion.ruby.other.builder.commands.MessageKey;
+import com.ryderbelserion.ruby.paper.plugin.items.SkullCreator;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperRegistration;
 import com.ryderbelserion.ruby.paper.utils.ItemUtil;
 import com.ryderbelserion.ruby.paper.utils.LegacyUtil;
@@ -17,6 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class PaperImpl extends RubyImpl {
 
     private PaperCommandManager manager;
+    private SkullCreator skullCreator;
     private BukkitAudiences audience;
     private MessageKey messageKey;
     private LegacyUtil legacyUtil;
@@ -50,6 +52,7 @@ public class PaperImpl extends RubyImpl {
         this.logger = new Logger(this.plugin.getName());
 
         this.itemUtil = new ItemUtil();
+        this.skullCreator = new SkullCreator();
 
         this.fileUtil = new FileUtil();
 
@@ -129,6 +132,10 @@ public class PaperImpl extends RubyImpl {
         this.plugin = plugin;
 
         return this;
+    }
+
+    public SkullCreator getSkullCreator() {
+        return this.skullCreator;
     }
 
     public LegacyUtil getLegacyUtil() {
