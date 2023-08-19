@@ -13,5 +13,8 @@ api/build
 buildSrc/.gradle
 buildSrc/build
 
+paper-small/.gradle
+paper-small/build
+
 runes/build
 runes/.gradle

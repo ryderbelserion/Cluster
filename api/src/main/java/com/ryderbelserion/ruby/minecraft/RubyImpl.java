@@ -10,6 +10,8 @@ import net.kyori.adventure.platform.AudienceProvider;
 
 public abstract class RubyImpl {
 
+    private AudienceProvider audience;
+
     public abstract Platform.Type getPlatform();
 
     public abstract Adventure getAdventure();
@@ -28,5 +30,13 @@ public abstract class RubyImpl {
 
     public void disable() {
         RubyRegistration.stop();
+    }
+
+    public void setAudience(AudienceProvider audience) {
+        this.audience = audience;
+    }
+
+    public AudienceProvider getAudience() {
+        return this.audience;
     }
 }
