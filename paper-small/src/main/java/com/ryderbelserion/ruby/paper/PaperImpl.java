@@ -5,20 +5,13 @@ import com.ryderbelserion.ruby.minecraft.plugin.Logger;
 import com.ryderbelserion.ruby.minecraft.plugin.Platform;
 import com.ryderbelserion.ruby.minecraft.plugin.Adventure;
 import com.ryderbelserion.ruby.minecraft.utils.FileUtil;
-import com.ryderbelserion.ruby.paper.plugin.builder.commands.PaperCommandManager;
-import com.ryderbelserion.ruby.other.builder.commands.MessageKey;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperRegistration;
 import com.ryderbelserion.ruby.paper.utils.ItemUtil;
 import com.ryderbelserion.ruby.paper.utils.LegacyUtil;
-import net.kyori.adventure.platform.AudienceProvider;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PaperImpl extends RubyImpl {
 
-    private PaperCommandManager manager;
-    private BukkitAudiences audience;
-    private MessageKey messageKey;
     private LegacyUtil legacyUtil;
     private Adventure adventure;
     private JavaPlugin plugin;
@@ -39,11 +32,6 @@ public class PaperImpl extends RubyImpl {
         // Initializes the paper provider.
         PaperRegistration.start(this);
 
-        // Creates the audience sender.
-        if (this.audience == null) {
-            this.audience = BukkitAudiences.create(this.plugin);
-        }
-
         // Create adventure/logger instance.
         this.adventure = new Adventure();
         this.legacyUtil = new LegacyUtil();
@@ -54,8 +42,6 @@ public class PaperImpl extends RubyImpl {
         this.fileUtil = new FileUtil();
 
         if (!this.plugin.getDataFolder().exists()) this.plugin.getDataFolder().mkdirs();
-
-        this.manager = new PaperCommandManager();
     }
 
     @Override
@@ -65,29 +51,6 @@ public class PaperImpl extends RubyImpl {
 
         // Stops the paper provider.
         PaperRegistration.stop();
-
-        // If audience is not null, close and set to null.
-        if (this.audience != null) {
-            this.audience.close();
-            this.audience = null;
-        }
-    }
-
-    public PaperCommandManager getManager() {
-        return this.manager;
-    }
-
-    @Override
-    public AudienceProvider getAudience() {
-        return this.audience;
-    }
-
-    public MessageKey getMessageKey() {
-        return this.messageKey;
-    }
-
-    public void setMessageKey(MessageKey messageKey) {
-        this.messageKey = messageKey;
     }
 
     @Override

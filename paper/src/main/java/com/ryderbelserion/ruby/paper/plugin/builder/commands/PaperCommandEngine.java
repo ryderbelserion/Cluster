@@ -52,12 +52,12 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
 
     private boolean validate(PaperCommandContext context) {
         if (context.getArgs().size() < this.requiredArgs.size()) {
-            context.reply(this.paper.getMessageKey().tooFewArgs());
+            context.reply(this.paper.getMessageKey().NOT_ENOUGH_ARGS());
             return false;
         }
 
         if (context.getArgs().size() > this.requiredArgs.size() + this.optionalArgs.size() || context.getArgs().size() > this.requiredArgs.size()) {
-            context.reply(this.paper.getMessageKey().tooManyArgs());
+            context.reply(this.paper.getMessageKey().TOO_MANY_ARGS());
             return false;
         }
 
