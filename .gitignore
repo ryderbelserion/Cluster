@@ -12,3 +12,6 @@ api/build
 
 buildSrc/.gradle
 buildSrc/build
+
+runes/build
+runes/.gradle
