@@ -1,8 +1,6 @@
 package com.ryderbelserion.ruby.other.builder.commands.args.types;
 
 import com.ryderbelserion.ruby.other.builder.commands.args.ArgumentType;
-
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -11,7 +11,8 @@ rootProject.name = "Ruby"
 listOf(
     "api",
     "folia",
-    "paper"
+    "paper",
+    "runes"
 ).forEach {
     include(it)
 }

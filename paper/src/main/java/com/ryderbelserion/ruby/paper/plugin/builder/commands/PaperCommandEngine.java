@@ -16,18 +16,20 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
 
     private final @NotNull JavaPlugin plugin = this.paper.getPlugin();
 
+    private final @NotNull PaperCommandManager manager = this.paper.getManager();
+
     private final LinkedList<PaperCommandEngine> subCommands = new LinkedList<>();
 
-    public LinkedList<Argument> requiredArgs = new LinkedList<>();
-    public LinkedList<Argument> optionalArgs = new LinkedList<>();
+    private final LinkedList<Argument> requiredArgs = new LinkedList<>();
+    private final LinkedList<Argument> optionalArgs = new LinkedList<>();
 
-    protected PaperCommandEngine(@NotNull String name, @NotNull String description, @NotNull String usageMessage, @NotNull List<String> aliases) {
+    public PaperCommandEngine(@NotNull String name, @NotNull String description, @NotNull String usageMessage, @NotNull List<String> aliases) {
         super(name, description, usageMessage, aliases);
     }
 
     public abstract void perform(PaperCommandContext context, String[] args);
 
-    public void execute(PaperCommandContext context) {
+    public void execute(PaperCommandContext context, String[] args) {
         StringBuilder label = new StringBuilder(getLabel());
 
         if (!context.getArgs().isEmpty()) {
@@ -41,7 +43,7 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
 
                     context.setLabel(label.toString());
 
-                    command.execute(context);
+                    command.execute(context, args);
 
                     return;
                 }
@@ -50,7 +52,7 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
 
         //if (!validation(context)) return;
 
-        perform(context, new String[0]);
+        perform(context, args);
     }
 
     private boolean validation(PaperCommandContext context) {
@@ -80,7 +82,7 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
                 arguments
         );
 
-        execute(context);
+        execute(context, args);
 
         return true;
     }
@@ -147,10 +149,12 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
 
                 for (Argument argument : arguments) {
                     if (argument.order() == argToComplete) {
-                        List<String> possibleValuesArgs = argument.argumentType().getPossibleValues();
+                        if (!argument.argumentType().getPossibleValues().isEmpty()) {
+                            List<String> possibleArgs = argument.argumentType().getPossibleValues();
 
-                        possibleValues = new ArrayList<>(possibleValuesArgs);
-                        break;
+                            possibleValues = new ArrayList<>(possibleArgs);
+                            break;
+                        }
                     }
                 }
 
@@ -175,5 +179,13 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
 
     public boolean hasCommand(PaperCommandEngine command) {
         return this.subCommands.contains(command);
+    }
+
+    public void addRequiredArgument(Argument argument) {
+        this.requiredArgs.add(argument);
+    }
+
+    public void addOptionalArgument(Argument argument) {
+        this.optionalArgs.add(argument);
     }
 }

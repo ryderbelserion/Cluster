@@ -90,17 +90,4 @@ public class CommandContext {
     public List<String> getArgs() {
         return this.args;
     }
-
-    public void removeArgAt(int point) {
-        if (this.args.isEmpty()) {
-            switch (ruby.getPlatform()) {
-                case PAPER, SPIGOT, FABRIC -> this.ruby.getLogger().error("You did not supply any args to check.");
-                case OTHER -> System.out.println(this.ruby.getPrefix() + "You did not supply any args to check.");
-            }
-
-            return;
-        }
-
-        this.args.remove(point);
-    }
 }
