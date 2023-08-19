@@ -24,4 +24,8 @@ tasks {
             }
         }
     }
+
+    shadowJar {
+        dependsOn(":api:shadowJar")
+    }
 }
