@@ -76,7 +76,7 @@ public class CommandContext {
         return true;
     }
 
-    public void updateUUID(UUID uuid) {
+    public void setUUID(UUID uuid) {
         this.uuid = uuid;
     }
 
