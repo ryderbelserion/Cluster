@@ -42,7 +42,7 @@ public class CommandContext {
     public void send(Audience audience, String message) {
         if (empty(message)) return;
 
-        Component component = this.ruby.getAdventure().parse(message);
+        Component component = this.plugin.getAdventure().parse(message);
 
         audience.sendMessage(component);
     }
