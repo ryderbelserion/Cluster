@@ -1,16 +1,17 @@
 package com.ryderbelserion.ruby.other.builder.commands;
 
-import com.ryderbelserion.ruby.minecraft.RubyImpl;
+import com.ryderbelserion.ruby.minecraft.RubyPlugin;
 import com.ryderbelserion.ruby.other.registry.RubyProvider;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.permission.PermissionChecker;
 import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.UUID;
 
 public class CommandContext {
 
-    private final RubyImpl ruby = RubyProvider.get();
+    private final @NotNull RubyPlugin plugin = RubyProvider.get();
 
     private final List<String> args;
     private final Audience audience;
@@ -27,7 +28,7 @@ public class CommandContext {
     public void reply(String message) {
         if (empty(message)) return;
 
-        Component component = this.ruby.getAdventure().parse(message);
+        Component component = this.plugin.getAdventure().parse(message);
 
         this.audience.sendMessage(component);
     }
@@ -65,7 +66,7 @@ public class CommandContext {
     }
 
     public Audience getPlayer() {
-        return this.ruby.getAudience().player(this.uuid);
+        return this.plugin.getAudience().player(this.uuid);
     }
 
     public boolean hasPermission(String permission) {

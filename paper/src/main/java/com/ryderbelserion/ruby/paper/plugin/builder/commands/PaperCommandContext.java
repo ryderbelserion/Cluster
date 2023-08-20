@@ -1,7 +1,7 @@
 package com.ryderbelserion.ruby.paper.plugin.builder.commands;
 
-import com.ryderbelserion.ruby.paper.PaperImpl;
 import com.ryderbelserion.ruby.other.builder.commands.CommandContext;
+import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.builder.commands.args.CommandArgs;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
 import org.bukkit.OfflinePlayer;
@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class PaperCommandContext extends CommandContext implements CommandArgs {
 
-    private final @NotNull PaperImpl paper = PaperProvider.get();
+    private final @NotNull PaperPlugin paper = PaperProvider.get();
 
     private final @NotNull JavaPlugin plugin = this.paper.getPlugin();
     private final boolean isLegacy = this.paper.isLegacy();

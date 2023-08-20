@@ -1,5 +1,7 @@
 package com.ryderbelserion.ruby.paper.plugin.items;
 
+import com.ryderbelserion.ruby.paper.PaperPlugin;
+import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -9,11 +11,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class ItemNbt {
 
-    private final @NotNull JavaPlugin plugin;
+    private final @NotNull PaperPlugin paperPlugin = PaperProvider.get();
 
-    public ItemNbt(@NotNull JavaPlugin plugin) {
-        this.plugin = plugin;
-    }
+    private final @NotNull JavaPlugin plugin = this.paperPlugin.getPlugin();
 
     public ItemStack setString(ItemStack itemStack, String key, String value) {
         ItemMeta meta = itemStack.getItemMeta();

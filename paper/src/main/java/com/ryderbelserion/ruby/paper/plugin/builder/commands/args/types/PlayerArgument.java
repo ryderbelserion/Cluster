@@ -1,7 +1,7 @@
 package com.ryderbelserion.ruby.paper.plugin.builder.commands.args.types;
 
-import com.ryderbelserion.ruby.paper.PaperImpl;
 import com.ryderbelserion.ruby.other.builder.commands.args.ArgumentType;
+import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class PlayerArgument extends ArgumentType {
 
-    private final @NotNull PaperImpl paper = PaperProvider.get();
+    private final @NotNull PaperPlugin paper = PaperProvider.get();
 
     @Override
     public List<String> getPossibleValues() {

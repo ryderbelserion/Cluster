@@ -1,6 +1,6 @@
 package com.ryderbelserion.ruby.other.registry;
 
-import com.ryderbelserion.ruby.minecraft.RubyImpl;
+import com.ryderbelserion.ruby.minecraft.RubyPlugin;
 import org.jetbrains.annotations.ApiStatus;
 import java.lang.reflect.Method;
 
@@ -11,7 +11,7 @@ public class RubyRegistration {
 
     static {
         try {
-            start = RubyProvider.class.getDeclaredMethod("start", RubyImpl.class);
+            start = RubyProvider.class.getDeclaredMethod("start", RubyPlugin.class);
             start.setAccessible(true);
 
             stop = RubyProvider.class.getDeclaredMethod("stop");
@@ -22,11 +22,11 @@ public class RubyRegistration {
     }
 
     @ApiStatus.Internal
-    public static void start(RubyImpl ruby) {
+    public static void start(RubyPlugin rubyPlugin) {
         try {
-            start.invoke(null, ruby);
+            start.invoke(null, rubyPlugin);
         } catch (Exception exception) {
-            System.out.println("[ERROR] Failed to enable ruby provider");
+            System.out.println("[ERROR] Failed to enable ruby plugin");
             System.out.println("[ERROR] Reason: " + exception.getMessage());
         }
     }
@@ -36,7 +36,7 @@ public class RubyRegistration {
         try {
             stop.invoke(null);
         } catch (Exception exception) {
-            System.out.println("[ERROR] Failed to disable ruby provider");
+            System.out.println("[ERROR] Failed to disable ruby plugin");
             System.out.println("[ERROR] Reason: " + exception.getMessage());
         }
     }

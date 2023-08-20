@@ -1,13 +1,14 @@
 package com.ryderbelserion.ruby.other.config;
 
-import com.ryderbelserion.ruby.minecraft.RubyImpl;
+import com.ryderbelserion.ruby.minecraft.RubyPlugin;
 import com.ryderbelserion.ruby.other.config.types.file.JsonFile;
 import com.ryderbelserion.ruby.other.registry.RubyProvider;
+import org.jetbrains.annotations.NotNull;
 import java.io.File;
 
 public class FileManager implements FileContext {
 
-    private final RubyImpl ruby = RubyProvider.get();
+    private final @NotNull RubyPlugin plugin = RubyProvider.get();
 
     private JsonFile jsonFile;
 
@@ -19,12 +20,7 @@ public class FileManager implements FileContext {
                 this.jsonFile.load();
             }
 
-            case YAML -> {
-                switch (this.ruby.getPlatform()) {
-                    case PAPER, FABRIC, SPIGOT -> this.ruby.getLogger().info(file.getFileType().getName() + " is not supported yet.");
-                    case OTHER -> System.out.println(this.ruby.getPrefix() + file.getFileType().getName() + " is not supported yet.");
-                }
-            }
+            case YAML -> this.plugin.getFancyLogger().info(file.getFileType().getName() + " is not supported yet.");
         }
     }
 
@@ -36,12 +32,7 @@ public class FileManager implements FileContext {
                 this.jsonFile.save();
             }
 
-            case YAML -> {
-                switch (this.ruby.getPlatform()) {
-                    case PAPER, FABRIC, SPIGOT -> this.ruby.getLogger().info(file.getFileType().getName() + " is not supported yet.");
-                    case OTHER -> System.out.println(this.ruby.getPrefix() + file.getFileType().getName() + " is not supported yet.");
-                }
-            }
+            case YAML -> this.plugin.getFancyLogger().info(file.getFileType().getName() + " is not supported yet.");
         }
     }
 

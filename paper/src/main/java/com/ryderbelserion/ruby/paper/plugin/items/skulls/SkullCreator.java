@@ -1,6 +1,6 @@
-package com.ryderbelserion.ruby.paper.plugin.items;
+package com.ryderbelserion.ruby.paper.plugin.items.skulls;
 
-import com.ryderbelserion.ruby.paper.PaperImpl;
+import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -17,9 +17,9 @@ import java.util.UUID;
 
 public class SkullCreator {
 
-    private final @NotNull PaperImpl paper = PaperProvider.get();
+    private final @NotNull PaperPlugin paperPlugin = PaperProvider.get();
 
-    private final JavaPlugin plugin = this.paper.getPlugin();
+    private final @NotNull JavaPlugin plugin = this.paperPlugin.getPlugin();
     
     /**
      * Creates a player skull based on a player's name.

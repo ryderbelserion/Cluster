@@ -1,13 +1,12 @@
 package com.ryderbelserion.ruby.paper;
 
-import com.ryderbelserion.ruby.minecraft.RubyImpl;
+import com.ryderbelserion.ruby.minecraft.RubyPlugin;
 import com.ryderbelserion.ruby.minecraft.plugin.Logger;
 import com.ryderbelserion.ruby.minecraft.plugin.Platform;
 import com.ryderbelserion.ruby.minecraft.plugin.Adventure;
 import com.ryderbelserion.ruby.minecraft.utils.FileUtil;
 import com.ryderbelserion.ruby.paper.plugin.builder.commands.PaperCommandManager;
-import com.ryderbelserion.ruby.other.builder.commands.MessageKey;
-import com.ryderbelserion.ruby.paper.plugin.items.SkullCreator;
+import com.ryderbelserion.ruby.paper.plugin.items.skulls.SkullCreator;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperRegistration;
 import com.ryderbelserion.ruby.paper.utils.ItemUtil;
 import com.ryderbelserion.ruby.paper.utils.LegacyUtil;
@@ -15,12 +14,11 @@ import net.kyori.adventure.platform.AudienceProvider;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class PaperImpl extends RubyImpl {
+public class PaperPlugin extends RubyPlugin {
 
     private PaperCommandManager manager;
     private SkullCreator skullCreator;
     private BukkitAudiences audience;
-    private MessageKey messageKey;
     private LegacyUtil legacyUtil;
     private Adventure adventure;
     private JavaPlugin plugin;
@@ -29,7 +27,7 @@ public class PaperImpl extends RubyImpl {
     private boolean isLegacy;
     private Logger logger;
 
-    public PaperImpl(JavaPlugin plugin) {
+    public PaperPlugin(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -85,14 +83,6 @@ public class PaperImpl extends RubyImpl {
         return this.audience;
     }
 
-    public MessageKey getMessageKey() {
-        return this.messageKey;
-    }
-
-    public void setMessageKey(MessageKey messageKey) {
-        this.messageKey = messageKey;
-    }
-
     @Override
     public Platform.Type getPlatform() {
         return Platform.Type.PAPER;
@@ -109,13 +99,8 @@ public class PaperImpl extends RubyImpl {
     }
 
     @Override
-    public Logger getLogger() {
+    public Logger getFancyLogger() {
         return this.logger;
-    }
-
-    @Override
-    public String getPrefix() {
-        return "[" + this.plugin.getName() + "] ";
     }
 
     @Override
@@ -123,7 +108,7 @@ public class PaperImpl extends RubyImpl {
         return this.isLegacy;
     }
 
-    public PaperImpl setPlugin(JavaPlugin plugin) {
+    public PaperPlugin setPlugin(JavaPlugin plugin) {
         // If the plugin is already registered,
         // return as we don't want it registered again.
         if (this.plugin != null) return this;

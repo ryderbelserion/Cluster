@@ -1,6 +1,6 @@
 package com.ryderbelserion.ruby.minecraft.plugin;
 
-import com.ryderbelserion.ruby.minecraft.RubyImpl;
+import com.ryderbelserion.ruby.minecraft.RubyPlugin;
 import com.ryderbelserion.ruby.other.registry.RubyProvider;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
@@ -12,9 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class Adventure {
 
-    private @NotNull RubyImpl ruby() {
-        return RubyProvider.get();
-    }
+    private final @NotNull RubyPlugin plugin = RubyProvider.get();
 
     private MiniMessage adventure() {
         return MiniMessage.miniMessage();
@@ -25,7 +23,7 @@ public class Adventure {
     }
 
     public void console(String message) {
-        ruby().getAudience().console().sendMessage(parse(message));
+        this.plugin.getAudience().console().sendMessage(parse(message));
     }
 
     public void player(Audience audience, String message) {

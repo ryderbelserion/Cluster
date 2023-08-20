@@ -2,16 +2,17 @@ package com.ryderbelserion.ruby.other.config.types.file;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.ryderbelserion.ruby.minecraft.RubyImpl;
+import com.ryderbelserion.ruby.minecraft.RubyPlugin;
 import com.ryderbelserion.ruby.other.config.FileEngine;
 import com.ryderbelserion.ruby.other.registry.RubyProvider;
+import org.jetbrains.annotations.NotNull;
 import java.io.*;
 import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 
 public class JsonFile {
 
-    private final RubyImpl ruby = RubyProvider.get();
+    private final @NotNull RubyPlugin plugin = RubyProvider.get();
 
     private final FileEngine context;
 
@@ -43,31 +44,15 @@ public class JsonFile {
                 return;
             }
         } catch (Exception exception) {
-            switch (ruby.getPlatform()) {
-                case PAPER, SPIGOT, FABRIC -> {
-                    this.ruby.getLogger().error("Failed to save " + this.file.getName());
-                    this.ruby.getLogger().error("Reason: " + exception.getMessage());
-                }
-                case OTHER -> {
-                    System.out.println(this.ruby.getPrefix() + "Failed to save " + this.file.getName());
-                    System.out.println(this.ruby.getPrefix() + "Reason: " + exception.getMessage());
-                }
-            }
+            this.plugin.getFancyLogger().error("Failed to save " + this.file.getName());
+            this.plugin.getFancyLogger().error("Reason: " + exception.getMessage());
         }
 
         try (InputStreamReader reader = new InputStreamReader(new FileInputStream(this.file), StandardCharsets.UTF_8)) {
             this.gson.fromJson(reader, this.context.getClass());
         } catch (Exception exception) {
-            switch (ruby.getPlatform()) {
-                case PAPER, SPIGOT, FABRIC -> {
-                    this.ruby.getLogger().error("Failed to convert " + this.file.getName());
-                    this.ruby.getLogger().error("Reason: " + exception.getMessage());
-                }
-                case OTHER -> {
-                    System.out.println(this.ruby.getPrefix() + "Failed to convert " + this.file.getName());
-                    System.out.println(this.ruby.getPrefix() + "Reason: " + exception.getMessage());
-                }
-            }
+            this.plugin.getFancyLogger().error("Failed to convert " + this.file.getName());
+            this.plugin.getFancyLogger().error("Reason: " + exception.getMessage());
         }
 
         this.context.load();
@@ -79,16 +64,8 @@ public class JsonFile {
 
             write();
         } catch (Exception exception) {
-            switch (ruby.getPlatform()) {
-                case PAPER, SPIGOT, FABRIC -> {
-                    this.ruby.getLogger().error("Failed to create or write to " + this.file.getName());
-                    this.ruby.getLogger().error("Reason: " + exception.getMessage());
-                }
-                case OTHER -> {
-                    System.out.println(this.ruby.getPrefix() + "Failed to create or write to " + this.file.getName());
-                    System.out.println(this.ruby.getPrefix() + "Reason: " + exception.getMessage());
-                }
-            }
+            this.plugin.getFancyLogger().error("Failed to create or write to " + this.file.getName());
+            this.plugin.getFancyLogger().error("Reason: " + exception.getMessage());
         }
 
         this.context.save();

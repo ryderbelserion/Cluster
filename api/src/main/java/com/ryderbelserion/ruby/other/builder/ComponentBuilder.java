@@ -1,6 +1,6 @@
 package com.ryderbelserion.ruby.other.builder;
 
-import com.ryderbelserion.ruby.minecraft.RubyImpl;
+import com.ryderbelserion.ruby.minecraft.RubyPlugin;
 import com.ryderbelserion.ruby.other.registry.RubyProvider;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ComponentBuilder {
 
-    private final RubyImpl ruby = RubyProvider.get();
+    private final @NotNull RubyPlugin plugin = RubyProvider.get();
 
     private final TextComponent.@NotNull Builder builder = Component.text();
 
@@ -33,7 +33,7 @@ public class ComponentBuilder {
     }
 
     private Component parse(String value) {
-        return this.ruby.getAdventure().parse(value);
+        return this.plugin.getAdventure().parse(value);
     }
 
     public ComponentBuilder hover(String text) {

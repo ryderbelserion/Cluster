@@ -1,6 +1,6 @@
 package com.ryderbelserion.ruby.paper.plugin.registry;
 
-import com.ryderbelserion.ruby.paper.PaperImpl;
+import com.ryderbelserion.ruby.paper.PaperPlugin;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.reflect.Method;
@@ -12,7 +12,7 @@ public class PaperRegistration {
 
     static {
         try {
-            start = PaperProvider.class.getDeclaredMethod("start", PaperImpl.class);
+            start = PaperProvider.class.getDeclaredMethod("start", PaperPlugin.class);
             start.setAccessible(true);
 
             stop = PaperProvider.class.getDeclaredMethod("stop");
@@ -23,11 +23,11 @@ public class PaperRegistration {
     }
 
     @ApiStatus.Internal
-    public static void start(PaperImpl paper) {
+    public static void start(PaperPlugin paper) {
         try {
             start.invoke(null, paper);
         } catch (Exception exception) {
-            System.out.println("[ERROR] Failed to enable paper provider using ruby api");
+            System.out.println("[ERROR] Failed to enable paper plugin using ruby api");
             System.out.println("[ERROR] Reason: " + exception.getMessage());
         }
     }
@@ -37,7 +37,7 @@ public class PaperRegistration {
         try {
             stop.invoke(null);
         } catch (Exception exception) {
-            System.out.println("[ERROR] Failed to disable paper provider using ruby api");
+            System.out.println("[ERROR] Failed to disable paper plugin using ruby api");
             System.out.println("[ERROR] Reason: " + exception.getMessage());
         }
     }

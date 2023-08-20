@@ -1,4 +1,4 @@
-package com.ryderbelserion.ruby.paper.plugin.builder.commands.args.types;
+package com.ryderbelserion.ruby.other.builder.commands.args.types;
 
 import com.ryderbelserion.ruby.other.builder.commands.args.ArgumentType;
 import java.util.List;

@@ -1,17 +1,13 @@
 package com.ryderbelserion.ruby.paper.plugin.builder.commands;
 
-import com.ryderbelserion.ruby.other.builder.commands.args.Argument;
-import com.ryderbelserion.ruby.paper.PaperImpl;
 import com.ryderbelserion.ruby.other.builder.commands.CommandEngine;
-import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
+import com.ryderbelserion.ruby.other.builder.commands.args.Argument;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public abstract class PaperCommandEngine extends Command implements CommandEngine {
-
-    private final @NotNull PaperImpl paper = PaperProvider.get();
 
     private final LinkedList<PaperCommandEngine> subCommands = new LinkedList<>();
 
@@ -52,12 +48,12 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
 
     private boolean validate(PaperCommandContext context) {
         if (context.getArgs().size() < this.requiredArgs.size()) {
-            context.reply(this.paper.getMessageKey().NOT_ENOUGH_ARGS());
+            //context.reply(this.paper.getMessageKey().NOT_ENOUGH_ARGS());
             return false;
         }
 
         if (context.getArgs().size() > this.requiredArgs.size() + this.optionalArgs.size() || context.getArgs().size() > this.requiredArgs.size()) {
-            context.reply(this.paper.getMessageKey().TOO_MANY_ARGS());
+            //context.reply(this.paper.getMessageKey().TOO_MANY_ARGS());
             return false;
         }
 

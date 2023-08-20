@@ -1,28 +1,28 @@
 package com.ryderbelserion.ruby.other.registry;
 
-import com.ryderbelserion.ruby.minecraft.RubyImpl;
+import com.ryderbelserion.ruby.minecraft.RubyPlugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 public class RubyProvider {
 
-    private static RubyImpl ruby = null;
+    private static RubyPlugin rubyPlugin = null;
 
-    public static @NotNull RubyImpl get() {
-        RubyImpl instance = RubyProvider.ruby;
+    public static @NotNull RubyPlugin get() {
+        RubyPlugin instance = RubyProvider.rubyPlugin;
 
         if (instance == null) throw new RuntimeException("Failed to utilize ruby provider. Did it get enabled?");
 
-        return ruby;
+        return rubyPlugin;
     }
 
     @ApiStatus.Internal
-    public static void start(RubyImpl ruby) {
-        RubyProvider.ruby = ruby;
+    public static void start(RubyPlugin rubyPlugin) {
+        RubyProvider.rubyPlugin = rubyPlugin;
     }
 
     @ApiStatus.Internal
     public static void stop() {
-        RubyProvider.ruby = null;
+        RubyProvider.rubyPlugin = null;
     }
 }

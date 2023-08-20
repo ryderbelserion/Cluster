@@ -1,12 +1,12 @@
 package com.ryderbelserion.ruby.minecraft.plugin;
 
-import com.ryderbelserion.ruby.minecraft.RubyImpl;
+import com.ryderbelserion.ruby.minecraft.RubyPlugin;
 import com.ryderbelserion.ruby.other.registry.RubyProvider;
 import org.jetbrains.annotations.NotNull;
 
 public class Logger {
 
-    private final @NotNull RubyImpl ruby = RubyProvider.get();
+    private final @NotNull RubyPlugin plugin = RubyProvider.get();
 
     private final String pluginName;
 
@@ -31,6 +31,6 @@ public class Logger {
     }
 
     private void send(String message) {
-        this.ruby.getAudience().console().sendMessage(this.ruby.getAdventure().parse(message));
+        this.plugin.getAudience().console().sendMessage(this.plugin.getAdventure().parse(message));
     }
 }

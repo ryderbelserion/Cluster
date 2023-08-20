@@ -1,7 +1,8 @@
 package com.ryderbelserion.ruby.minecraft.utils;
 
-import com.ryderbelserion.ruby.minecraft.RubyImpl;
+import com.ryderbelserion.ruby.minecraft.RubyPlugin;
 import com.ryderbelserion.ruby.other.registry.RubyProvider;
+import org.jetbrains.annotations.NotNull;
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Path;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class FileUtil {
 
-    private final RubyImpl ruby = RubyProvider.get();
+    private final @NotNull RubyPlugin plugin = RubyProvider.get();
 
     public void copyFiles(Path directory, String folder, List<String> names) {
         names.forEach(name -> copyFile(directory, folder, name));
@@ -31,10 +32,7 @@ public class FileUtil {
         URL resource = loader.getResource(url);
 
         if (resource == null) {
-            switch (ruby.getPlatform()) {
-                case PAPER, SPIGOT, FABRIC -> this.ruby.getLogger().error("Failed to find file: " + url);
-                case OTHER -> System.out.println(this.ruby.getPrefix() + "Failed to find file: " + url);
-            }
+            this.plugin.getFancyLogger().error("Failed to find file: " + url);
 
             return;
         }
@@ -42,10 +40,7 @@ public class FileUtil {
         try {
             grab(resource.openStream(), file);
         } catch (Exception exception) {
-            switch (ruby.getPlatform()) {
-                case PAPER, SPIGOT, FABRIC -> this.ruby.getLogger().error("Failed to copy file: " + url);
-                case OTHER -> System.out.println(this.ruby.getPrefix() + "Failed to copy file: " + url);
-            }
+            this.plugin.getFancyLogger().error("Failed to copy file: " + url);
         }
     }
 

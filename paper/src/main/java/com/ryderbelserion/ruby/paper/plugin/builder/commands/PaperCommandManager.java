@@ -1,13 +1,11 @@
 package com.ryderbelserion.ruby.paper.plugin.builder.commands;
 
 import com.ryderbelserion.ruby.other.builder.commands.args.Argument;
-import com.ryderbelserion.ruby.paper.PaperImpl;
+import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
 import org.bukkit.command.Command;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.codehaus.plexus.util.cli.Arg;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -15,9 +13,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class PaperCommandManager {
 
-    private final @NotNull PaperImpl paper = PaperProvider.get();
+    private final @NotNull PaperPlugin paperPlugin = PaperProvider.get();
 
-    private final @NotNull JavaPlugin plugin = this.paper.getPlugin();
+    private final @NotNull JavaPlugin plugin = this.paperPlugin.getPlugin();
 
     private final ConcurrentHashMap<String, PaperCommandEngine> commands = new ConcurrentHashMap<>();
 
