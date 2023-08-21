@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ryderbelserion.ruby.minecraft.RubyPlugin;
 import com.ryderbelserion.ruby.other.config.FileEngine;
-import com.ryderbelserion.ruby.other.registry.RubyProvider;
+import com.ryderbelserion.ruby.minecraft.plugin.registry.RubyProvider;
 import org.jetbrains.annotations.NotNull;
 import java.io.*;
 import java.lang.reflect.Modifier;
@@ -22,7 +22,7 @@ public class JsonFile {
     public JsonFile(FileEngine context) {
         this.context = context;
 
-        this.file = context.getNewFile();
+        this.file = context.getFile();
 
         if (context.getGson() != null) {
             this.gson = context.getGson().create();

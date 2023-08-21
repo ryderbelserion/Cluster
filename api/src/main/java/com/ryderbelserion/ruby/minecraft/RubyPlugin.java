@@ -1,9 +1,9 @@
 package com.ryderbelserion.ruby.minecraft;
 
-import com.ryderbelserion.ruby.minecraft.plugin.Logger;
+import com.ryderbelserion.ruby.minecraft.plugin.FancyLogger;
 import com.ryderbelserion.ruby.minecraft.plugin.Platform;
-import com.ryderbelserion.ruby.other.registry.RubyRegistration;
-import com.ryderbelserion.ruby.minecraft.plugin.Adventure;
+import com.ryderbelserion.ruby.minecraft.plugin.registry.RubyRegistration;
+import com.ryderbelserion.ruby.minecraft.utils.AdvUtil;
 import com.ryderbelserion.ruby.minecraft.utils.FileUtil;
 import net.kyori.adventure.platform.AudienceProvider;
 
@@ -13,11 +13,11 @@ public abstract class RubyPlugin {
 
     public abstract Platform.Type getPlatform();
 
-    public abstract Adventure getAdventure();
+    public abstract AdvUtil getAdventure();
 
     public abstract FileUtil getFileUtil();
 
-    public abstract Logger getFancyLogger();
+    public abstract FancyLogger getFancyLogger();
 
     public abstract boolean isLegacy();
 

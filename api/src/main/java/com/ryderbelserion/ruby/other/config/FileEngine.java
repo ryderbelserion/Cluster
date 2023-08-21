@@ -3,7 +3,7 @@ package com.ryderbelserion.ruby.other.config;
 import com.google.gson.GsonBuilder;
 import com.ryderbelserion.ruby.minecraft.RubyPlugin;
 import com.ryderbelserion.ruby.other.config.types.FileType;
-import com.ryderbelserion.ruby.other.registry.RubyProvider;
+import com.ryderbelserion.ruby.minecraft.plugin.registry.RubyProvider;
 import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.nio.file.Path;
@@ -50,11 +50,7 @@ public abstract class FileEngine {
         return this.filePath;
     }
 
-    public File getNewFile() {
-        return this.filePath.resolve(this.fileName).toFile();
-    }
-
-    public String getFileName() {
-        return this.fileName;
+    public File getFile() {
+        return new File(this.filePath.toFile(), this.fileName);
     }
 }

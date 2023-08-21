@@ -1,7 +1,7 @@
-package com.ryderbelserion.ruby.minecraft.plugin;
+package com.ryderbelserion.ruby.minecraft.utils;
 
 import com.ryderbelserion.ruby.minecraft.RubyPlugin;
-import com.ryderbelserion.ruby.other.registry.RubyProvider;
+import com.ryderbelserion.ruby.minecraft.plugin.registry.RubyProvider;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -10,7 +10,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
 
-public class Adventure {
+public class AdvUtil {
 
     private final @NotNull RubyPlugin plugin = RubyProvider.get();
 

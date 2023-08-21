@@ -1,7 +1,7 @@
 package com.ryderbelserion.ruby.minecraft.utils;
 
 import com.ryderbelserion.ruby.minecraft.RubyPlugin;
-import com.ryderbelserion.ruby.other.registry.RubyProvider;
+import com.ryderbelserion.ruby.minecraft.plugin.registry.RubyProvider;
 import org.jetbrains.annotations.NotNull;
 import java.io.*;
 import java.net.URL;

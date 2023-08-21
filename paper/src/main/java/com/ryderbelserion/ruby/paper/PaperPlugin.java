@@ -1,9 +1,9 @@
 package com.ryderbelserion.ruby.paper;
 
 import com.ryderbelserion.ruby.minecraft.RubyPlugin;
-import com.ryderbelserion.ruby.minecraft.plugin.Logger;
+import com.ryderbelserion.ruby.minecraft.plugin.FancyLogger;
 import com.ryderbelserion.ruby.minecraft.plugin.Platform;
-import com.ryderbelserion.ruby.minecraft.plugin.Adventure;
+import com.ryderbelserion.ruby.minecraft.utils.AdvUtil;
 import com.ryderbelserion.ruby.minecraft.utils.FileUtil;
 import com.ryderbelserion.ruby.paper.plugin.builder.commands.PaperCommandManager;
 import com.ryderbelserion.ruby.paper.plugin.items.skulls.SkullCreator;
@@ -20,12 +20,12 @@ public class PaperPlugin extends RubyPlugin {
     private SkullCreator skullCreator;
     private BukkitAudiences audience;
     private LegacyUtil legacyUtil;
-    private Adventure adventure;
+    private AdvUtil advUtil;
     private JavaPlugin plugin;
     private ItemUtil itemUtil;
     private FileUtil fileUtil;
     private boolean isLegacy;
-    private Logger logger;
+    private FancyLogger fancyLogger;
 
     public PaperPlugin(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -45,9 +45,9 @@ public class PaperPlugin extends RubyPlugin {
         }
 
         // Create adventure/logger instance.
-        this.adventure = new Adventure();
+        this.advUtil = new AdvUtil();
         this.legacyUtil = new LegacyUtil();
-        this.logger = new Logger(this.plugin.getName());
+        this.fancyLogger = new FancyLogger(this.plugin.getName());
 
         this.itemUtil = new ItemUtil();
         this.skullCreator = new SkullCreator();
@@ -89,8 +89,8 @@ public class PaperPlugin extends RubyPlugin {
     }
 
     @Override
-    public Adventure getAdventure() {
-        return this.adventure;
+    public AdvUtil getAdventure() {
+        return this.advUtil;
     }
 
     @Override
@@ -99,8 +99,8 @@ public class PaperPlugin extends RubyPlugin {
     }
 
     @Override
-    public Logger getFancyLogger() {
-        return this.logger;
+    public FancyLogger getFancyLogger() {
+        return this.fancyLogger;
     }
 
     @Override

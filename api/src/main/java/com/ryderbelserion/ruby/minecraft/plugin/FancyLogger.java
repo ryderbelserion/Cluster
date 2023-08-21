@@ -1,16 +1,16 @@
 package com.ryderbelserion.ruby.minecraft.plugin;
 
 import com.ryderbelserion.ruby.minecraft.RubyPlugin;
-import com.ryderbelserion.ruby.other.registry.RubyProvider;
+import com.ryderbelserion.ruby.minecraft.plugin.registry.RubyProvider;
 import org.jetbrains.annotations.NotNull;
 
-public class Logger {
+public class FancyLogger {
 
     private final @NotNull RubyPlugin plugin = RubyProvider.get();
 
     private final String pluginName;
 
-    public Logger(String pluginName) {
+    public FancyLogger(String pluginName) {
         this.pluginName = pluginName;
     }
 
