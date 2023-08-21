@@ -18,3 +18,5 @@ paper-small/build
 
 runes/build
 runes/.gradle
+
+build
