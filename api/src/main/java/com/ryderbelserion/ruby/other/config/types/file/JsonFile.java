@@ -54,8 +54,6 @@ public class JsonFile {
             this.plugin.getFancyLogger().error("Failed to convert " + this.file.getName());
             this.plugin.getFancyLogger().error("Reason: " + exception.getMessage());
         }
-
-        this.context.load();
     }
 
     public void save() {
@@ -67,8 +65,6 @@ public class JsonFile {
             this.plugin.getFancyLogger().error("Failed to create or write to " + this.file.getName());
             this.plugin.getFancyLogger().error("Reason: " + exception.getMessage());
         }
-
-        this.context.save();
     }
 
     private void write() throws IOException {
