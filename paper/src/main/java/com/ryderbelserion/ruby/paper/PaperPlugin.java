@@ -5,8 +5,7 @@ import com.ryderbelserion.ruby.minecraft.plugin.FancyLogger;
 import com.ryderbelserion.ruby.minecraft.plugin.Platform;
 import com.ryderbelserion.ruby.minecraft.utils.AdvUtil;
 import com.ryderbelserion.ruby.minecraft.utils.FileUtil;
-import com.ryderbelserion.ruby.other.builder.commands.provider.CommandProvider;
-import com.ryderbelserion.ruby.other.builder.commands.provider.LocaleProvider;
+import com.ryderbelserion.ruby.other.builder.commands.CommandHelpProvider;
 import com.ryderbelserion.ruby.paper.plugin.builder.commands.PaperCommandManager;
 import com.ryderbelserion.ruby.paper.plugin.items.skulls.SkullCreator;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperRegistration;
@@ -18,8 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class PaperPlugin extends RubyPlugin {
 
-    private CommandProvider commandProvider;
-    private LocaleProvider localeProvider;
+    private CommandHelpProvider commandHelpProvider;
     private PaperCommandManager manager;
     private SkullCreator skullCreator;
     private BukkitAudiences audience;
@@ -121,20 +119,12 @@ public class PaperPlugin extends RubyPlugin {
         return this;
     }
 
-    public void setLocaleProvider(LocaleProvider localeProvider) {
-        this.localeProvider = localeProvider;
+    public void setCommandProvider(CommandHelpProvider commandHelpProvider) {
+        this.commandHelpProvider = commandHelpProvider;
     }
 
-    public LocaleProvider getLocaleProvider() {
-        return this.localeProvider;
-    }
-
-    public void setCommandProvider(CommandProvider commandProvider) {
-        this.commandProvider = commandProvider;
-    }
-
-    public CommandProvider getCommandProvider() {
-        return this.commandProvider;
+    public CommandHelpProvider getCommandProvider() {
+        return this.commandHelpProvider;
     }
 
     public SkullCreator getSkullCreator() {

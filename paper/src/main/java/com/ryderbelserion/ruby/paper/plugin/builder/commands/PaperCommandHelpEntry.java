@@ -1,8 +1,8 @@
 package com.ryderbelserion.ruby.paper.plugin.builder.commands;
 
 import com.ryderbelserion.ruby.other.builder.ComponentBuilder;
+import com.ryderbelserion.ruby.other.builder.commands.CommandHelpProvider;
 import com.ryderbelserion.ruby.other.builder.commands.args.Argument;
-import com.ryderbelserion.ruby.other.builder.commands.provider.LocaleProvider;
 import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -16,7 +16,7 @@ public class PaperCommandHelpEntry {
 
     private final @NotNull PaperCommandManager manager = this.plugin.getManager();
 
-    private final @NotNull LocaleProvider locale = this.plugin.getLocaleProvider();
+    private final @NotNull CommandHelpProvider locale = this.plugin.getCommandProvider();
 
     private int page = 1;
     private int perPage;

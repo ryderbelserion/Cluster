@@ -1,6 +1,7 @@
 package com.ryderbelserion.ruby.paper.plugin.builder.commands;
 
 import com.ryderbelserion.ruby.other.builder.commands.CommandEngine;
+import com.ryderbelserion.ruby.other.builder.commands.CommandHelpProvider;
 import com.ryderbelserion.ruby.other.builder.commands.args.Argument;
 import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.builder.commands.reqs.PaperRequirements;
@@ -12,7 +13,8 @@ import java.util.*;
 
 public abstract class PaperCommandEngine extends Command implements CommandEngine {
 
-    private final @NotNull PaperPlugin paperPlugin = PaperProvider.get();
+    private final @NotNull PaperPlugin plugin = PaperProvider.get();
+    private final @NotNull CommandHelpProvider locale = this.plugin.getCommandProvider();
 
     public PaperRequirements paperRequirements;
 
@@ -57,12 +59,12 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
 
     private boolean validate(PaperCommandContext context) {
         if (context.getArgs().size() < this.requiredArgs.size()) {
-            context.reply(this.paperPlugin.getLocaleProvider().notEnoughArgs());
+            context.reply(this.locale.notEnoughArgs());
             return false;
         }
 
         if (context.getArgs().size() > this.requiredArgs.size() + this.optionalArgs.size() || context.getArgs().size() > this.requiredArgs.size()) {
-            context.reply(this.paperPlugin.getLocaleProvider().tooManyArgs());
+            context.reply(this.locale.tooManyArgs());
             return false;
         }
 

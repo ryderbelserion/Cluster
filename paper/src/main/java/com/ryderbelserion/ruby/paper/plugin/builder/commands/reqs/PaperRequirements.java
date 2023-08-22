@@ -1,6 +1,6 @@
 package com.ryderbelserion.ruby.paper.plugin.builder.commands.reqs;
 
-import com.ryderbelserion.ruby.other.builder.commands.provider.LocaleProvider;
+import com.ryderbelserion.ruby.other.builder.commands.CommandHelpProvider;
 import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.builder.commands.PaperCommandContext;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
@@ -13,7 +13,7 @@ public class PaperRequirements {
 
     private final @NotNull PaperPlugin plugin = PaperProvider.get();
 
-    private final @NotNull LocaleProvider locale = this.plugin.getLocaleProvider();
+    private final @NotNull CommandHelpProvider locale = this.plugin.getCommandProvider();
 
     private final boolean isPlayer;
     private final Permission permission;

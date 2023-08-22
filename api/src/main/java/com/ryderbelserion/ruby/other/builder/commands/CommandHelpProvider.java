@@ -1,6 +1,10 @@
-package com.ryderbelserion.ruby.other.builder.commands.provider;
+package com.ryderbelserion.ruby.other.builder.commands;
 
-public interface LocaleProvider {
+public interface CommandHelpProvider {
+
+    int defaultHelpPerPage();
+
+    void updateHelpPerPage(int amount);
 
     String optionalMessage();
     String requiredMessage();
