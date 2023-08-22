@@ -22,14 +22,15 @@ public class JsonFile {
     public JsonFile(FileEngine context) {
         this.context = context;
 
-        this.file = context.getFile();
+        this.file = this.context.getFile();
 
-        if (context.getGson() != null) {
-            this.gson = context.getGson().create();
+        if (this.context.getGson() != null) {
+            this.gson = this.context.getGson().create();
             return;
         }
 
         GsonBuilder builder = new GsonBuilder().disableHtmlEscaping()
+                .enableComplexMapKeySerialization()
                 .excludeFieldsWithModifiers(Modifier.TRANSIENT)
                 .excludeFieldsWithoutExposeAnnotation();
 
@@ -51,18 +52,18 @@ public class JsonFile {
         try (InputStreamReader reader = new InputStreamReader(new FileInputStream(this.file), StandardCharsets.UTF_8)) {
             this.gson.fromJson(reader, this.context.getClass());
         } catch (Exception exception) {
-            this.plugin.getFancyLogger().error("Failed to convert " + this.file.getName());
+            this.plugin.getFancyLogger().error("Failed to load " + this.file.getName());
             this.plugin.getFancyLogger().error("Reason: " + exception.getMessage());
         }
     }
 
     public void save() {
         try {
-            if (!this.file.exists()) this.file.createNewFile();
+            this.file.createNewFile();
 
             write();
         } catch (Exception exception) {
-            this.plugin.getFancyLogger().error("Failed to create or write to " + this.file.getName());
+            this.plugin.getFancyLogger().error("Failed to write/save to " + this.file.getName());
             this.plugin.getFancyLogger().error("Reason: " + exception.getMessage());
         }
     }
