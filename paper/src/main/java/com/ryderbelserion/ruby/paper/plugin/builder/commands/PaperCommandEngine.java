@@ -54,7 +54,9 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
             }
         }
 
-        if (!paperRequirements.checkRequirements(context, true)) return;
+        if (paperRequirements != null) {
+            if (!paperRequirements.checkRequirements(context, true)) return;
+        }
 
         if (!validate(context)) return;
 
