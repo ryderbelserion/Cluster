@@ -4,6 +4,4 @@ public interface CommandProvider {
 
     int defaultHelpPerPage();
 
-    void updateHelpPerPage(int amount);
-
 }
