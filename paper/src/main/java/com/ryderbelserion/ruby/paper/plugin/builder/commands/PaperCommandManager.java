@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,6 +19,8 @@ public class PaperCommandManager {
     private final @NotNull JavaPlugin plugin = this.paperPlugin.getPlugin();
 
     private final ConcurrentHashMap<String, PaperCommandEngine> commands = new ConcurrentHashMap<>();
+
+    private final LinkedList<PaperCommandEngine> classes = new LinkedList<>();
 
     private String namespace;
 
@@ -54,6 +57,8 @@ public class PaperCommandManager {
         }
 
         this.commands.remove(command.getName());
+
+        this.classes.remove(command);
     }
 
     public boolean hasCommand(String label) {
@@ -70,11 +75,17 @@ public class PaperCommandManager {
 
         this.commands.put(command.getName(), command);
 
+        this.classes.add(command);
+
         // Add it to the command map.
         this.plugin.getServer().getCommandMap().register(this.namespace, command);
     }
 
     public Map<String, PaperCommandEngine> getCommands() {
         return Collections.unmodifiableMap(this.commands);
+    }
+
+    public LinkedList<PaperCommandEngine> getClasses() {
+        return this.classes;
     }
 }

@@ -40,9 +40,7 @@ public class PaperPlugin extends RubyPlugin {
         PaperRegistration.start(this);
 
         // Creates the audience sender.
-        if (this.audience == null) {
-            this.audience = BukkitAudiences.create(this.plugin);
-        }
+        if (this.audience == null) this.audience = BukkitAudiences.create(this.plugin);
 
         // Create adventure/logger instance.
         this.advUtil = new AdvUtil();
