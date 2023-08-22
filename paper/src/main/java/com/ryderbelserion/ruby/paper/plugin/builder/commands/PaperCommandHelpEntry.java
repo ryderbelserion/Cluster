@@ -41,6 +41,8 @@ public class PaperCommandHelpEntry {
             return;
         }
 
+        context.reply(this.locale.pageHeader().replaceAll("\\{page}", String.valueOf(page)));
+
         for (int value = min; value < max; value++) {
             if (this.totalResults - 1 < value) continue;
 

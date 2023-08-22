@@ -6,6 +6,10 @@ import com.ryderbelserion.ruby.other.builder.commands.args.Argument;
 import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.builder.commands.reqs.PaperRequirements;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -60,15 +64,68 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
     private boolean validate(PaperCommandContext context) {
         if (context.getArgs().size() < this.requiredArgs.size()) {
             context.reply(this.locale.notEnoughArgs());
+            format(context);
             return false;
         }
 
         if (context.getArgs().size() > this.requiredArgs.size() + this.optionalArgs.size() || context.getArgs().size() > this.requiredArgs.size()) {
             context.reply(this.locale.tooManyArgs());
+            format(context);
             return false;
         }
 
         return true;
+    }
+
+    private void format(PaperCommandContext context) {
+        ArrayList<Argument> arguments = new ArrayList<>();
+
+        arguments.addAll(this.requiredArgs);
+        arguments.addAll(this.optionalArgs);
+
+        this.requiredArgs.sort(Comparator.comparing(Argument::order));
+
+        if (context.isPlayer()) {
+            StringBuilder format = new StringBuilder("/" + this.plugin.getManager().getNamespace() + ":" + context.getLabel());
+
+            TextComponent.@NotNull Builder emptyComponent = Component.text();
+
+            StringBuilder types = new StringBuilder();
+
+            for (Argument arg : arguments) {
+                String value = this.optionalArgs.contains(arg) ? " (" + arg.name() + ") " : " <" + arg.name() + ">";
+
+                String msg = this.optionalArgs.contains(arg) ? this.plugin.getCommandProvider().optionalMessage() : this.plugin.getCommandProvider().requiredMessage();
+
+                Component argComponent = this.plugin.getAdventure().parse(value)
+                        .hoverEvent(HoverEvent.showText(this.plugin.getAdventure().parse(msg).asComponent()));
+
+                emptyComponent.append(argComponent);
+
+                boolean isPresent = arg.argumentType().getPossibleValues().stream().findFirst().isPresent();
+
+                if (isPresent) types.append(" ").append(arg.argumentType().getPossibleValues().stream().findFirst().get());
+            }
+
+            TextComponent.@NotNull Builder finalComponent = emptyComponent
+                    .hoverEvent(HoverEvent.showText(this.plugin.getAdventure().parse(this.plugin.getCommandProvider().hoverMessage().replaceAll("\\{command}", types.toString()))))
+                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, format.append(types).toString()))
+                    .append(emptyComponent.build());
+
+            context.reply(finalComponent.build());
+
+            return;
+        }
+
+        StringBuilder format = new StringBuilder("/" + this.plugin.getManager().getNamespace() + ":" + getLabel());
+
+        for (Argument arg : arguments) {
+            String value = this.optionalArgs.contains(arg) ? "(" + arg.name() + ") " : "<" + arg.name() + "> ";
+
+            format.append(value);
+        }
+
+        context.reply(format.toString());
     }
 
     @Override

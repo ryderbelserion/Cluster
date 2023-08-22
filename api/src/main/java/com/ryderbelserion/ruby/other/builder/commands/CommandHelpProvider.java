@@ -4,8 +4,6 @@ public interface CommandHelpProvider {
 
     int defaultHelpPerPage();
 
-    void updateHelpPerPage(int amount);
-
     String optionalMessage();
     String requiredMessage();
 
