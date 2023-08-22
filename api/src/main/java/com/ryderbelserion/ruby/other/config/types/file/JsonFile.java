@@ -39,13 +39,9 @@ public class JsonFile {
 
     public void load() {
         try {
-            if (this.file.createNewFile()) {
-                save();
-
-                return;
-            }
+            this.file.createNewFile();
         } catch (Exception exception) {
-            this.plugin.getFancyLogger().error("Failed to save " + this.file.getName());
+            this.plugin.getFancyLogger().error("Failed to create " + this.file.getName());
             this.plugin.getFancyLogger().error("Reason: " + exception.getMessage());
         }
 
