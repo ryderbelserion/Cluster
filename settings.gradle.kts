@@ -13,6 +13,7 @@ listOf(
     //"folia",
 
     "paper",
+    "paper-small"
 
     //"runes"
 ).forEach {

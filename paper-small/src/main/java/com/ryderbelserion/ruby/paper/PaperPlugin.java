@@ -5,9 +5,6 @@ import com.ryderbelserion.ruby.minecraft.plugin.FancyLogger;
 import com.ryderbelserion.ruby.minecraft.plugin.Platform;
 import com.ryderbelserion.ruby.minecraft.utils.AdvUtil;
 import com.ryderbelserion.ruby.minecraft.utils.FileUtil;
-import com.ryderbelserion.ruby.other.builder.commands.provider.CommandProvider;
-import com.ryderbelserion.ruby.other.builder.commands.provider.LocaleProvider;
-import com.ryderbelserion.ruby.paper.plugin.builder.commands.PaperCommandManager;
 import com.ryderbelserion.ruby.paper.plugin.items.skulls.SkullCreator;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperRegistration;
 import com.ryderbelserion.ruby.paper.utils.ItemUtil;
@@ -18,9 +15,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class PaperPlugin extends RubyPlugin {
 
-    private CommandProvider commandProvider;
-    private LocaleProvider localeProvider;
-    private PaperCommandManager manager;
     private SkullCreator skullCreator;
     private BukkitAudiences audience;
     private FancyLogger fancyLogger;
@@ -57,8 +51,6 @@ public class PaperPlugin extends RubyPlugin {
         this.fileUtil = new FileUtil();
 
         if (!this.plugin.getDataFolder().exists()) this.plugin.getDataFolder().mkdirs();
-
-        this.manager = new PaperCommandManager();
     }
 
     @Override
@@ -74,10 +66,6 @@ public class PaperPlugin extends RubyPlugin {
             this.audience.close();
             this.audience = null;
         }
-    }
-
-    public PaperCommandManager getManager() {
-        return this.manager;
     }
 
     @Override
@@ -119,22 +107,6 @@ public class PaperPlugin extends RubyPlugin {
         this.plugin = plugin;
 
         return this;
-    }
-
-    public void setLocaleProvider(LocaleProvider localeProvider) {
-        this.localeProvider = localeProvider;
-    }
-
-    public LocaleProvider getLocaleProvider() {
-        return this.localeProvider;
-    }
-
-    public void setCommandProvider(CommandProvider commandProvider) {
-        this.commandProvider = commandProvider;
-    }
-
-    public CommandProvider getCommandProvider() {
-        return this.commandProvider;
     }
 
     public SkullCreator getSkullCreator() {

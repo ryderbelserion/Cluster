@@ -2,12 +2,19 @@ package com.ryderbelserion.ruby.paper.plugin.builder.commands;
 
 import com.ryderbelserion.ruby.other.builder.commands.CommandEngine;
 import com.ryderbelserion.ruby.other.builder.commands.args.Argument;
+import com.ryderbelserion.ruby.paper.PaperPlugin;
+import com.ryderbelserion.ruby.paper.plugin.builder.commands.reqs.PaperRequirements;
+import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public abstract class PaperCommandEngine extends Command implements CommandEngine {
+
+    private final @NotNull PaperPlugin paperPlugin = PaperProvider.get();
+
+    public PaperRequirements paperRequirements;
 
     private final LinkedList<PaperCommandEngine> subCommands = new LinkedList<>();
 
@@ -21,7 +28,7 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
     public abstract void perform(PaperCommandContext context, String[] args);
 
     public void execute(PaperCommandContext context, String[] args) {
-        StringBuilder label = new StringBuilder(getLabel());
+        StringBuilder label = new StringBuilder(context.getLabel());
 
         if (!context.getArgs().isEmpty()) {
             for (PaperCommandEngine command : this.subCommands) {
@@ -41,6 +48,8 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
             }
         }
 
+        if (!paperRequirements.checkRequirements(context, true)) return;
+
         if (!validate(context)) return;
 
         perform(context, args);
@@ -48,12 +57,12 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
 
     private boolean validate(PaperCommandContext context) {
         if (context.getArgs().size() < this.requiredArgs.size()) {
-            //context.reply(this.paper.getMessageKey().NOT_ENOUGH_ARGS());
+            context.reply(this.paperPlugin.getLocaleProvider().notEnoughArgs());
             return false;
         }
 
         if (context.getArgs().size() > this.requiredArgs.size() + this.optionalArgs.size() || context.getArgs().size() > this.requiredArgs.size()) {
-            //context.reply(this.paper.getMessageKey().TOO_MANY_ARGS());
+            context.reply(this.paperPlugin.getLocaleProvider().tooManyArgs());
             return false;
         }
 

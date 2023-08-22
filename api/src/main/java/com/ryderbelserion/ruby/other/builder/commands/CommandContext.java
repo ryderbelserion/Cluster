@@ -33,6 +33,12 @@ public class CommandContext {
         this.audience.sendMessage(component);
     }
 
+    public void reply(Component message) {
+        if (message == null) return;
+
+        this.audience.sendMessage(message);
+    }
+
     public void send(Component component) {
         if (component == null) return;
 

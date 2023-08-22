@@ -9,15 +9,16 @@ import net.kyori.adventure.platform.AudienceProvider;
 
 public abstract class RubyPlugin {
 
+
     public abstract AudienceProvider getAudience();
+
+    public abstract FancyLogger getFancyLogger();
 
     public abstract Platform.Type getPlatform();
 
-    public abstract AdvUtil getAdventure();
-
     public abstract FileUtil getFileUtil();
 
-    public abstract FancyLogger getFancyLogger();
+    public abstract AdvUtil getAdventure();
 
     public abstract boolean isLegacy();
 

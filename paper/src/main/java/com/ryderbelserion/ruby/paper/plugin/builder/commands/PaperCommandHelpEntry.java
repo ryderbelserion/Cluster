@@ -2,6 +2,7 @@ package com.ryderbelserion.ruby.paper.plugin.builder.commands;
 
 import com.ryderbelserion.ruby.other.builder.ComponentBuilder;
 import com.ryderbelserion.ruby.other.builder.commands.args.Argument;
+import com.ryderbelserion.ruby.other.builder.commands.provider.LocaleProvider;
 import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -15,6 +16,8 @@ public class PaperCommandHelpEntry {
 
     private final @NotNull PaperCommandManager manager = this.plugin.getManager();
 
+    private final @NotNull LocaleProvider locale = this.plugin.getLocaleProvider();
+
     private int page = 1;
     private int perPage;
     private int totalPages;
@@ -22,7 +25,7 @@ public class PaperCommandHelpEntry {
     private boolean lastPage;
 
     public PaperCommandHelpEntry() {
-
+        this.perPage = this.plugin.getCommandProvider().defaultHelpPerPage();
     }
 
     public void showHelp(PaperCommandContext context) {
@@ -34,7 +37,7 @@ public class PaperCommandHelpEntry {
         this.totalPages = this.totalResults / this.perPage;
 
         if (min >= this.totalResults) {
-            //TODO() Add reply message which replaces {page}
+            context.reply(this.locale.invalidPage().replaceAll("\\{page}", String.valueOf(page)));
             return;
         }
 
@@ -49,8 +52,9 @@ public class PaperCommandHelpEntry {
 
             StringBuilder baseFormat = new StringBuilder(command.getUsage());
 
-            //TODO() Add locale provider.
-            String format = " ";
+            String format = this.locale.pageFormat()
+                    .replaceAll("\\{command}", baseFormat.toString())
+                    .replaceAll("\\{description}", command.getDescription());
 
             if (!command.getAliases().isEmpty()) baseFormat.append(" ").append(command.getAliases().get(0));
 
@@ -61,7 +65,6 @@ public class PaperCommandHelpEntry {
 
             arguments.sort(Comparator.comparing(Argument::order));
 
-            // Check if player.
             if (context.isPlayer()) {
                 StringBuilder types = new StringBuilder();
 
@@ -76,9 +79,38 @@ public class PaperCommandHelpEntry {
 
                 String hoverShit = baseFormat.append(types).toString();
 
-                String hoverFormat = " ";
+                String hoverFormat = this.locale.hoverMessage();
 
-                //builder.hover(hoverFormat.replaceAll("\\{command}", hoverShit)).click(hoverShit, ClickEvent.Action.COPY_TO_CLIPBOARD);
+                builder.hover(hoverFormat.replaceAll("\\{command}",
+                        hoverShit)).click(ClickEvent.Action.valueOf(this.locale.hoverAction().toUpperCase()), hoverShit);
+
+                context.reply(builder.build());
+            }
+
+            String footer = this.locale.pageFooter();
+
+            String namespace = this.manager.getNamespace();
+
+            if (context.isPlayer()) {
+                String text = this.locale.pageNavigation();
+
+                if (page > 1) {
+                    int number = page-1;
+
+                    this.plugin.getAdventure().hover(context.getPlayer(), footer.replaceAll("\\{page}", String.valueOf(page)),  text
+                                    .replaceAll("\\{page}", String.valueOf(number)),
+                            this.locale.pageBackButton(), "/" + namespace + ":" + command.getLabel() + number,
+                            ClickEvent.Action.RUN_COMMAND);
+                } else if (page < this.manager.getClasses().size()) {
+                    int number = page+1;
+
+                    this.plugin.getAdventure().hover(context.getPlayer(), footer.replaceAll("\\{page}", String.valueOf(page)),  text
+                                    .replaceAll("\\{page}", String.valueOf(number)),
+                            this.locale.pageNextButton(), "/" + namespace + ":" + command.getLabel() + number,
+                            ClickEvent.Action.RUN_COMMAND);
+                }
+            } else {
+                context.reply(footer.replaceAll("\\{page}", String.valueOf(page)));
             }
         }
 
