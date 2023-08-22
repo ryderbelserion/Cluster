@@ -6,6 +6,8 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.permission.PermissionChecker;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,7 +15,7 @@ public class CommandContext {
 
     private final @NotNull RubyPlugin plugin = RubyProvider.get();
 
-    private final List<String> args;
+    private final ArrayList<String> args;
     private final Audience audience;
     private String label;
 
@@ -22,7 +24,10 @@ public class CommandContext {
     public CommandContext(Audience audience, String label, List<String> args) {
         this.audience = audience;
         this.label = label;
-        this.args = args;
+
+        this.args = new ArrayList<>();
+
+        this.args.addAll(args);
     }
 
     public void reply(String message) {
@@ -94,7 +99,7 @@ public class CommandContext {
         return this.label;
     }
 
-    public List<String> getArgs() {
+    public ArrayList<String> getArgs() {
         return this.args;
     }
 }

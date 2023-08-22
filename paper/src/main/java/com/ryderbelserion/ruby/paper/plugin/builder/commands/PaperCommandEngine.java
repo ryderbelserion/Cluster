@@ -45,7 +45,10 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
                 if (isPresent && arg.equalsIgnoreCase(command.getLabel())) {
                     label.append(" ").append(context.getArgs().get(0));
 
+                    context.getArgs().remove(0);
                     context.setLabel(label.toString());
+
+                    if (!validate(context, command)) return;
 
                     command.execute(context, args);
 
@@ -58,21 +61,19 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
             if (!paperRequirements.checkRequirements(context, true)) return;
         }
 
-        if (!validate(context)) return;
-
         perform(context, args);
     }
 
-    private boolean validate(PaperCommandContext context) {
-        if (context.getArgs().size() < this.requiredArgs.size()) {
+    private boolean validate(PaperCommandContext context, PaperCommandEngine command) {
+        if (context.getArgs().size() < command.requiredArgs.size()) {
             context.reply(this.locale.notEnoughArgs());
-            format(context);
+            //format(context);
             return false;
         }
 
-        if (context.getArgs().size() > this.requiredArgs.size() + this.optionalArgs.size() || context.getArgs().size() > this.requiredArgs.size()) {
+        if (context.getArgs().size() > command.requiredArgs.size() + command.optionalArgs.size() || context.getArgs().size() > command.requiredArgs.size()) {
             context.reply(this.locale.tooManyArgs());
-            format(context);
+            //format(context);
             return false;
         }
 
@@ -132,12 +133,10 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
-        List<String> arguments = Arrays.asList(args);
-
         PaperCommandContext context = new PaperCommandContext(
                 sender,
                 label,
-                arguments
+                List.of(args)
         );
 
         execute(context, args);
