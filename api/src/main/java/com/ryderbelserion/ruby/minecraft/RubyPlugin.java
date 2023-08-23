@@ -5,16 +5,15 @@ import com.ryderbelserion.ruby.minecraft.plugin.Platform;
 import com.ryderbelserion.ruby.minecraft.plugin.registry.RubyRegistration;
 import com.ryderbelserion.ruby.minecraft.utils.AdvUtil;
 import com.ryderbelserion.ruby.minecraft.utils.FileUtil;
-import net.kyori.adventure.platform.AudienceProvider;
+import net.kyori.adventure.audience.Audience;
 
 public abstract class RubyPlugin {
-
-
-    public abstract AudienceProvider getAudience();
 
     public abstract FancyLogger getFancyLogger();
 
     public abstract Platform.Type getPlatform();
+
+    public abstract Audience getAudience();
 
     public abstract FileUtil getFileUtil();
 

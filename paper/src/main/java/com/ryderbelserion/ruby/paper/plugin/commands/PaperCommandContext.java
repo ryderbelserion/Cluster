@@ -1,16 +1,14 @@
-package com.ryderbelserion.ruby.paper.plugin.builder.commands;
+package com.ryderbelserion.ruby.paper.plugin.commands;
 
-import com.ryderbelserion.ruby.other.builder.commands.CommandContext;
+import com.ryderbelserion.ruby.other.commands.CommandContext;
 import com.ryderbelserion.ruby.paper.PaperPlugin;
-import com.ryderbelserion.ruby.paper.plugin.builder.commands.args.CommandArgs;
+import com.ryderbelserion.ruby.paper.plugin.commands.args.CommandArgs;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -39,17 +37,13 @@ public class PaperCommandContext extends CommandContext implements CommandArgs {
         return this.sender;
     }
 
-    @Override
     public Player getPlayer() {
         return (Player) this.sender;
     }
 
-    @Override
     public boolean isPlayer() {
         return this.sender instanceof Player;
     }
-    
-    // Arguments
 
     @Override
     public int getArgAsInt(int index, boolean notifySender, String message) {

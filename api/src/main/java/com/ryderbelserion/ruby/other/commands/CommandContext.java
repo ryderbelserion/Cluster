@@ -1,15 +1,12 @@
-package com.ryderbelserion.ruby.other.builder.commands;
+package com.ryderbelserion.ruby.other.commands;
 
 import com.ryderbelserion.ruby.minecraft.RubyPlugin;
 import com.ryderbelserion.ruby.minecraft.plugin.registry.RubyProvider;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.permission.PermissionChecker;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class CommandContext {
 
@@ -18,8 +15,6 @@ public class CommandContext {
     private final ArrayList<String> args;
     private final Audience audience;
     private String label;
-
-    private UUID uuid;
 
     public CommandContext(Audience audience, String label, List<String> args) {
         this.audience = audience;
@@ -70,25 +65,6 @@ public class CommandContext {
 
     public Audience getSender() {
         return this.audience;
-    }
-
-    public boolean isPlayer() {
-        return getPlayer() != null;
-    }
-
-    public Audience getPlayer() {
-        return this.plugin.getAudience().player(this.uuid);
-    }
-
-    public boolean hasPermission(String permission) {
-        if (isPlayer()) return getPlayer().get(PermissionChecker.POINTER).map(checker -> checker.test(permission)).orElse(false);
-
-        // Is not a player so always return true!
-        return true;
-    }
-
-    public void setUUID(UUID uuid) {
-        this.uuid = uuid;
     }
 
     public void setLabel(String label) {

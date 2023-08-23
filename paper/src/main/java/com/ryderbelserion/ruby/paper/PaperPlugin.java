@@ -5,22 +5,20 @@ import com.ryderbelserion.ruby.minecraft.plugin.FancyLogger;
 import com.ryderbelserion.ruby.minecraft.plugin.Platform;
 import com.ryderbelserion.ruby.minecraft.utils.AdvUtil;
 import com.ryderbelserion.ruby.minecraft.utils.FileUtil;
-import com.ryderbelserion.ruby.other.builder.commands.CommandHelpProvider;
-import com.ryderbelserion.ruby.paper.plugin.builder.commands.PaperCommandManager;
+import com.ryderbelserion.ruby.other.commands.CommandHelpProvider;
+import com.ryderbelserion.ruby.paper.plugin.commands.PaperCommandManager;
 import com.ryderbelserion.ruby.paper.plugin.items.skulls.SkullCreator;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperRegistration;
 import com.ryderbelserion.ruby.paper.utils.ItemUtil;
 import com.ryderbelserion.ruby.paper.utils.LegacyUtil;
-import net.kyori.adventure.platform.AudienceProvider;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.audience.Audience;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PaperPlugin extends RubyPlugin {
 
-    private CommandHelpProvider commandHelpProvider;
+    private CommandHelpProvider helpProvider;
     private PaperCommandManager manager;
     private SkullCreator skullCreator;
-    private BukkitAudiences audience;
     private FancyLogger fancyLogger;
     private LegacyUtil legacyUtil;
     private JavaPlugin plugin;
@@ -40,9 +38,6 @@ public class PaperPlugin extends RubyPlugin {
 
         // Initializes the paper provider.
         PaperRegistration.start(this);
-
-        // Creates the audience sender.
-        if (this.audience == null) this.audience = BukkitAudiences.create(this.plugin);
 
         // Create adventure/logger instance.
         this.advUtil = new AdvUtil();
@@ -66,21 +61,10 @@ public class PaperPlugin extends RubyPlugin {
 
         // Stops the paper provider.
         PaperRegistration.stop();
-
-        // If audience is not null, close and set to null.
-        if (this.audience != null) {
-            this.audience.close();
-            this.audience = null;
-        }
     }
 
     public PaperCommandManager getManager() {
         return this.manager;
-    }
-
-    @Override
-    public AudienceProvider getAudience() {
-        return this.audience;
     }
 
     @Override
@@ -96,6 +80,11 @@ public class PaperPlugin extends RubyPlugin {
     @Override
     public AdvUtil getAdventure() {
         return this.advUtil;
+    }
+
+    @Override
+    public Audience getAudience() {
+        return this.plugin.getServer().getConsoleSender();
     }
 
     @Override
@@ -119,12 +108,12 @@ public class PaperPlugin extends RubyPlugin {
         return this;
     }
 
-    public void setCommandProvider(CommandHelpProvider commandHelpProvider) {
-        this.commandHelpProvider = commandHelpProvider;
+    public void setHelpProvider(CommandHelpProvider helpProvider) {
+        this.helpProvider = helpProvider;
     }
 
-    public CommandHelpProvider getCommandProvider() {
-        return this.commandHelpProvider;
+    public CommandHelpProvider getHelpProvider() {
+        return this.helpProvider;
     }
 
     public SkullCreator getSkullCreator() {

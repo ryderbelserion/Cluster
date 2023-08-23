@@ -1,8 +1,8 @@
-package com.ryderbelserion.ruby.paper.plugin.builder.commands;
+package com.ryderbelserion.ruby.paper.plugin.commands;
 
 import com.ryderbelserion.ruby.other.builder.ComponentBuilder;
-import com.ryderbelserion.ruby.other.builder.commands.CommandHelpProvider;
-import com.ryderbelserion.ruby.other.builder.commands.args.Argument;
+import com.ryderbelserion.ruby.other.commands.CommandHelpProvider;
+import com.ryderbelserion.ruby.other.commands.args.Argument;
 import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -21,7 +21,7 @@ public class PaperCommandHelpEntry {
 
     private final @NotNull PaperCommandManager manager = this.plugin.getManager();
 
-    private final @NotNull CommandHelpProvider locale = this.plugin.getCommandProvider();
+    private final @NotNull CommandHelpProvider locale = this.plugin.getHelpProvider();
 
     private int page = 1;
     private int perPage;
@@ -30,7 +30,7 @@ public class PaperCommandHelpEntry {
     private boolean lastPage;
 
     public PaperCommandHelpEntry() {
-        this.perPage = this.plugin.getCommandProvider().defaultHelpPerPage();
+        this.perPage = this.plugin.getHelpProvider().defaultHelpPerPage();
     }
 
     public void showHelp(PaperCommandContext context) {

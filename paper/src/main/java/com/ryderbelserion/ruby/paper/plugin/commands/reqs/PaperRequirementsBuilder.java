@@ -1,4 +1,4 @@
-package com.ryderbelserion.ruby.paper.plugin.builder.commands.reqs;
+package com.ryderbelserion.ruby.paper.plugin.commands.reqs;
 
 import org.bukkit.permissions.Permission;
 

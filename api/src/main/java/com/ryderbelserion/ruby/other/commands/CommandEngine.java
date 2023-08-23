@@ -1,4 +1,4 @@
-package com.ryderbelserion.ruby.other.builder.commands;
+package com.ryderbelserion.ruby.other.commands;
 
 public interface CommandEngine {
 

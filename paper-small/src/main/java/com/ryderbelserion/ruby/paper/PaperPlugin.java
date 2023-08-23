@@ -9,14 +9,12 @@ import com.ryderbelserion.ruby.paper.plugin.items.skulls.SkullCreator;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperRegistration;
 import com.ryderbelserion.ruby.paper.utils.ItemUtil;
 import com.ryderbelserion.ruby.paper.utils.LegacyUtil;
-import net.kyori.adventure.platform.AudienceProvider;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.audience.Audience;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PaperPlugin extends RubyPlugin {
 
     private SkullCreator skullCreator;
-    private BukkitAudiences audience;
     private FancyLogger fancyLogger;
     private LegacyUtil legacyUtil;
     private JavaPlugin plugin;
@@ -36,9 +34,6 @@ public class PaperPlugin extends RubyPlugin {
 
         // Initializes the paper provider.
         PaperRegistration.start(this);
-
-        // Creates the audience sender.
-        if (this.audience == null) this.audience = BukkitAudiences.create(this.plugin);
 
         // Create adventure/logger instance.
         this.advUtil = new AdvUtil();
@@ -60,17 +55,6 @@ public class PaperPlugin extends RubyPlugin {
 
         // Stops the paper provider.
         PaperRegistration.stop();
-
-        // If audience is not null, close and set to null.
-        if (this.audience != null) {
-            this.audience.close();
-            this.audience = null;
-        }
-    }
-
-    @Override
-    public AudienceProvider getAudience() {
-        return this.audience;
     }
 
     @Override
@@ -86,6 +70,11 @@ public class PaperPlugin extends RubyPlugin {
     @Override
     public AdvUtil getAdventure() {
         return this.advUtil;
+    }
+
+    @Override
+    public Audience getAudience() {
+        return this.plugin.getServer().getConsoleSender();
     }
 
     @Override

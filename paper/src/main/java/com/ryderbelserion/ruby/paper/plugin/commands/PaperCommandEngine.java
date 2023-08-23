@@ -1,11 +1,11 @@
-package com.ryderbelserion.ruby.paper.plugin.builder.commands;
+package com.ryderbelserion.ruby.paper.plugin.commands;
 
 import com.ryderbelserion.ruby.other.builder.ComponentBuilder;
-import com.ryderbelserion.ruby.other.builder.commands.CommandEngine;
-import com.ryderbelserion.ruby.other.builder.commands.CommandHelpProvider;
-import com.ryderbelserion.ruby.other.builder.commands.args.Argument;
+import com.ryderbelserion.ruby.other.commands.CommandEngine;
+import com.ryderbelserion.ruby.other.commands.CommandHelpProvider;
+import com.ryderbelserion.ruby.other.commands.args.Argument;
 import com.ryderbelserion.ruby.paper.PaperPlugin;
-import com.ryderbelserion.ruby.paper.plugin.builder.commands.reqs.PaperRequirements;
+import com.ryderbelserion.ruby.paper.plugin.commands.reqs.PaperRequirements;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
 import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.command.Command;
@@ -16,7 +16,7 @@ import java.util.*;
 public abstract class PaperCommandEngine extends Command implements CommandEngine {
 
     private final @NotNull PaperPlugin plugin = PaperProvider.get();
-    private final @NotNull CommandHelpProvider locale = this.plugin.getCommandProvider();
+    private final @NotNull CommandHelpProvider locale = this.plugin.getHelpProvider();
 
     public PaperRequirements paperRequirements;
 

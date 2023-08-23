@@ -31,6 +31,6 @@ public class FancyLogger {
     }
 
     private void send(String message) {
-        this.plugin.getAudience().console().sendMessage(this.plugin.getAdventure().parse(message));
+        this.plugin.getAudience().sendMessage(this.plugin.getAdventure().parse(message));
     }
 }

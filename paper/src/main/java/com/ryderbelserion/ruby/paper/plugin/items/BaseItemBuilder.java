@@ -1,5 +1,7 @@
 package com.ryderbelserion.ruby.paper.plugin.items;
 
+import com.ryderbelserion.ruby.minecraft.plugin.FancyLogger;
+import com.ryderbelserion.ruby.minecraft.utils.AdvUtil;
 import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.items.skulls.SkullCreator;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
@@ -23,9 +25,13 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
 
-    private final @NotNull PaperPlugin paper = PaperProvider.get();
+    private final @NotNull PaperPlugin paperPlugin = PaperProvider.get();
 
-    private final @NotNull SkullCreator skullCreator = this.paper.getSkullCreator();
+    private final @NotNull SkullCreator skullCreator = this.paperPlugin.getSkullCreator();
+
+    private final @NotNull FancyLogger fancyLogger = this.paperPlugin.getFancyLogger();
+
+    private final @NotNull AdvUtil adventure = this.paperPlugin.getAdventure();
 
     // Core.
     private ItemStack itemStack;
@@ -164,7 +170,7 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
         List<Component> coloredLore = new ArrayList<>();
 
         for (String line : this.lore) {
-            coloredLore.add(this.paper.getAdventure().parse(line));
+            coloredLore.add(this.adventure.parse(line));
         }
 
         return coloredLore;
@@ -212,7 +218,7 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
 
                 addItemFlag(itemFlag);
             } catch (Exception exception) {
-                this.paper.getFancyLogger().warn("Failed to add item-flag: " + flag + ". The flag is invalid!");
+                this.fancyLogger.warn("Failed to add item-flag: " + flag + ". The flag is invalid!");
             }
         });
 
@@ -235,7 +241,7 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
             List.of(
                     "Material cannot be null or empty, Output: " + material + ".",
                     "Please take a screenshot of this before asking for support."
-            ).forEach(this.paper.getFancyLogger()::warn);
+            ).forEach(this.fancyLogger::warn);
 
             return (Base) this;
         }
@@ -252,7 +258,7 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
                 try {
                     this.potionType = PotionType.valueOf(sectionOne[1]);
                 } catch (Exception exception) {
-                    this.paper.getFancyLogger().warn("Failed to set potion type " + sectionOne[1] + ". The potion type inputted is invalid.");
+                    this.fancyLogger.warn("Failed to set potion type " + sectionOne[1] + ". The potion type inputted is invalid.");
                 }
 
                 this.potionColor = getColor(sectionTwo[1]);
@@ -399,7 +405,7 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
 
             if (!newLore.isEmpty()) meta.lore(getColoredLore());
 
-            this.itemMeta.displayName(this.paper.getAdventure().parse(this.displayName));
+            this.itemMeta.displayName(this.adventure.parse(this.displayName));
 
             if (this.isPotion || this.isTippedArrow && (this.potionType != null || this.potionColor != null)) {
                 PotionMeta potionMeta = (PotionMeta) meta;
@@ -449,7 +455,7 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
 
             addGlow();
         } else {
-            this.paper.getFancyLogger().warn("Material cannot be AIR.");
+            this.fancyLogger.warn("Material cannot be AIR.");
         }
 
         this.itemStack.setItemMeta(this.itemMeta);

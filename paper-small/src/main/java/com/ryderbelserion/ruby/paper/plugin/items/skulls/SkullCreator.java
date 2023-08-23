@@ -2,8 +2,8 @@ package com.ryderbelserion.ruby.paper.plugin.items.skulls;
 
 import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.inventory.ItemStack;
@@ -14,6 +14,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Base64;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class SkullCreator {
 
@@ -44,7 +45,7 @@ public class SkullCreator {
         notNull(item, "item");
         notNull(name, "name");
         
-        return plugin.getServer().getUnsafe().modifyItemStack(item,
+        return this.plugin.getServer().getUnsafe().modifyItemStack(item,
         "{SkullOwner:\"" + name + "\"}"
         );
     }
@@ -52,28 +53,28 @@ public class SkullCreator {
     /**
      * Creates a player skull with a UUID. 1.13 only.
      *
-     * @param id The Player's UUID
+     * @param uuid The Player's UUID
      * @return The head of the Player
      */
-    public ItemStack itemFromUuid(UUID id) {
+    public ItemStack itemFromUuid(UUID uuid) {
         ItemStack item = getPlayerSkullItem();
         
-        return itemWithUuid(item, id);
+        return itemWithUuid(item, uuid);
     }
     
     /**
      * Creates a player skull based on a UUID. 1.13 only.
      *
      * @param item The item to apply the name to
-     * @param id The Player's UUID
+     * @param uuid The Player's UUID
      * @return The head of the Player
      */
-    public ItemStack itemWithUuid(ItemStack item, UUID id) {
+    public ItemStack itemWithUuid(ItemStack item, UUID uuid) {
         notNull(item, "item");
-        notNull(id, "id");
+        notNull(uuid, "id");
         
         SkullMeta meta = (SkullMeta) item.getItemMeta();
-        meta.setOwningPlayer(plugin.getServer().getOfflinePlayer(id));
+        meta.setOwningPlayer(this.plugin.getServer().getOfflinePlayer(uuid));
         item.setItemMeta(meta);
         
         return item;
@@ -129,7 +130,7 @@ public class SkullCreator {
         notNull(base64, "base64");
         
         UUID hashAsId = new UUID(base64.hashCode(), base64.hashCode());
-        return plugin.getServer().getUnsafe().modifyItemStack(item,
+        return this.plugin.getServer().getUnsafe().modifyItemStack(item,
         "{SkullOwner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}"
         );
     }
@@ -148,21 +149,25 @@ public class SkullCreator {
         notNull(name, "name");
         
         setBlockType(block);
-        ((Skull) block.getState()).setOwningPlayer(Bukkit.getOfflinePlayer(name));
+
+        CompletableFuture<UUID> future = CompletableFuture.supplyAsync(() -> this.plugin.getServer().getOfflinePlayer(name)).thenApply(OfflinePlayer::getUniqueId);
+
+        ((Skull) block.getState()).setOwningPlayer(this.plugin.getServer().getOfflinePlayer(future.join()));
     }
     
     /**
      * Sets the block to a skull with the given UUID.
      *
      * @param block The block to set
-     * @param id The player to set it to
+     * @param uuid The player to set it to
      */
-    public void blockWithUuid(Block block, UUID id) {
+    public void blockWithUuid(Block block, UUID uuid) {
         notNull(block, "block");
-        notNull(id, "id");
+        notNull(uuid, "id");
         
         setBlockType(block);
-        ((Skull) block.getState()).setOwningPlayer(Bukkit.getOfflinePlayer(id));
+
+        ((Skull) block.getState()).setOwningPlayer(this.plugin.getServer().getOfflinePlayer(uuid));
     }
     
     /**
@@ -197,47 +202,23 @@ public class SkullCreator {
         block.getZ(),
         "{Owner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}"
         );
-        
-        if (newerApi()) {
-            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "data merge block " + args);
-        } else {
-            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "blockdata " + args);
-        }
-    }
-    
-    private boolean newerApi() {
-        try {
-            Material.valueOf("PLAYER_HEAD");
-            return true;
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
+
+        this.plugin.getServer().dispatchCommand(this.plugin.getServer().getConsoleSender(), "data merge block " + args);
     }
     
     private ItemStack getPlayerSkullItem() {
-        if (newerApi()) {
-            return new ItemStack(Material.valueOf("PLAYER_HEAD"));
-        } else {
-            return new ItemStack(Material.valueOf("SKULL_ITEM"), 1, (byte) 3);
-        }
+        return new ItemStack(Material.valueOf("PLAYER_HEAD"));
     }
     
     private void setBlockType(Block block) {
-        try {
-            block.setType(Material.valueOf("PLAYER_HEAD"), false);
-        } catch (IllegalArgumentException e) {
-            block.setType(Material.valueOf("SKULL"), false);
-        }
+        block.setType(Material.valueOf("PLAYER_HEAD"), false);
     }
     
-    private void notNull(Object o, String name) {
-        if (o == null) {
-            throw new NullPointerException(name + " should not be null!");
-        }
+    private void notNull(Object instance, String name) {
+        if (instance == null) throw new NullPointerException(name + " should not be null!");
     }
     
     private String urlToBase64(String url) {
-        
         URI actualUrl;
 
         try {

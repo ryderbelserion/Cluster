@@ -4,8 +4,6 @@ import com.ryderbelserion.ruby.minecraft.RubyPlugin;
 import com.ryderbelserion.ruby.minecraft.plugin.registry.RubyProvider;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
@@ -23,26 +21,10 @@ public class AdvUtil {
     }
 
     public void console(String message) {
-        this.plugin.getAudience().console().sendMessage(parse(message));
+        this.plugin.getAudience().sendMessage(parse(message));
     }
 
     public void player(Audience audience, String message) {
         audience.sendMessage(parse(message));
-    }
-
-    public void hover(Audience audience, String message, String text, String value, ClickEvent.Action action) {
-        Component textComponent = parse(message)
-                .hoverEvent(HoverEvent.showText(parse(text)))
-                .clickEvent(ClickEvent.clickEvent(action, value));
-
-        audience.sendMessage(textComponent);
-    }
-
-    public void hover(Audience audience, String message, String text, String button, String value, ClickEvent.Action action) {
-        Component textComponent = parse(message)
-                .append(parse(button).hoverEvent(HoverEvent.showText(parse(text))))
-                .clickEvent(ClickEvent.clickEvent(action, value));
-
-        audience.sendMessage(textComponent);
     }
 }

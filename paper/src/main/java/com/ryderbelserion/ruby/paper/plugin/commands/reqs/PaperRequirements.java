@@ -1,8 +1,8 @@
-package com.ryderbelserion.ruby.paper.plugin.builder.commands.reqs;
+package com.ryderbelserion.ruby.paper.plugin.commands.reqs;
 
-import com.ryderbelserion.ruby.other.builder.commands.CommandHelpProvider;
+import com.ryderbelserion.ruby.other.commands.CommandHelpProvider;
 import com.ryderbelserion.ruby.paper.PaperPlugin;
-import com.ryderbelserion.ruby.paper.plugin.builder.commands.PaperCommandContext;
+import com.ryderbelserion.ruby.paper.plugin.commands.PaperCommandContext;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -13,7 +13,7 @@ public class PaperRequirements {
 
     private final @NotNull PaperPlugin plugin = PaperProvider.get();
 
-    private final @NotNull CommandHelpProvider locale = this.plugin.getCommandProvider();
+    private final @NotNull CommandHelpProvider locale = this.plugin.getHelpProvider();
 
     private final boolean isPlayer;
     private final Permission permission;

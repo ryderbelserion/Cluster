@@ -1,4 +1,4 @@
-package com.ryderbelserion.ruby.paper.plugin.builder.commands.args;
+package com.ryderbelserion.ruby.paper.plugin.commands.args;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;

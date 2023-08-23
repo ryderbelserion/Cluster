@@ -1,4 +1,4 @@
-package com.ryderbelserion.ruby.other.builder.commands.args;
+package com.ryderbelserion.ruby.other.commands.args;
 
 import java.util.List;
 
