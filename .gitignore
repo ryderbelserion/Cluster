@@ -7,6 +7,9 @@ paper/build
 folia/.gradle
 folia/build
 
+folia-small/.gradle
+folia-small/build
+
 api/.gradle
 api/build
 
@@ -15,8 +18,5 @@ buildSrc/build
 
 paper-small/.gradle
 paper-small/build
-
-runes/build
-runes/.gradle
 
 build

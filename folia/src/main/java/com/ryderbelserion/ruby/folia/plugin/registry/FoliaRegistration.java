@@ -2,7 +2,6 @@ package com.ryderbelserion.ruby.folia.plugin.registry;
 
 import com.ryderbelserion.ruby.folia.FoliaImpl;
 import org.jetbrains.annotations.ApiStatus;
-
 import java.lang.reflect.Method;
 
 public class FoliaRegistration {
