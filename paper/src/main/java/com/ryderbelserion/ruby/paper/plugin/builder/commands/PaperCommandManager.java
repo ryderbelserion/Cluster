@@ -32,16 +32,18 @@ public class PaperCommandManager {
         return this.namespace;
     }
 
-    public void addCommand(PaperCommandEngine command) {
-        add(command);
+    public void addCommand(PaperCommandEngine command, boolean first) {
+        add(command, first);
     }
 
-    public void removeCommand(PaperCommandEngine command) {
+    public void removeCommand(PaperCommandEngine command, boolean first) {
         if (!hasCommand(command.getName())) return;
 
-        Command map = this.plugin.getServer().getCommandMap().getCommand(command.getName());
+        if (first) {
+            Command map = this.plugin.getServer().getCommandMap().getCommand(command.getName());
 
-        if (map != null) map.unregister(this.plugin.getServer().getCommandMap());
+            if (map != null) map.unregister(this.plugin.getServer().getCommandMap());
+        }
 
         if (!command.getCommands(command).isEmpty()) {
             command.getCommands(command).forEach(other -> {
@@ -53,32 +55,36 @@ public class PaperCommandManager {
                 if (!required.isEmpty()) required.clear();
             });
 
-            command.removeCommand(command);
+            command.removeCommand(command, first);
         }
 
-        this.commands.remove(command.getName());
+        if (first) this.commands.remove(command.getName());
 
-        this.classes.remove(command);
+        if (!first) this.classes.remove(command);
     }
 
     public boolean hasCommand(String label) {
         return this.commands.containsKey(label);
     }
 
-    private void add(PaperCommandEngine command) {
+    private void add(PaperCommandEngine command, boolean first) {
+        if (!first) {
+            if (!this.classes.contains(command)) this.classes.add(command);
+        }
+
         if (hasCommand(command.getName())) return;
 
         if (!command.isVisible()) {
-            if (hasCommand(command.getName())) removeCommand(command);
+            if (hasCommand(command.getName())) removeCommand(command, first);
             return;
         }
 
-        this.commands.put(command.getName(), command);
+        if (first) {
+            this.commands.put(command.getName(), command);
 
-        this.classes.add(command);
-
-        // Add it to the command map.
-        this.plugin.getServer().getCommandMap().register(this.namespace, command);
+            // Add it to the command map.
+            this.plugin.getServer().getCommandMap().register(this.namespace, command);
+        }
     }
 
     public Map<String, PaperCommandEngine> getCommands() {

@@ -10,6 +10,7 @@ public interface CommandHelpProvider {
     String hoverMessage();
     String hoverAction();
 
+    String invalidFormat();
     String notEnoughArgs();
     String tooManyArgs();
 

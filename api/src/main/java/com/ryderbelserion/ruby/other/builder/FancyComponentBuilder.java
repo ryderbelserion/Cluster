@@ -42,7 +42,7 @@ public class FancyComponentBuilder {
         return this;
     }
 
-    public Component fancy(Component component) {
-        return component.append(this.builder.build());
+    public Component fancy() {
+        return this.builder.build();
     }
 }

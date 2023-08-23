@@ -12,6 +12,11 @@ import java.util.Comparator;
 
 public class PaperCommandHelpEntry {
 
+    //TODO() Finish setting up the navigation using the proper component builder.
+    //TODO() Figure out why there is a blank space when copying the command.
+    //TODO() Hide commands if they don't have the permission to use them.
+    //TODO() Add the (page) or (player) args to the help menu potentially? It would get funky after 5+ args though.
+
     private final @NotNull PaperPlugin plugin = PaperProvider.get();
 
     private final @NotNull PaperCommandManager manager = this.plugin.getManager();
@@ -32,7 +37,7 @@ public class PaperCommandHelpEntry {
         int min = this.perPage * (this.page - 1);
         int max = min + this.perPage;
 
-        this.totalResults = this.manager.getCommands().size();
+        this.totalResults = this.manager.getClasses().size();
 
         this.totalPages = this.totalResults / this.perPage;
 
@@ -50,9 +55,9 @@ public class PaperCommandHelpEntry {
 
             boolean isVisible = command.isVisible();
 
-            if (!isVisible || !command.isRegistered()) return;
+            if (!isVisible) return;
 
-            StringBuilder baseFormat = new StringBuilder(command.getUsage());
+            StringBuilder baseFormat = new StringBuilder("/" + command.getUsage());
 
             String format = this.locale.pageFormat()
                     .replaceAll("\\{command}", baseFormat.toString())
@@ -62,54 +67,63 @@ public class PaperCommandHelpEntry {
 
             ArrayList<Argument> arguments = new ArrayList<>();
 
-            arguments.addAll(command.getOptionalArgs(command));
-            arguments.addAll(command.getRequiredArgs(command));
+            arguments.addAll(command.getOptionalArgs());
+            arguments.addAll(command.getRequiredArgs());
 
-            arguments.sort(Comparator.comparing(Argument::order));
+            arguments.sort(Comparator.comparingInt(Argument::order));
 
             if (context.isPlayer()) {
                 StringBuilder types = new StringBuilder();
 
                 ComponentBuilder builder = new ComponentBuilder();
 
-                for (Argument args : arguments) {
-                    String arg = command.getOptionalArgs(command).contains(args) ? " (" + args.name() + ") " : " <" + args.name() + ">";
-                    types.append(arg);
+                for (Argument arg : arguments) {
+                    String argValue = command.getOptionalArgs().contains(arg) ? " (" + arg.name() + ") " : " <" + arg.name() + ">";
+
+                    types.append(argValue);
                 }
 
-                builder.setMessage(format.replace("\\{args}", String.valueOf(types)));
+                builder.setMessage(format.replaceAll("\\{args}", String.valueOf(types)));
 
                 String hoverShit = baseFormat.append(types).toString();
 
                 String hoverFormat = this.locale.hoverMessage();
 
-                builder.hover(hoverFormat.replaceAll("\\{command}",
-                        hoverShit)).click(ClickEvent.Action.valueOf(this.locale.hoverAction().toUpperCase()), hoverShit);
+                builder.hover(hoverFormat.replaceAll("\\{command}", hoverShit)).click(ClickEvent.Action.valueOf(this.locale.hoverAction().toUpperCase()), hoverShit);
 
                 context.reply(builder.build());
             }
 
             String footer = this.locale.pageFooter();
 
-            String namespace = this.manager.getNamespace();
-
             if (context.isPlayer()) {
                 String text = this.locale.pageNavigation();
+
+                ComponentBuilder builder = new ComponentBuilder();
 
                 if (page > 1) {
                     int number = page-1;
 
-                    this.plugin.getAdventure().hover(context.getPlayer(), footer.replaceAll("\\{page}", String.valueOf(page)),  text
-                                    .replaceAll("\\{page}", String.valueOf(number)),
-                            this.locale.pageBackButton(), "/" + namespace + ":" + command.getLabel() + number,
-                            ClickEvent.Action.RUN_COMMAND);
-                } else if (page < this.manager.getClasses().size()) {
-                    int number = page+1;
+                    String fullUsage = "/" + command.getUsage() + " " + number;
+                    String newNumber = String.valueOf(number);
 
-                    this.plugin.getAdventure().hover(context.getPlayer(), footer.replaceAll("\\{page}", String.valueOf(page)),  text
-                                    .replaceAll("\\{page}", String.valueOf(number)),
-                            this.locale.pageNextButton(), "/" + namespace + ":" + command.getLabel() + number,
-                            ClickEvent.Action.RUN_COMMAND);
+                    builder.setMessage(footer.replaceAll("\\{page}", String.valueOf(page)));
+
+                    builder.hover(text.replaceAll("\\{page}", String.valueOf(number)));
+
+                    context.reply(builder.build());
+
+                    //this.plugin.getAdventure().hover(context.getPlayer(), footer.replaceAll("\\{page}", newPage), text.replaceAll("\\{page}", newNumber), this.locale.pageBackButton(), fullUsage, ClickEvent.Action.RUN_COMMAND);
+                } else if (page < this.manager.getClasses().size()) {
+                    //int number = page+1;
+
+                    //String fullUsage = "/" + command.getUsage() + " " + number;
+                    //String newPage = String.valueOf(page);
+                    //String newNumber = String.valueOf(number);
+
+                    //this.plugin.getAdventure().hover(context.getPlayer(), footer.replaceAll("\\{page}", newPage),
+                    //        text.replaceAll("\\{page}", newNumber), this.locale.pageNextButton(), fullUsage,
+                    //        ClickEvent.Action.RUN_COMMAND);
                 }
             } else {
                 context.reply(footer.replaceAll("\\{page}", String.valueOf(page)));

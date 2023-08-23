@@ -31,18 +31,18 @@ public class AdvUtil {
     }
 
     public void hover(Audience audience, String message, String text, String value, ClickEvent.Action action) {
-        Component component = parse(message)
+        Component textComponent = parse(message)
                 .hoverEvent(HoverEvent.showText(parse(text)))
                 .clickEvent(ClickEvent.clickEvent(action, value));
 
-        audience.sendMessage(component);
+        audience.sendMessage(textComponent);
     }
 
     public void hover(Audience audience, String message, String text, String button, String value, ClickEvent.Action action) {
-        Component component = parse(message)
+        Component textComponent = parse(message)
                 .append(parse(button).hoverEvent(HoverEvent.showText(parse(text))))
                 .clickEvent(ClickEvent.clickEvent(action, value));
 
-        audience.sendMessage(component);
+        audience.sendMessage(textComponent);
     }
 }

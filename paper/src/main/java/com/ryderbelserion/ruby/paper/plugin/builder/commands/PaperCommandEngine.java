@@ -1,15 +1,13 @@
 package com.ryderbelserion.ruby.paper.plugin.builder.commands;
 
+import com.ryderbelserion.ruby.other.builder.ComponentBuilder;
 import com.ryderbelserion.ruby.other.builder.commands.CommandEngine;
 import com.ryderbelserion.ruby.other.builder.commands.CommandHelpProvider;
 import com.ryderbelserion.ruby.other.builder.commands.args.Argument;
 import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.builder.commands.reqs.PaperRequirements;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -67,68 +65,66 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
     private boolean validate(PaperCommandContext context, PaperCommandEngine command) {
         if (context.getArgs().size() < command.requiredArgs.size()) {
             context.reply(this.locale.notEnoughArgs());
-            //format(context);
+            format(context, command);
             return false;
         }
 
         if (context.getArgs().size() > command.requiredArgs.size() + command.optionalArgs.size() || context.getArgs().size() > command.requiredArgs.size()) {
             context.reply(this.locale.tooManyArgs());
-            //format(context);
+            format(context, command);
             return false;
         }
 
         return true;
     }
 
-    private void format(PaperCommandContext context) {
+    private void format(PaperCommandContext context, PaperCommandEngine command) {
         ArrayList<Argument> arguments = new ArrayList<>();
 
-        arguments.addAll(this.requiredArgs);
-        arguments.addAll(this.optionalArgs);
+        arguments.addAll(command.requiredArgs);
+        arguments.addAll(command.optionalArgs);
 
-        this.requiredArgs.sort(Comparator.comparing(Argument::order));
+        command.requiredArgs.sort(Comparator.comparing(Argument::order));
 
         if (context.isPlayer()) {
-            StringBuilder format = new StringBuilder("/" + this.plugin.getManager().getNamespace() + ":" + context.getLabel());
+            StringBuilder baseFormat = new StringBuilder("/" + command.getUsage());
 
-            TextComponent.@NotNull Builder emptyComponent = Component.text();
+            String format = this.locale.invalidFormat().replaceAll("\\{command}", baseFormat.toString());
 
             StringBuilder types = new StringBuilder();
 
+            ComponentBuilder builder = new ComponentBuilder();
+
             for (Argument arg : arguments) {
-                String value = this.optionalArgs.contains(arg) ? " (" + arg.name() + ") " : " <" + arg.name() + ">";
-
-                String msg = this.optionalArgs.contains(arg) ? this.plugin.getCommandProvider().optionalMessage() : this.plugin.getCommandProvider().requiredMessage();
-
-                Component argComponent = this.plugin.getAdventure().parse(value)
-                        .hoverEvent(HoverEvent.showText(this.plugin.getAdventure().parse(msg).asComponent()));
-
-                emptyComponent.append(argComponent);
-
                 boolean isPresent = arg.argumentType().getPossibleValues().stream().findFirst().isPresent();
 
-                if (isPresent) types.append(" ").append(arg.argumentType().getPossibleValues().stream().findFirst().get());
+                if (isPresent) types.append(arg.argumentType().getPossibleValues().stream().findFirst().get());
             }
 
-            TextComponent.@NotNull Builder finalComponent = emptyComponent
-                    .hoverEvent(HoverEvent.showText(this.plugin.getAdventure().parse(this.plugin.getCommandProvider().hoverMessage().replaceAll("\\{command}", types.toString()))))
-                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, format.append(types).toString()))
-                    .append(emptyComponent.build());
+            builder.setMessage(format.replaceAll("\\{args}", String.valueOf(types)));
 
-            context.reply(finalComponent.build());
+            String hoverShit = baseFormat.append(" ").append(types).toString();
+
+            String hoverFormat = this.locale.hoverMessage();
+
+            builder.hover(hoverFormat.replaceAll("\\{command}", hoverShit)).click(ClickEvent.Action.SUGGEST_COMMAND, hoverShit);
+
+            context.reply(builder.build());
 
             return;
         }
 
-        StringBuilder format = new StringBuilder("/" + this.plugin.getManager().getNamespace() + ":" + getLabel());
+        StringBuilder baseFormat = new StringBuilder("/" + command.getUsage());
+
+        StringBuilder types = new StringBuilder();
 
         for (Argument arg : arguments) {
-            String value = this.optionalArgs.contains(arg) ? "(" + arg.name() + ") " : "<" + arg.name() + "> ";
+            boolean isPresent = arg.argumentType().getPossibleValues().stream().findFirst().isPresent();
 
-            format.append(value);
+            if (isPresent) types.append(arg.argumentType().getPossibleValues().stream().findFirst().get());
         }
 
-        context.reply(format.toString());
+        context.reply(baseFormat.append(types).toString());
     }
 
     @Override
@@ -222,14 +218,18 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
         return Collections.emptyList();
     }
 
-    public void addCommand(PaperCommandEngine command) {
+    public void addCommand(PaperCommandEngine command, boolean first) {
         if (hasCommand(command)) return;
+
+        this.plugin.getManager().addCommand(command, first);
 
         this.subCommands.add(command);
     }
 
-    public void removeCommand(PaperCommandEngine command) {
+    public void removeCommand(PaperCommandEngine command, boolean first) {
         if (!hasCommand(command)) return;
+
+        this.plugin.getManager().removeCommand(command, first);
 
         this.subCommands.remove(command);
     }
@@ -248,6 +248,14 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
 
     public List<Argument> getRequiredArgs(PaperCommandEngine command) {
         return command.optionalArgs;
+    }
+
+    public List<Argument> getOptionalArgs() {
+        return this.requiredArgs;
+    }
+
+    public List<Argument> getRequiredArgs() {
+        return this.optionalArgs;
     }
 
     public void addRequiredArgument(PaperCommandEngine command, Argument argument) {
