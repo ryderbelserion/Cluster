@@ -7,7 +7,7 @@ base {
 }
 
 dependencies {
-    implementation(project(":api"))
+    api(project(":api"))
 }
 
 val component: SoftwareComponent = components["java"]
