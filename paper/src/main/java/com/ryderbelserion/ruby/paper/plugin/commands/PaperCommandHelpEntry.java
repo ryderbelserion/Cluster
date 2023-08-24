@@ -106,25 +106,30 @@ public class PaperCommandHelpEntry {
                     int number = page-1;
 
                     String fullUsage = "/" + command.getUsage() + " " + number;
+                    String newPage = String.valueOf(page);
                     String newNumber = String.valueOf(number);
 
-                    builder.setMessage(footer.replaceAll("\\{page}", String.valueOf(page)));
+                    builder.setMessage(footer.replaceAll("\\{page}", newPage));
 
-                    builder.hover(text.replaceAll("\\{page}", String.valueOf(number)));
+                    builder.getFancyComponentBuilder().hover(this.locale.pageBackButton(), text.replaceAll("\\{page}", newNumber));
+
+                    builder.getFancyComponentBuilder().click(ClickEvent.Action.RUN_COMMAND, fullUsage);
 
                     context.reply(builder.build());
-
-                    //this.plugin.getAdventure().hover(context.getPlayer(), footer.replaceAll("\\{page}", newPage), text.replaceAll("\\{page}", newNumber), this.locale.pageBackButton(), fullUsage, ClickEvent.Action.RUN_COMMAND);
                 } else if (page < this.manager.getClasses().size()) {
-                    //int number = page+1;
+                    int number = page+1;
 
-                    //String fullUsage = "/" + command.getUsage() + " " + number;
-                    //String newPage = String.valueOf(page);
-                    //String newNumber = String.valueOf(number);
+                    String fullUsage = "/" + command.getUsage() + " " + number;
+                    String newPage = String.valueOf(page);
+                    String newNumber = String.valueOf(number);
 
-                    //this.plugin.getAdventure().hover(context.getPlayer(), footer.replaceAll("\\{page}", newPage),
-                    //        text.replaceAll("\\{page}", newNumber), this.locale.pageNextButton(), fullUsage,
-                    //        ClickEvent.Action.RUN_COMMAND);
+                    builder.setMessage(footer.replaceAll("\\{page}", newPage));
+
+                    builder.getFancyComponentBuilder().hover(this.locale.pageNextButton(), text.replaceAll("\\{page}", newNumber));
+
+                    builder.getFancyComponentBuilder().click(ClickEvent.Action.RUN_COMMAND, fullUsage);
+
+                    context.reply(builder.build());
                 }
             } else {
                 context.reply(footer.replaceAll("\\{page}", String.valueOf(page)));
