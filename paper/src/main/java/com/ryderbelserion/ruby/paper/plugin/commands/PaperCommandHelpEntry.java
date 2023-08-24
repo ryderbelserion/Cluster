@@ -12,10 +12,7 @@ import java.util.Comparator;
 
 public class PaperCommandHelpEntry {
 
-    //TODO() Finish setting up the navigation using the proper component builder.
     //TODO() Figure out why there is a blank space when copying the command.
-    //TODO() Hide commands if they don't have the permission to use them.
-    //TODO() Add the (page) or (player) args to the help menu potentially? It would get funky after 5+ args though.
 
     private final @NotNull PaperPlugin plugin = PaperProvider.get();
 
@@ -56,6 +53,10 @@ public class PaperCommandHelpEntry {
             boolean isVisible = command.isVisible();
 
             if (!isVisible) return;
+
+            if (command.paperRequirements != null) {
+                if (!command.paperRequirements.checkRequirements(context, false)) return;
+            }
 
             StringBuilder baseFormat = new StringBuilder("/" + command.getUsage());
 

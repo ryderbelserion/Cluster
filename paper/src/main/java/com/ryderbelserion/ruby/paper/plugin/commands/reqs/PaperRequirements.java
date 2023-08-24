@@ -18,13 +18,16 @@ public class PaperRequirements {
     private final boolean isPlayer;
     private final Permission permission;
     private final String rawPermission;
+    private PaperRequirementsBuilder paperRequirementsBuilder;
 
-    public PaperRequirements(boolean isPlayer, Permission permission, String rawPermission) {
+    public PaperRequirements(boolean isPlayer, Permission permission, String rawPermission, PaperRequirementsBuilder paperRequirementsBuilder) {
         this.isPlayer = isPlayer;
 
         this.permission = permission;
 
         this.rawPermission = rawPermission;
+
+        if (paperRequirementsBuilder != null) this.paperRequirementsBuilder = paperRequirementsBuilder;
     }
 
     public boolean checkRequirements(PaperCommandContext context, boolean notifySender) {
@@ -46,5 +49,9 @@ public class PaperRequirements {
         }
 
         return true;
+    }
+
+    public PaperRequirementsBuilder getRequirementsBuilder() {
+        return this.paperRequirementsBuilder;
     }
 }

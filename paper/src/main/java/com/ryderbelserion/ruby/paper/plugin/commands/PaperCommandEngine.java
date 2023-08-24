@@ -6,10 +6,12 @@ import com.ryderbelserion.ruby.other.commands.CommandHelpProvider;
 import com.ryderbelserion.ruby.other.commands.args.Argument;
 import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.commands.reqs.PaperRequirements;
+import com.ryderbelserion.ruby.paper.plugin.commands.reqs.PaperRequirementsBuilder;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
 import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
@@ -55,8 +57,8 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
             }
         }
 
-        if (paperRequirements != null) {
-            if (!paperRequirements.checkRequirements(context, true)) return;
+        if (this.paperRequirements != null) {
+            if (!this.paperRequirements.checkRequirements(context, true)) return;
         }
 
         perform(context, args);
@@ -152,15 +154,31 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
         return this.value;
     }
 
-    public List<String> handleTabComplete(List<String> args) {
+    public List<String> handleTabComplete(CommandSender sender, List<String> args) {
         if (args.size() == 1) {
             ArrayList<String> completions = new ArrayList<>();
 
             if (args.get(0).isEmpty()) {
                 this.subCommands.forEach(sub -> {
+                    // If command is visible return.
                     if (!sub.isVisible()) return;
 
-                    completions.add(sub.getName());
+                    // Check if requirements are null and if not, check if they meet the requirements then add completions if they do.
+                    if (sub.paperRequirements != null) {
+                        PaperRequirementsBuilder builder = sub.paperRequirements.getRequirementsBuilder();
+
+                        if (builder.isPlayer()) {
+                            Player player = (Player) sender;
+
+                            if (builder.getPermission() != null && !player.hasPermission(builder.getPermission()) || (builder.getPermission() != null && !player.hasPermission(builder.getRawPermission()))) return;
+
+                            completions.add(sub.getName());
+
+                            return;
+                        }
+
+                        completions.add(sub.getName());
+                    }
                 });
 
                 return completions;

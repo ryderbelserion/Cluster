@@ -39,6 +39,6 @@ public class PaperRequirementsBuilder {
     }
 
     public PaperRequirements build() {
-        return new PaperRequirements(this.isPlayer, this.permission, this.rawPermission);
+        return new PaperRequirements(this.isPlayer, this.permission, this.rawPermission, this);
     }
 }
