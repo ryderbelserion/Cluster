@@ -5,15 +5,15 @@ import org.bukkit.entity.Player;
 
 public interface CommandArgs {
 
-    Integer getArgAsInt(int index, boolean notifySender, String message);
+    int getArgAsInt(int index, boolean notifySender, String message);
 
-    Long getArgAsLong(int index, boolean notifySender, String message);
+    long getArgAsLong(int index, boolean notifySender, String message);
 
-    Double getArgAsDouble(int index, boolean notifySender, String message);
+    double getArgAsDouble(int index, boolean notifySender, String message);
 
-    Boolean getArgAsBoolean(int index, boolean notifySender, String message);
+    boolean getArgAsBoolean(int index, boolean notifySender, String message);
 
-    Float getArgAsFloat(int index, boolean notifySender, String message);
+    float getArgAsFloat(int index, boolean notifySender, String message);
 
     Player getArgAsPlayer(int index, boolean notifySender, String message);
 
