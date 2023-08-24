@@ -1,4 +1,4 @@
-package com.ryderbelserion.ruby.paper.plugin.config.json;
+package com.ryderbelserion.ruby.paper.plugin.config.types.json;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
