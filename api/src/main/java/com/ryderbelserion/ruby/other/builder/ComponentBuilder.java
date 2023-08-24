@@ -32,7 +32,7 @@ public class ComponentBuilder {
         return this;
     }
 
-    private Component parse(String value) {
+    public Component parse(String value) {
         return this.plugin.getAdventure().parse(value);
     }
 
@@ -46,6 +46,10 @@ public class ComponentBuilder {
         this.builder.clickEvent(ClickEvent.clickEvent(action, text));
 
         return this;
+    }
+
+    public FancyComponentBuilder getFancyComponentBuilder() {
+        return this.fancyComponentBuilder;
     }
 
     public @NotNull TextComponent build() {

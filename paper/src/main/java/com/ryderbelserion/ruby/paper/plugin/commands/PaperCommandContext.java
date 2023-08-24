@@ -46,76 +46,76 @@ public class PaperCommandContext extends CommandContext implements CommandArgs {
     }
 
     @Override
-    public int getArgAsInt(int index, boolean notifySender, String message) {
-        int value = 1;
+    public Integer getArgAsInt(int index, boolean notifySender, String message) {
+        int value;
 
         try {
             value = Integer.parseInt(getArgs().get(index));
         } catch (NumberFormatException exception) {
             String msg = message.replaceAll("\\{value}", getArgs().get(index)).replaceAll("\\{action}", "integer");
 
-            if (!notifySender) return value;
+            if (!notifySender) return null;
 
             if (this.isLegacy) {
                 legacy(msg);
-                return value;
+                return null;
             }
 
             reply(msg);
-            return value;
+            return null;
         }
 
         return value;
     }
 
     @Override
-    public long getArgAsLong(int index, boolean notifySender, String message) {
-        long value = 1L;
+    public Long getArgAsLong(int index, boolean notifySender, String message) {
+        long value;
 
         try {
             value = Long.parseLong(getArgs().get(index));
         } catch (NumberFormatException exception) {
             String msg = message.replaceAll("\\{value}", getArgs().get(index)).replaceAll("\\{action}", "long");
 
-            if (!notifySender) return value;
+            if (!notifySender) return null;
 
             if (this.isLegacy) {
                 legacy(msg);
-                return value;
+                return null;
             }
 
             reply(msg);
-            return value;
+            return null;
         }
 
         return value;
     }
 
     @Override
-    public double getArgAsDouble(int index, boolean notifySender, String message) {
-        double value = 0.1;
+    public Double getArgAsDouble(int index, boolean notifySender, String message) {
+        double value;
 
         try {
             value = Double.parseDouble(getArgs().get(index));
         } catch (NumberFormatException exception) {
             String msg = message.replaceAll("\\{value}", getArgs().get(index)).replaceAll("\\{action}", "double");
 
-            if (!notifySender) return value;
+            if (!notifySender) return null;
 
             if (this.isLegacy) {
                 legacy(msg);
-                return value;
+                return null;
             }
 
             reply(msg);
-            return value;
+            return null;
         }
 
         return value;
     }
 
     @Override
-    public boolean getArgAsBoolean(int index, boolean notifySender, String message) {
+    public Boolean getArgAsBoolean(int index, boolean notifySender, String message) {
         String lowerCase = getArgs().get(index).toLowerCase();
 
         switch (lowerCase) {
@@ -128,37 +128,37 @@ public class PaperCommandContext extends CommandContext implements CommandArgs {
             default -> {
                 String msg = message.replaceAll("\\{value}", getArgs().get(index)).replaceAll("\\{action}", "boolean");
 
-                if (!notifySender) return false;
+                if (!notifySender) return null;
 
                 if (this.isLegacy) {
                     legacy(msg);
-                    return false;
+                    return null;
                 }
 
                 reply(msg);
-                return false;
+                return null;
             }
         }
     }
 
     @Override
-    public float getArgAsFloat(int index, boolean notifySender, String message) {
-        float value = 1F;
+    public Float getArgAsFloat(int index, boolean notifySender, String message) {
+        float value;
 
         try {
             value = Float.parseFloat(getArgs().get(index));
         } catch (NumberFormatException exception) {
             String msg = message.replaceAll("\\{value}", getArgs().get(index)).replaceAll("\\{action}", "float");
 
-            if (!notifySender) return value;
+            if (!notifySender) return null;
 
             if (this.isLegacy) {
                 legacy(msg);
-                return value;
+                return null;
             }
 
             reply(msg);
-            return value;
+            return null;
         }
 
         return value;
