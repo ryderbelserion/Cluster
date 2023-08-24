@@ -8,24 +8,30 @@ public class PaperRequirementsBuilder {
     private Permission permission = null;
     private String rawPermission = "";
 
-    public void setPlayer(boolean player) {
-        isPlayer = player;
+    public PaperRequirementsBuilder isPlayer(boolean isPlayer) {
+        this.isPlayer = isPlayer;
+
+        return this;
     }
 
     public boolean isPlayer() {
         return this.isPlayer;
     }
 
-    public void setRawPermission(String rawPermission) {
+    public PaperRequirementsBuilder withRawPermission(String rawPermission) {
         this.rawPermission = rawPermission;
+
+        return this;
     }
 
     public String getRawPermission() {
         return this.rawPermission;
     }
 
-    public void setPermission(Permission permission) {
+    public PaperRequirementsBuilder withPermission(Permission permission) {
         this.permission = permission;
+
+        return this;
     }
 
     public Permission getPermission() {
