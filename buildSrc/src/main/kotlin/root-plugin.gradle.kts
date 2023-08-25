@@ -6,10 +6,11 @@ plugins {
 }
 
 repositories {
+    maven("https://libraries.minecraft.net")
+
     maven("https://jitpack.io")
 
     mavenCentral()
-    mavenLocal()
 }
 
 java {
@@ -27,7 +28,6 @@ tasks {
         mergeServiceFiles()
     }
 }
-
 
 val isSnapshot = rootProject.version.toString().contains("snapshot")
 

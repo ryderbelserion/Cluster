@@ -1,9 +1,9 @@
 package com.ryderbelserion.ruby.paper.plugin.commands;
 
-import com.ryderbelserion.ruby.other.builder.ComponentBuilder;
-import com.ryderbelserion.ruby.other.commands.CommandEngine;
-import com.ryderbelserion.ruby.other.commands.CommandHelpProvider;
-import com.ryderbelserion.ruby.other.commands.args.Argument;
+import com.ryderbelserion.ruby.builder.ComponentBuilder;
+import com.ryderbelserion.ruby.commands.CommandEngine;
+import com.ryderbelserion.ruby.commands.CommandHelpProvider;
+import com.ryderbelserion.ruby.commands.args.Argument;
 import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.commands.reqs.PaperRequirements;
 import com.ryderbelserion.ruby.paper.plugin.commands.reqs.PaperRequirementsBuilder;

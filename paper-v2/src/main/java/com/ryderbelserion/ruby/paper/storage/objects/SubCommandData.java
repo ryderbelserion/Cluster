@@ -1,7 +1,6 @@
 package com.ryderbelserion.ruby.paper.storage.objects;
 
 import com.google.gson.annotations.Expose;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.ryderbelserion.ruby.paper.plugin.items;
 
 import com.ryderbelserion.ruby.minecraft.FancyLogger;
-import com.ryderbelserion.ruby.minecraft.utils.AdvUtil;
+import com.ryderbelserion.ruby.utils.AdvUtil;
 import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.items.skulls.SkullCreator;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;

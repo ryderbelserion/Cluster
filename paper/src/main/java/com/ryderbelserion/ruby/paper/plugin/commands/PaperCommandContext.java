@@ -1,6 +1,6 @@
 package com.ryderbelserion.ruby.paper.plugin.commands;
 
-import com.ryderbelserion.ruby.other.commands.CommandContext;
+import com.ryderbelserion.ruby.commands.CommandContext;
 import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.commands.args.CommandArgs;
 import com.ryderbelserion.ruby.paper.plugin.commands.reqs.PaperRequirements;

@@ -1,11 +1,12 @@
 package com.ryderbelserion.ruby.paper;
 
-import com.ryderbelserion.ruby.minecraft.RubyPlugin;
-import com.ryderbelserion.ruby.minecraft.FancyLogger;
-import com.ryderbelserion.ruby.other.Platform;
-import com.ryderbelserion.ruby.minecraft.utils.ColorUtils;
-import com.ryderbelserion.ruby.minecraft.utils.FileUtil;
-import com.ryderbelserion.ruby.other.config.FileManager;
+import com.ryderbelserion.ruby.RubyPlugin;
+import com.ryderbelserion.ruby.adventure.FancyLogger;
+import com.ryderbelserion.ruby.Platform;
+import com.ryderbelserion.ruby.utils.ColorUtils;
+import com.ryderbelserion.ruby.utils.FileUtil;
+import com.ryderbelserion.ruby.config.FileManager;
+import com.ryderbelserion.ruby.paper.commands.PaperCommandManager;
 import com.ryderbelserion.ruby.paper.registry.PaperRegistration;
 import com.ryderbelserion.ruby.paper.storage.DataManager;
 import net.kyori.adventure.audience.Audience;
@@ -15,6 +16,7 @@ import java.nio.file.Path;
 
 public class PaperPlugin extends RubyPlugin {
 
+    private PaperCommandManager paperCommandManager;
     private DataManager dataManager;
     private FileManager fileManager;
     private ColorUtils colorUtils;
@@ -57,13 +59,19 @@ public class PaperPlugin extends RubyPlugin {
 
         File file = this.path.toFile();
 
-        if (!file.exists()) file.mkdirs(); else getFancyLogger().debug("Could not create " + file.getName() + " because it already exists");
+        if (!file.exists()) file.mkdirs(); else getFancyLogger().debug("Could not create " + file.getName() + " folder because it already exists");
 
         if (!getPlugin().getDataFolder().exists()) getPlugin().getDataFolder().mkdirs();
 
         this.dataManager = new DataManager(this.path);
 
-        getFileManager().addFile(getDataManager());
+        this.dataManager.load();
+
+        this.paperCommandManager = new PaperCommandManager();
+    }
+
+    public PaperCommandManager getCommandManager() {
+        return this.paperCommandManager;
     }
 
     public DataManager getDataManager() {
@@ -74,7 +82,7 @@ public class PaperPlugin extends RubyPlugin {
     public void disable() {
         super.disable();
 
-        getFileManager().saveFile(getDataManager());
+        this.dataManager.save();
 
         PaperRegistration.stop();
     }

@@ -1,7 +1,7 @@
 package com.ryderbelserion.ruby.paper.plugin.commands;
 
-import com.ryderbelserion.ruby.other.commands.CommandHelpProvider;
-import com.ryderbelserion.ruby.other.commands.args.Argument;
+import com.ryderbelserion.ruby.commands.CommandHelpProvider;
+import com.ryderbelserion.ruby.commands.args.Argument;
 import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
 import org.jetbrains.annotations.NotNull;
