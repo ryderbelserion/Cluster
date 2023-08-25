@@ -48,8 +48,6 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
                     context.getArgs().remove(0);
                     context.setLabel(label.toString());
 
-                    if (!validate(context, command)) return;
-
                     command.execute(context, args);
 
                     return;
@@ -57,39 +55,39 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
             }
         }
 
-        if (this.paperRequirements != null) {
-            if (!this.paperRequirements.checkRequirements(context, true)) return;
-        }
+        if (!this.paperRequirements.checkRequirements(context, true)) return;
+
+        if (!validate(context)) return;
 
         perform(context, args);
     }
 
-    private boolean validate(PaperCommandContext context, PaperCommandEngine command) {
-        if (context.getArgs().size() < command.requiredArgs.size()) {
+    private boolean validate(PaperCommandContext context) {
+        if (context.getArgs().size() < this.requiredArgs.size()) {
             context.reply(this.locale.notEnoughArgs());
-            format(context, command);
+            format(context);
             return false;
         }
 
-        if (context.getArgs().size() > command.requiredArgs.size() + command.optionalArgs.size() || context.getArgs().size() > command.requiredArgs.size()) {
+        if (context.getArgs().size() > this.requiredArgs.size() + this.optionalArgs.size() || context.getArgs().size() > this.requiredArgs.size()) {
             context.reply(this.locale.tooManyArgs());
-            format(context, command);
+            format(context);
             return false;
         }
 
         return true;
     }
 
-    private void format(PaperCommandContext context, PaperCommandEngine command) {
+    private void format(PaperCommandContext context) {
         ArrayList<Argument> arguments = new ArrayList<>();
 
-        arguments.addAll(command.requiredArgs);
-        arguments.addAll(command.optionalArgs);
+        arguments.addAll(this.requiredArgs);
+        arguments.addAll(this.optionalArgs);
 
-        command.requiredArgs.sort(Comparator.comparing(Argument::order));
+        this.requiredArgs.sort(Comparator.comparing(Argument::order));
 
         if (context.isPlayer()) {
-            StringBuilder baseFormat = new StringBuilder("/" + command.getUsage());
+            StringBuilder baseFormat = new StringBuilder("/" + getUsage());
 
             String format = this.locale.invalidFormat().replaceAll("\\{command}", baseFormat.toString());
 
@@ -116,7 +114,7 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
             return;
         }
 
-        StringBuilder baseFormat = new StringBuilder("/" + command.getUsage());
+        StringBuilder baseFormat = new StringBuilder("/" + getUsage());
 
         StringBuilder types = new StringBuilder();
 
@@ -126,7 +124,7 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
             if (isPresent) types.append(arg.argumentType().getPossibleValues().stream().findFirst().get());
         }
 
-        context.reply(baseFormat.append(types).toString());
+        context.reply(baseFormat.append(" ").append(types).toString());
     }
 
     @Override
@@ -170,9 +168,12 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
                         if (builder.isPlayer()) {
                             Player player = (Player) sender;
 
-                            if (builder.getPermission() != null && !player.hasPermission(builder.getPermission()) || (builder.getPermission() != null && !player.hasPermission(builder.getRawPermission()))) return;
+                            if (builder.getPermission() != null && player.hasPermission(builder.getPermission()) || builder.getRawPermission() != null && player.hasPermission(builder.getRawPermission())) {
+                                this.plugin.getFancyLogger().debug("They have the permission: " + builder.getPermission());
+                                this.plugin.getFancyLogger().debug("Or: " + builder.getRawPermission());
 
-                            completions.add(sub.getName());
+                                completions.add(sub.getName());
+                            }
 
                             return;
                         }
@@ -180,8 +181,12 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
                         completions.add(sub.getName());
                     }
                 });
-
-                return completions;
+            } else {
+                for (PaperCommandEngine subCommand : this.subCommands) {
+                    for (String alias : subCommand.getAliases()) {
+                        if (alias.toLowerCase().startsWith(args.get(0))) completions.add(alias);
+                    }
+                }
             }
 
             return completions;

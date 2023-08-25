@@ -18,20 +18,20 @@ public class PaperRequirements {
     private final boolean isPlayer;
     private final Permission permission;
     private final String rawPermission;
-    private PaperRequirementsBuilder paperRequirementsBuilder;
+    private PaperRequirementsBuilder builder;
 
-    public PaperRequirements(boolean isPlayer, Permission permission, String rawPermission, PaperRequirementsBuilder paperRequirementsBuilder) {
+    public PaperRequirements(boolean isPlayer, Permission permission, String rawPermission, PaperRequirementsBuilder builder) {
         this.isPlayer = isPlayer;
 
         this.permission = permission;
 
         this.rawPermission = rawPermission;
 
-        if (paperRequirementsBuilder != null) this.paperRequirementsBuilder = paperRequirementsBuilder;
+        if (builder != null) this.builder = builder;
     }
 
     public boolean checkRequirements(PaperCommandContext context, boolean notifySender) {
-        if (isPlayer && !context.isPlayer()) {
+        if (this.isPlayer && !context.isPlayer()) {
             if (notifySender) context.reply(this.locale.notPlayer());
 
             return false;
@@ -41,9 +41,14 @@ public class PaperRequirements {
 
         Player player = context.getPlayer();
 
-        if (this.permission != null && !player.hasPermission(this.permission)
-        || (this.rawPermission != null && !player.hasPermission(this.rawPermission))) {
-            if (notifySender) context.reply(this.locale.noPermission());
+        if (this.permission != null && !player.hasPermission(this.permission) || this.rawPermission != null && !player.hasPermission(this.rawPermission)) {
+            if (notifySender) {
+                if (this.permission != null) {
+                    context.reply(this.locale.noPermission().replaceAll("\\{permission}", this.permission.getName()));
+                } else {
+                    context.reply(this.locale.noPermission().replaceAll("\\{permission}", this.rawPermission));
+                }
+            }
 
             return false;
         }
@@ -52,6 +57,6 @@ public class PaperRequirements {
     }
 
     public PaperRequirementsBuilder getRequirementsBuilder() {
-        return this.paperRequirementsBuilder;
+        return this.builder;
     }
 }

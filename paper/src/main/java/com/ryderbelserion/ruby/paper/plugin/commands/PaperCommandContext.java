@@ -3,6 +3,7 @@ package com.ryderbelserion.ruby.paper.plugin.commands;
 import com.ryderbelserion.ruby.other.commands.CommandContext;
 import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.commands.args.CommandArgs;
+import com.ryderbelserion.ruby.paper.plugin.commands.reqs.PaperRequirements;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -21,6 +22,8 @@ public class PaperCommandContext extends CommandContext implements CommandArgs {
     private final boolean isLegacy = this.paper.isLegacy();
 
     private final CommandSender sender;
+
+    private PaperRequirements paperRequirements;
 
     public PaperCommandContext(CommandSender sender, String label, List<String> args) {
         super(sender, label, args);

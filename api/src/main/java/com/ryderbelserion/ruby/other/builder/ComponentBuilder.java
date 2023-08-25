@@ -55,9 +55,9 @@ public class ComponentBuilder {
     public @NotNull TextComponent build() {
         Component message = parse(this.message);
 
-        if (this.fancyComponentBuilder.fancy() != null) {
-            return this.builder.append(message).append(this.fancyComponentBuilder.fancy()).build();
-        }
+        //if (this.fancyComponentBuilder.fancy() != null) {
+        //    return this.builder.append(message).append(this.fancyComponentBuilder.fancy()).build();
+        //}
 
         return this.builder.append(message).build();
     }

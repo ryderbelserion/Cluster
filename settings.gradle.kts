@@ -14,7 +14,9 @@ listOf(
     "folia",
 
     "paper",
-    "paper-small"
+    "paper-small",
+
+    "example"
 ).forEach {
     include(it)
 }

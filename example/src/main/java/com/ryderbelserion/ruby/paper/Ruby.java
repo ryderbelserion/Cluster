@@ -1,12 +1,11 @@
-package com.ryderbelserion.crafty.paper;
+package com.ryderbelserion.ruby.paper;
 
-import com.ryderbelserion.crafty.paper.commands.CraftyCommand;
-import com.ryderbelserion.crafty.paper.commands.CraftyHelpData;
-import com.ryderbelserion.ruby.paper.PaperPlugin;
+import com.ryderbelserion.ruby.paper.commands.CraftyCommand;
+import com.ryderbelserion.ruby.paper.commands.CraftyHelpData;
 import com.ryderbelserion.ruby.paper.plugin.commands.PaperCommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Crafty extends JavaPlugin {
+public class Ruby extends JavaPlugin {
 
     private PaperPlugin paperPlugin;
 

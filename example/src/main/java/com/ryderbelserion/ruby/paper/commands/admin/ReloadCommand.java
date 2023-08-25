@@ -1,4 +1,4 @@
-package com.ryderbelserion.crafty.paper.commands.admin;
+package com.ryderbelserion.ruby.paper.commands.admin;
 
 import com.ryderbelserion.ruby.paper.plugin.commands.PaperCommandContext;
 import com.ryderbelserion.ruby.paper.plugin.commands.PaperCommandEngine;
@@ -13,9 +13,9 @@ import java.util.List;
 public class ReloadCommand extends PaperCommandEngine {
 
     public ReloadCommand() {
-        super("reload", "The reload crafty for crafty", "crafty reload", Collections.emptyList());
+        super("reload", "The reload command for crafty", "crafty reload", Collections.emptyList());
 
-        this.paperRequirements = new PaperRequirementsBuilder().isPlayer(false).withPermission(new Permission("crafty.reload", PermissionDefault.FALSE)).build();
+        this.paperRequirements = new PaperRequirementsBuilder().isPlayer(false).withPermission(new Permission("crafty.reload", PermissionDefault.OP)).build();
     }
 
     @Override

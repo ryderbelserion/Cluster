@@ -52,11 +52,9 @@ public class PaperCommandHelpEntry {
 
             boolean isVisible = command.isVisible();
 
-            if (!isVisible) return;
+            if (!isVisible) continue;
 
-            if (command.paperRequirements != null) {
-                if (!command.paperRequirements.checkRequirements(context, false)) return;
-            }
+            if (!command.paperRequirements.checkRequirements(context, false)) continue;
 
             StringBuilder baseFormat = new StringBuilder("/" + command.getUsage());
 
@@ -74,6 +72,7 @@ public class PaperCommandHelpEntry {
             arguments.sort(Comparator.comparingInt(Argument::order));
 
             if (context.isPlayer()) {
+
                 StringBuilder types = new StringBuilder();
 
                 ComponentBuilder builder = new ComponentBuilder();
@@ -111,9 +110,9 @@ public class PaperCommandHelpEntry {
 
                     builder.setMessage(footer.replaceAll("\\{page}", newPage));
 
-                    builder.getFancyComponentBuilder().hover(this.locale.pageBackButton(), text.replaceAll("\\{page}", newNumber));
+                    //builder.getFancyComponentBuilder().hover(this.locale.pageBackButton(), text.replaceAll("\\{page}", newNumber));
 
-                    builder.getFancyComponentBuilder().click(ClickEvent.Action.RUN_COMMAND, fullUsage);
+                    //builder.getFancyComponentBuilder().click(ClickEvent.Action.RUN_COMMAND, fullUsage);
 
                     context.reply(builder.build());
                 } else if (page < this.manager.getClasses().size()) {
@@ -125,9 +124,9 @@ public class PaperCommandHelpEntry {
 
                     builder.setMessage(footer.replaceAll("\\{page}", newPage));
 
-                    builder.getFancyComponentBuilder().hover(this.locale.pageNextButton(), text.replaceAll("\\{page}", newNumber));
+                    //builder.getFancyComponentBuilder().hover(this.locale.pageNextButton(), text.replaceAll("\\{page}", newNumber));
 
-                    builder.getFancyComponentBuilder().click(ClickEvent.Action.RUN_COMMAND, fullUsage);
+                    //builder.getFancyComponentBuilder().click(ClickEvent.Action.RUN_COMMAND, fullUsage);
 
                     context.reply(builder.build());
                 }

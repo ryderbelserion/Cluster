@@ -1,4 +1,4 @@
-package com.ryderbelserion.crafty.paper.commands;
+package com.ryderbelserion.ruby.paper.commands;
 
 import com.ryderbelserion.ruby.other.commands.CommandHelpProvider;
 
@@ -83,11 +83,11 @@ public class CraftyHelpData implements CommandHelpProvider {
 
     @Override
     public String noPermission() {
-        return "{prefix} You are lacking the permission <red>{permission}</red>".replaceAll("\\{prefix}", prefix);
+        return "{prefix}You are lacking the permission <red>{permission}</red>".replaceAll("\\{prefix}", prefix);
     }
 
     @Override
     public String notPlayer() {
-        return "{prefix} You are not a player.".replaceAll("\\{prefix}", prefix);
+        return "{prefix}You are not a player.".replaceAll("\\{prefix}", prefix);
     }
 }

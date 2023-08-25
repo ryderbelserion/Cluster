@@ -7,20 +7,21 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.Collections;
 import java.util.List;
 
-public class ReloadCommand extends PaperCommandEngine {
+public class HelpCommand extends PaperCommandEngine {
 
-    public ReloadCommand() {
-        super("reload", "The reload crafty for crafty", "crafty reload", Collections.emptyList());
+    public HelpCommand() {
+        super("help", "The help command for crafty", "crafty help", Collections.emptyList());
 
-        this.paperRequirements = new PaperRequirementsBuilder().isPlayer(false).withPermission(new Permission("crafty.reload", PermissionDefault.OP)).build();
+        this.paperRequirements = new PaperRequirementsBuilder().isPlayer(false).withPermission(new Permission("crafty.help", PermissionDefault.TRUE)).build();
     }
 
     @Override
     public void perform(PaperCommandContext context, String[] args) {
-        context.reply("<red>This is a reload command</red>");
+        context.reply("<red>This is a help command</red>");
     }
 
     @Override
