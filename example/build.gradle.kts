@@ -7,7 +7,7 @@ plugins {
 project.group = "${rootProject.group}.paper"
 
 dependencies {
-    api(project(":paper"))
+    api(project(":paper-v2"))
 }
 
 tasks {

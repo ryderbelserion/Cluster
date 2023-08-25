@@ -19,4 +19,7 @@ buildSrc/build
 paper-small/.gradle
 paper-small/build
 
+paper-v2/.gradle
+paper-v2/build
+
 build

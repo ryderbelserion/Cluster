@@ -1,7 +1,7 @@
 package com.ryderbelserion.ruby.other.builder;
 
 import com.ryderbelserion.ruby.minecraft.RubyPlugin;
-import com.ryderbelserion.ruby.minecraft.plugin.registry.RubyProvider;
+import com.ryderbelserion.ruby.minecraft.registry.RubyProvider;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -33,7 +33,7 @@ public class ComponentBuilder {
     }
 
     public Component parse(String value) {
-        return this.plugin.getAdventure().parse(value);
+        return this.plugin.getColorUtils().parse(value);
     }
 
     public ComponentBuilder hover(String text) {
@@ -55,9 +55,9 @@ public class ComponentBuilder {
     public @NotNull TextComponent build() {
         Component message = parse(this.message);
 
-        //if (this.fancyComponentBuilder.fancy() != null) {
-        //    return this.builder.append(message).append(this.fancyComponentBuilder.fancy()).build();
-        //}
+        if (this.fancyComponentBuilder.fancy() != null) {
+            return this.builder.append(message).append(this.fancyComponentBuilder.fancy()).build();
+        }
 
         return this.builder.append(message).build();
     }

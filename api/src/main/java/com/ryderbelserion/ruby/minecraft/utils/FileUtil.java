@@ -1,7 +1,7 @@
 package com.ryderbelserion.ruby.minecraft.utils;
 
 import com.ryderbelserion.ruby.minecraft.RubyPlugin;
-import com.ryderbelserion.ruby.minecraft.plugin.registry.RubyProvider;
+import com.ryderbelserion.ruby.minecraft.registry.RubyProvider;
 import org.jetbrains.annotations.NotNull;
 import java.io.*;
 import java.net.URL;
@@ -32,7 +32,7 @@ public class FileUtil {
         URL resource = loader.getResource(url);
 
         if (resource == null) {
-            this.plugin.getFancyLogger().error("Failed to find file: " + url);
+            this.plugin.fancyLogger().error("Failed to find file: " + url);
 
             return;
         }
@@ -40,7 +40,7 @@ public class FileUtil {
         try {
             grab(resource.openStream(), file);
         } catch (Exception exception) {
-            this.plugin.getFancyLogger().error("Failed to copy file: " + url);
+            this.plugin.fancyLogger().error("Failed to copy file: " + url);
         }
     }
 

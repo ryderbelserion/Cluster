@@ -169,8 +169,8 @@ public abstract class PaperCommandEngine extends Command implements CommandEngin
                             Player player = (Player) sender;
 
                             if (builder.getPermission() != null && player.hasPermission(builder.getPermission()) || builder.getRawPermission() != null && player.hasPermission(builder.getRawPermission())) {
-                                this.plugin.getFancyLogger().debug("They have the permission: " + builder.getPermission());
-                                this.plugin.getFancyLogger().debug("Or: " + builder.getRawPermission());
+                                this.plugin.fancyLogger().debug("They have the permission: " + builder.getPermission());
+                                this.plugin.fancyLogger().debug("Or: " + builder.getRawPermission());
 
                                 completions.add(sub.getName());
                             }

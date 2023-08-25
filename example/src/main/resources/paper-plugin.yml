@@ -1,5 +1,5 @@
-name: '${name}'
-main: '${group}.${name}'
+name: 'Crafty'
+main: '${group}.Crafty'
 
 version: '${version}'
 api-version: '${apiVersion}'

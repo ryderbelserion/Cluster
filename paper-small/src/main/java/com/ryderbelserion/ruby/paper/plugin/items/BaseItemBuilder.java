@@ -1,6 +1,6 @@
 package com.ryderbelserion.ruby.paper.plugin.items;
 
-import com.ryderbelserion.ruby.minecraft.plugin.FancyLogger;
+import com.ryderbelserion.ruby.minecraft.FancyLogger;
 import com.ryderbelserion.ruby.minecraft.utils.AdvUtil;
 import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.items.skulls.SkullCreator;
@@ -29,9 +29,9 @@ public class BaseItemBuilder<Base extends BaseItemBuilder<Base>> {
 
     private final @NotNull SkullCreator skullCreator = this.paperPlugin.getSkullCreator();
 
-    private final @NotNull FancyLogger fancyLogger = this.paperPlugin.getFancyLogger();
+    private final @NotNull FancyLogger fancyLogger = this.paperPlugin.fancyLogger();
 
-    private final @NotNull AdvUtil adventure = this.paperPlugin.getAdventure();
+    private final @NotNull AdvUtil adventure = this.paperPlugin.adventure();
 
     // Core.
     private ItemStack itemStack;

@@ -19,7 +19,7 @@ public class PaperCommandContext extends CommandContext implements CommandArgs {
     private final @NotNull PaperPlugin paper = PaperProvider.get();
 
     private final @NotNull JavaPlugin plugin = this.paper.getPlugin();
-    private final boolean isLegacy = this.paper.isLegacy();
+    private final boolean isLegacy = this.paper.legacy();
 
     private final CommandSender sender;
 

@@ -2,7 +2,7 @@ package com.ryderbelserion.ruby.other.config;
 
 import com.ryderbelserion.ruby.minecraft.RubyPlugin;
 import com.ryderbelserion.ruby.other.config.types.file.JsonFile;
-import com.ryderbelserion.ruby.minecraft.plugin.registry.RubyProvider;
+import com.ryderbelserion.ruby.minecraft.registry.RubyProvider;
 import org.jetbrains.annotations.NotNull;
 import java.io.File;
 

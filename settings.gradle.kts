@@ -11,10 +11,12 @@ rootProject.name = "Ruby"
 listOf(
     "api",
 
-    "folia",
+    //"folia",
 
-    "paper",
-    "paper-small",
+    //"paper",
+    //"paper-small",
+
+    "paper-v2",
 
     "example"
 ).forEach {

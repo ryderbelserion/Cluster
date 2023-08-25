@@ -1,18 +1,14 @@
 package com.ryderbelserion.ruby.paper.plugin.commands;
 
-import com.ryderbelserion.ruby.other.builder.ComponentBuilder;
 import com.ryderbelserion.ruby.other.commands.CommandHelpProvider;
 import com.ryderbelserion.ruby.other.commands.args.Argument;
 import com.ryderbelserion.ruby.paper.PaperPlugin;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperProvider;
-import net.kyori.adventure.text.event.ClickEvent;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 public class PaperCommandHelpEntry {
-
-    //TODO() Figure out why there is a blank space when copying the command.
 
     private final @NotNull PaperPlugin plugin = PaperProvider.get();
 
@@ -62,8 +58,10 @@ public class PaperCommandHelpEntry {
                     .replaceAll("\\{command}", baseFormat.toString())
                     .replaceAll("\\{description}", command.getDescription());
 
+            // Append aliases.
             if (!command.getAliases().isEmpty()) baseFormat.append(" ").append(command.getAliases().get(0));
 
+            // Sort arguments.
             ArrayList<Argument> arguments = new ArrayList<>();
 
             arguments.addAll(command.getOptionalArgs());
@@ -71,9 +69,10 @@ public class PaperCommandHelpEntry {
 
             arguments.sort(Comparator.comparingInt(Argument::order));
 
-            if (context.isPlayer()) {
+            String footer = this.locale.pageFooter();
 
-                StringBuilder types = new StringBuilder();
+            if (context.isPlayer()) {
+                /*StringBuilder types = new StringBuilder();
 
                 ComponentBuilder builder = new ComponentBuilder();
 
@@ -92,11 +91,7 @@ public class PaperCommandHelpEntry {
                 builder.hover(hoverFormat.replaceAll("\\{command}", hoverShit)).click(ClickEvent.Action.valueOf(this.locale.hoverAction().toUpperCase()), hoverShit);
 
                 context.reply(builder.build());
-            }
 
-            String footer = this.locale.pageFooter();
-
-            if (context.isPlayer()) {
                 String text = this.locale.pageNavigation();
 
                 ComponentBuilder builder = new ComponentBuilder();
@@ -110,9 +105,9 @@ public class PaperCommandHelpEntry {
 
                     builder.setMessage(footer.replaceAll("\\{page}", newPage));
 
-                    //builder.getFancyComponentBuilder().hover(this.locale.pageBackButton(), text.replaceAll("\\{page}", newNumber));
+                    builder.getFancyComponentBuilder().hover(this.locale.pageBackButton(), text.replaceAll("\\{page}", newNumber));
 
-                    //builder.getFancyComponentBuilder().click(ClickEvent.Action.RUN_COMMAND, fullUsage);
+                    builder.getFancyComponentBuilder().click(ClickEvent.Action.RUN_COMMAND, fullUsage);
 
                     context.reply(builder.build());
                 } else if (page < this.manager.getClasses().size()) {
@@ -124,12 +119,12 @@ public class PaperCommandHelpEntry {
 
                     builder.setMessage(footer.replaceAll("\\{page}", newPage));
 
-                    //builder.getFancyComponentBuilder().hover(this.locale.pageNextButton(), text.replaceAll("\\{page}", newNumber));
+                    builder.getFancyComponentBuilder().hover(this.locale.pageNextButton(), text.replaceAll("\\{page}", newNumber));
 
-                    //builder.getFancyComponentBuilder().click(ClickEvent.Action.RUN_COMMAND, fullUsage);
+                    builder.getFancyComponentBuilder().click(ClickEvent.Action.RUN_COMMAND, fullUsage);
 
                     context.reply(builder.build());
-                }
+                }*/
             } else {
                 context.reply(footer.replaceAll("\\{page}", String.valueOf(page)));
             }
@@ -147,8 +142,8 @@ public class PaperCommandHelpEntry {
     }
 
     public void setPage(int page, int perPage) {
-        this.setPage(page);
         this.setPerPage(perPage);
+        this.setPage(page);
     }
 
     public int getPage() {

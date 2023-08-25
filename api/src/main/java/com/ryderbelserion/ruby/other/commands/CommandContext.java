@@ -1,7 +1,7 @@
 package com.ryderbelserion.ruby.other.commands;
 
 import com.ryderbelserion.ruby.minecraft.RubyPlugin;
-import com.ryderbelserion.ruby.minecraft.plugin.registry.RubyProvider;
+import com.ryderbelserion.ruby.minecraft.registry.RubyProvider;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +28,7 @@ public class CommandContext {
     public void reply(String message) {
         if (empty(message)) return;
 
-        Component component = this.plugin.getAdventure().parse(message);
+        Component component = this.plugin.getColorUtils().parse(message);
 
         this.audience.sendMessage(component);
     }
@@ -48,7 +48,7 @@ public class CommandContext {
     public void send(Audience audience, String message) {
         if (empty(message)) return;
 
-        Component component = this.plugin.getAdventure().parse(message);
+        Component component = this.plugin.getColorUtils().parse(message);
 
         audience.sendMessage(component);
     }

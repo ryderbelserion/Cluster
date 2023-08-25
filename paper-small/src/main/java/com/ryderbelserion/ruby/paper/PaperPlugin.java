@@ -1,16 +1,19 @@
 package com.ryderbelserion.ruby.paper;
 
 import com.ryderbelserion.ruby.minecraft.RubyPlugin;
-import com.ryderbelserion.ruby.minecraft.plugin.FancyLogger;
-import com.ryderbelserion.ruby.minecraft.plugin.Platform;
+import com.ryderbelserion.ruby.minecraft.FancyLogger;
+import com.ryderbelserion.ruby.other.Platform;
 import com.ryderbelserion.ruby.minecraft.utils.AdvUtil;
 import com.ryderbelserion.ruby.minecraft.utils.FileUtil;
+import com.ryderbelserion.ruby.other.config.FileManager;
 import com.ryderbelserion.ruby.paper.plugin.items.skulls.SkullCreator;
 import com.ryderbelserion.ruby.paper.plugin.registry.PaperRegistration;
 import com.ryderbelserion.ruby.paper.utils.ItemUtil;
 import com.ryderbelserion.ruby.paper.utils.LegacyUtil;
 import net.kyori.adventure.audience.Audience;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.nio.file.Path;
 
 public class PaperPlugin extends RubyPlugin {
 
@@ -58,33 +61,43 @@ public class PaperPlugin extends RubyPlugin {
     }
 
     @Override
-    public FancyLogger getFancyLogger() {
+    public FileManager fileManager() {
+        return null;
+    }
+
+    @Override
+    public FancyLogger fancyLogger() {
         return this.fancyLogger;
     }
 
     @Override
-    public Platform.Type getPlatform() {
+    public Platform.Type platform() {
         return Platform.Type.PAPER;
     }
 
     @Override
-    public AdvUtil getAdventure() {
+    public AdvUtil adventure() {
         return this.advUtil;
     }
 
     @Override
-    public Audience getAudience() {
+    public Audience audience() {
         return this.plugin.getServer().getConsoleSender();
     }
 
     @Override
-    public FileUtil getFileUtil() {
+    public FileUtil fileUtil() {
         return this.fileUtil;
     }
 
     @Override
-    public boolean isLegacy() {
+    public boolean legacy() {
         return this.isLegacy;
+    }
+
+    @Override
+    public Path path() {
+        return null;
     }
 
     public PaperPlugin setPlugin(JavaPlugin plugin) {
