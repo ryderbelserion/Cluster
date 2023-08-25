@@ -23,3 +23,7 @@ paper-v2/.gradle
 paper-v2/build
 
 build
+
+example/run
+!example/run/eula.txt
+!example/run/server.properties
