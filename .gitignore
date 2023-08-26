@@ -1,15 +1,11 @@
 .gradle
 .idea
 
-api/.gradle
-api/build
-
 buildSrc/.gradle
 buildSrc/build
 
-paper/.gradle
-paper/build
+bukkit/.gradle
+bukkit/build
 
-paper/run
-!paper/run/eula.txt
-!paper/run/server.properties
+api/.gradle
+api/build
