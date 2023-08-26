@@ -9,3 +9,7 @@ bukkit/build
 
 api/.gradle
 api/build
+
+run
+!bukkit/run/eula.txt
+!bukkit/run/server.properties
