@@ -11,7 +11,9 @@ public class BukkitProvider {
     public static @NotNull BukkitPlugin get() {
         BukkitPlugin instance = BukkitProvider.bukkit;
 
-        if (instance == null) throw new RuntimeException("Failed to grab the ruby api instance. Did it get enabled?");
+        if (instance == null) {
+            return null;
+        }
 
         return bukkit;
     }
