@@ -3,22 +3,10 @@ pluginManagement {
         maven("https://repo.papermc.io/repository/maven-public/")
 
         gradlePluginPortal()
+        mavenCentral()
     }
 }
 
-rootProject.name = "Ruby"
+rootProject.name = "Cluster"
 
-listOf(
-    "api",
-
-    //"folia",
-
-    //"paper",
-    //"paper-small",
-
-    "paper-v2",
-
-    "example"
-).forEach {
-    include(it)
-}
+include("bukkit", "api")

@@ -1,29 +1,15 @@
 .gradle
 .idea
 
-paper/.gradle
-paper/build
-
-folia/.gradle
-folia/build
-
-folia-small/.gradle
-folia-small/build
-
 api/.gradle
 api/build
 
 buildSrc/.gradle
 buildSrc/build
 
-paper-small/.gradle
-paper-small/build
+paper/.gradle
+paper/build
 
-paper-v2/.gradle
-paper-v2/build
-
-build
-
-example/run
-!example/run/eula.txt
-!example/run/server.properties
+paper/run
+!paper/run/eula.txt
+!paper/run/server.properties

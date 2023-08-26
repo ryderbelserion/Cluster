@@ -1,0 +1,6 @@
+name: 'Cluster'
+main: 'com.ryderbelserion.cluster.plugin.Cluster'
+
+version: '1.0'
+api-version: '1.20'
+description: 'An example project using commodore'
