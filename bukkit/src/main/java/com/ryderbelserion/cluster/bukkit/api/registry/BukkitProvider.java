@@ -9,10 +9,10 @@ public class BukkitProvider {
 
     private static BukkitPlugin bukkit = null;
 
-    public static @NotNull BukkitPlugin get() throws PluginInitializeException {
+    public static @NotNull BukkitPlugin get() {
         BukkitPlugin instance = BukkitProvider.bukkit;
 
-        if (instance == null) throw new PluginInitializeException("Cluster provider is null.");
+        if (instance == null) throw new RuntimeException("Cluster provider is null.");
 
         return bukkit;
     }
