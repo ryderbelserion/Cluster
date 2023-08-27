@@ -1,6 +1,6 @@
 package com.ryderbelserion.cluster.plugin;
 
-import com.ryderbelserion.cluster.BukkitPlugin;
+import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Cluster extends JavaPlugin {

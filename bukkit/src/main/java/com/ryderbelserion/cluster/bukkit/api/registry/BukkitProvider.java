@@ -1,6 +1,7 @@
-package com.ryderbelserion.cluster.registry;
+package com.ryderbelserion.cluster.bukkit.api.registry;
 
-import com.ryderbelserion.cluster.BukkitPlugin;
+import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
+import com.ryderbelserion.cluster.bukkit.api.exceptions.PluginInitializeException;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -8,12 +9,10 @@ public class BukkitProvider {
 
     private static BukkitPlugin bukkit = null;
 
-    public static @NotNull BukkitPlugin get() {
+    public static @NotNull BukkitPlugin get() throws PluginInitializeException {
         BukkitPlugin instance = BukkitProvider.bukkit;
 
-        if (instance == null) {
-            return null;
-        }
+        if (instance == null) throw new PluginInitializeException("Cluster provider is null.");
 
         return bukkit;
     }

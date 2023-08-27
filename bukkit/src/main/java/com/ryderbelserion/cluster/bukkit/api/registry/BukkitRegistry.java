@@ -1,6 +1,7 @@
-package com.ryderbelserion.cluster.registry;
+package com.ryderbelserion.cluster.bukkit.api.registry;
 
-import com.ryderbelserion.cluster.BukkitPlugin;
+import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
+import com.ryderbelserion.cluster.bukkit.api.adventure.FancyLogger;
 import org.jetbrains.annotations.ApiStatus;
 import java.lang.reflect.Method;
 
@@ -26,8 +27,8 @@ public class BukkitRegistry {
         try {
             start.invoke(null, bukkit);
         } catch (Exception exception) {
-            System.out.println("[ERROR] Failed to enable bukkit plugin using ruby api");
-            System.out.println("[ERROR] Reason: " + exception.getMessage());
+            FancyLogger.error("Failed to enable cluster bukkit api.");
+            FancyLogger.debug("Reason: " + exception.getMessage());
         }
     }
 
@@ -36,8 +37,8 @@ public class BukkitRegistry {
         try {
             stop.invoke(null);
         } catch (Exception exception) {
-            System.out.println("[ERROR] Failed to disable bukkit plugin using ruby api");
-            System.out.println("[ERROR] Reason: " + exception.getMessage());
+            FancyLogger.error("Failed to disable cluster bukkit api.");
+            FancyLogger.debug("Reason: " + exception.getMessage());
         }
     }
 }

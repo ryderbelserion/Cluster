@@ -11,5 +11,8 @@ api/.gradle
 api/build
 
 run
+
+!bukkit/run/config
 !bukkit/run/eula.txt
+!bukkit/run/bukkit.yml
 !bukkit/run/server.properties
