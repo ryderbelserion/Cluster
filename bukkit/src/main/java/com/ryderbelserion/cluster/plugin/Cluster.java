@@ -1,7 +1,7 @@
 package com.ryderbelserion.cluster.plugin;
 
 import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
-import com.ryderbelserion.cluster.plugin.commands.BuilderCommand;
+import com.ryderbelserion.cluster.plugin.commands.ClusterCommand;
 import org.bukkit.command.Command;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,7 +14,7 @@ public class Cluster extends JavaPlugin {
         this.bukkitPlugin = new BukkitPlugin(this);
         this.bukkitPlugin.enable();
 
-        Command command = new BuilderCommand();
+        Command command = new ClusterCommand();
 
         getServer().getCommandMap().register("cluster", command);
     }

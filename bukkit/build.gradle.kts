@@ -11,8 +11,14 @@ base {
 project.version = "1.0"
 project.group = "${rootProject.group}.bukkit"
 
+repositories {
+    maven("https://libraries.minecraft.net/")
+}
+
 dependencies {
     api(project(":api"))
+
+    compileOnly("com.mojang", "brigadier", "1.0.18")
 }
 
 val component: SoftwareComponent = components["java"]

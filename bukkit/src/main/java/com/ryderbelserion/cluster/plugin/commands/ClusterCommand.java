@@ -1,5 +1,6 @@
 package com.ryderbelserion.cluster.plugin.commands;
 
+import com.ryderbelserion.cluster.bukkit.items.BaseItemBuilder;
 import com.ryderbelserion.cluster.bukkit.items.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -8,14 +9,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
-public class BuilderCommand extends Command {
+public class ClusterCommand extends Command {
 
-    public BuilderCommand() {
-        super("builder");
+    public ClusterCommand() {
+        super("cluster");
     }
 
     @Override
@@ -31,10 +33,14 @@ public class BuilderCommand extends Command {
         if (item != null) {
             ItemStack itemStack = new ItemStack(item);
 
-            ItemBuilder builder = new ItemBuilder(itemStack);
+            BaseItemBuilder<ItemBuilder> builder = ItemBuilder.of(itemStack);
 
             switch (type) {
-                case "item-data" -> builder.setItemData("{Enchantments:[{id:\"minecraft:fire_aspect\",lvl:2s},{id:\"minecraft:sharpness\",lvl:5s},{id:\"minecraft:unbreaking\",lvl:3s}],Damage:0,slots:2,\"ae_enchantment;doublestrike\":1,\"ae_enchantment;disarmor\":1}");
+                case "item-data" -> builder.setItemData("{Enchantments:[{id:\"minecraft:fire_aspect\",lvl:2s},{id:\"minecraft:sharpness\",lvl:5s},{id:\"minecraft:unbreaking\",lvl:3s}],Damage:650,slots:2,\"ae_enchantment;berserk\":5}");
+
+                case "potions" -> {
+                    builder.setValue("POTION:resistance");
+                }
 
                 case "enchants" -> {
                     String enchant = args[2];
@@ -55,8 +61,6 @@ public class BuilderCommand extends Command {
 
             Player player = (Player) sender;
 
-            player.getInventory().clear();
-
             player.getInventory().addItem(builder.build());
         }
 
@@ -64,6 +68,8 @@ public class BuilderCommand extends Command {
     }
 
     private static final List<String> ITEMS = Arrays.stream(Material.values()).filter(Material::isItem).map(Enum::name).toList();
+
+    private static final List<String> POTIONS = Arrays.stream(PotionEffectType.values()).map(PotionEffectType::getName).toList();
 
     private static List<String> getEnchants(ItemStack itemStack) {
         return Arrays.stream(Enchantment.values()).filter(ench -> ench.canEnchantItem(itemStack)).map(key -> key.getKey().getKey()).toList();
@@ -82,12 +88,13 @@ public class BuilderCommand extends Command {
         if (args.length == 1) {
             return StringUtil.copyPartialMatches(args[0].toLowerCase(), List.of(
                     "enchants",
+                    "potions",
                     "item-data",
                     "lores"
             ), new ArrayList<>());
         }
 
-        if (args.length == 2) {
+        if (args.length == 2 && !args[0].equalsIgnoreCase("potions")) {
             return StringUtil.copyPartialMatches(args[1].toLowerCase(), ITEMS, new ArrayList<>());
         }
 
@@ -104,8 +111,24 @@ public class BuilderCommand extends Command {
                 }
             }
 
-            case "other" -> {
+            case "potions" -> {
+                if (args.length == 2) {
+                    ArrayList<String> completions = new ArrayList<>();
 
+                    completions.add(Material.POTION.name());
+                    completions.add(Material.SPLASH_POTION.name());
+                    completions.add(Material.LINGERING_POTION.name());
+
+                    return StringUtil.copyPartialMatches(args[1].toLowerCase(), completions, new ArrayList<>());
+                }
+
+                if (args.length == 3) {
+                    return StringUtil.copyPartialMatches(args[2], POTIONS, new ArrayList<>());
+                }
+            }
+
+            case "item-data" -> {
+                return Collections.emptyList();
             }
         }
 
