@@ -17,4 +17,6 @@ run
 !bukkit/run/bukkit.yml
 !bukkit/run/server.properties
 
+build
+
 jars
