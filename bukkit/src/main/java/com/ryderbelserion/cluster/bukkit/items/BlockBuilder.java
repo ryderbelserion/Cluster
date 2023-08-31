@@ -8,13 +8,10 @@ import org.bukkit.block.data.BlockData;
 public class BlockBuilder {
 
     private final Block block;
-    private final BlockData blockData;
     private final Material material;
 
     protected BlockBuilder(Block block) {
         this.block = block;
-
-        this.blockData = block.getBlockData();
 
         this.material = block.getType();
     }
@@ -26,12 +23,18 @@ public class BlockBuilder {
             FancyLogger.warn("Material cannot be air or null.");
         }
 
-        this.block.setBlockData(this.blockData);
-
-        return this.block;
+        return getBlock();
     }
 
     private boolean isAir() {
         return this.material.isAir();
+    }
+
+    private Block getBlock() {
+        return this.block;
+    }
+
+    private Material getMaterial() {
+        return this.material;
     }
 }
