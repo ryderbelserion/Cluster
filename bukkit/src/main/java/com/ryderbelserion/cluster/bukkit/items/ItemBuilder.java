@@ -1,12 +1,12 @@
 package com.ryderbelserion.cluster.bukkit.items;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
 import com.ryderbelserion.cluster.bukkit.api.adventure.FancyLogger;
 import com.ryderbelserion.cluster.bukkit.api.registry.BukkitProvider;
 import com.ryderbelserion.cluster.bukkit.api.utils.ColorUtils;
 import com.ryderbelserion.cluster.bukkit.items.utils.DyeUtils;
-import com.ryderbelserion.cluster.bukkit.items.utils.SkullUtils;
 import net.kyori.adventure.text.Component;
 import net.minecraft.nbt.TagParser;
 import org.apache.commons.lang.WordUtils;
@@ -30,7 +30,10 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -68,7 +71,6 @@ public class ItemBuilder {
     // Player Heads
     private String player = "";
     private boolean isHead = false;
-    private boolean isHash = false;
     private boolean isURL = false;
 
     // Arrows
@@ -124,6 +126,7 @@ public class ItemBuilder {
             case TIPPED_ARROW -> this.isTippedArrow = true;
             case FIREWORK_ROCKET -> this.isFirework = true;
             case FILLED_MAP -> this.isShield = true;
+            case PLAYER_HEAD -> this.isHead = true;
             case SPAWNER -> this.isSpawner = true;
             case SHIELD -> this.isShield = true;
         }
@@ -139,7 +142,7 @@ public class ItemBuilder {
 
     public ItemStack build() {
         if (this.itemStack == null) {
-
+            return this.itemStack;
         }
 
         if (!isAir()) {
@@ -156,7 +159,7 @@ public class ItemBuilder {
                 return CraftItemStack.asBukkitCopy(nmsItem);
             }
 
-            if (this.isHead) { // Has to go 1st due to it removing all data when finished.
+            /*if (this.isHead) { // Has to go 1st due to it removing all data when finished.
                 if (this.isHash) { // Sauce: https://github.com/deanveloper/SkullCreator
                     if (this.isURL) {
                         SkullUtils.itemWithUrl(getItemStack(), player);
@@ -164,11 +167,32 @@ public class ItemBuilder {
                         SkullUtils.itemWithBase64(getItemStack(), player);
                     }
                 }
-            }
+            }*/
 
             getItemStack().setAmount(this.itemAmount);
 
             getItemStack().editMeta(meta -> {
+                if (this.isHead) {
+                    SkullMeta skullMeta = (SkullMeta) meta;
+
+                    if (this.isURL) {
+                        PlayerProfile profile = this.plugin.getServer().createProfile(UUID.randomUUID());
+
+                        PlayerTextures textures = profile.getTextures();
+
+                        try {
+                            textures.setSkin(new URL(this.player));
+                        } catch (MalformedURLException exception) {
+                            FancyLogger.warn("Failed to set skin: " + this.player + " to profile.");
+                            FancyLogger.debug(exception.getMessage());
+                        }
+                    } else {
+                        OfflinePlayer offlinePlayer = getPlayer(this.player) != null ? getPlayer(this.player) : getOfflinePlayer(this.player);
+
+                        skullMeta.setOwningPlayer(offlinePlayer);
+                    }
+                }
+
                 // Set the display name.
                 if (!this.displayName.equals(Component.empty())) {
                     meta.displayName(this.displayName);
@@ -422,8 +446,14 @@ public class ItemBuilder {
     }
 
     // Custom Heads
-    public void setPlayer(String player) {
+    public ItemBuilder setPlayer(String player) {
         this.player = player;
+
+        if (this.player != null && this.player.length() > 16) {
+            this.isURL = this.player.startsWith("http");
+        }
+
+        return this;
     }
 
     // Enchantments
@@ -519,6 +549,7 @@ public class ItemBuilder {
             case TIPPED_ARROW -> this.isTippedArrow = true;
             case FIREWORK_ROCKET -> this.isFirework = true;
             case FILLED_MAP -> this.isShield = true;
+            case PLAYER_HEAD -> this.isHead = true;
             case SPAWNER -> this.isSpawner = true;
             case SHIELD -> this.isShield = true;
         }

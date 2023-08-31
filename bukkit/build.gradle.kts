@@ -39,6 +39,6 @@ tasks {
     runServer {
         minecraftVersion("1.20.1")
 
-        jvmArgs("-Dnet.kyori.ansi.colorLevel=truecolor")
+        jvmArgs("-Dnet.kyori.ansi.colorLevel=truecolor -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005")
     }
 }

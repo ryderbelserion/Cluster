@@ -28,6 +28,20 @@ public class ClusterCommand extends Command {
 
         player.getInventory().addItem(firework);
 
+        ItemStack skull = ParentBuilder.of(Material.PLAYER_HEAD)
+                .setPlayer("Asruna").build();
+
+        ItemStack skullTwo = ParentBuilder.of(Material.PLAYER_HEAD)
+                .setPlayer("Rukkhadevata").build();
+
+        ItemStack other = ParentBuilder.of(Material.PLAYER_HEAD)
+                        .setPlayer("http://textures.minecraft.net/texture/1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e")
+                                .build();
+
+        player.getInventory().addItem(skull);
+        player.getInventory().addItem(skullTwo);
+        player.getInventory().addItem(other);
+
         return true;
     }
 }
