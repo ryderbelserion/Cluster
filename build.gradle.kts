@@ -15,7 +15,7 @@ tasks {
 
                 if (project.name == "api") return@doLast
 
-                val file = file("${project.buildDir}/libs/${rootProject.name.lowercase()}-${project.name}-${rootProject.version}.jar")
+                val file = file("${project.layout.projectDirectory}/build/libs/${rootProject.name}-${rootProject.version}.jar")
 
                 copy {
                     from(file)
