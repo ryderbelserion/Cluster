@@ -2,6 +2,8 @@ plugins {
     id("root-plugin")
 }
 
+defaultTasks("build")
+
 tasks {
     assemble {
         val jarsDir = File("$rootDir/jars")
