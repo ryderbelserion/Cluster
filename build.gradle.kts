@@ -26,4 +26,16 @@ tasks {
             }
         }
     }
+
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                groupId = rootProject.group.toString()
+                artifactId = "${rootProject.name.lowercase()}-api"
+                version = rootProject.version.toString()
+
+                artifact("$rootDir/jars/${rootProject.name}-${rootProject.version}.jar")
+            }
+        }
+    }
 }

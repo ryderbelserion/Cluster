@@ -1,6 +1,7 @@
 package com.ryderbelserion.cluster.bukkit;
 
 import com.ryderbelserion.cluster.bukkit.api.RootPlugin;
+import com.ryderbelserion.cluster.bukkit.api.adventure.FancyLogger;
 import com.ryderbelserion.cluster.bukkit.api.registry.BukkitRegistry;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.nio.file.Path;
