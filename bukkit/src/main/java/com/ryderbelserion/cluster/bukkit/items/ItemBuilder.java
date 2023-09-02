@@ -107,6 +107,7 @@ public class ItemBuilder {
     private boolean isSpawner = false;
     private EntityType entityType = EntityType.BAT;
 
+    // Create a new item.
     public ItemBuilder(ItemStack itemStack) {
         this.itemStack = itemStack;
 
@@ -129,6 +130,64 @@ public class ItemBuilder {
         this.isArmor = name.endsWith("_HELMET") || name.endsWith("_CHESTPLATE") || name.endsWith("_LEGGINGS") || name.endsWith("_BOOTS");
 
         this.isBanner = name.endsWith("BANNER");
+    }
+
+    // De-duplicate an item builder.
+    public ItemBuilder(ItemBuilder itemBuilder) {
+        this.material = itemBuilder.material;
+        this.itemStack = itemBuilder.itemStack;
+        this.itemAmount = itemBuilder.itemAmount;
+        this.itemData = itemBuilder.itemData;
+
+        this.displayName = itemBuilder.displayName;
+        this.displayLore = itemBuilder.displayLore;
+        this.itemDamage = itemBuilder.itemDamage;
+
+        this.hasCustomModelData = itemBuilder.hasCustomModelData;
+        this.customModelData = itemBuilder.customModelData;
+
+        this.isPotion = itemBuilder.isPotion;
+        this.potionColor = itemBuilder.potionColor;
+        this.potionType = itemBuilder.potionType;
+        this.potionDuration = itemBuilder.potionDuration;
+        this.potionAmpilifier = itemBuilder.potionAmpilifier;
+
+        this.player = itemBuilder.player;
+        this.isHead = itemBuilder.isHead;
+        this.isURL = itemBuilder.isURL;
+
+        this.isTippedArrow = itemBuilder.isTippedArrow;
+
+        this.isLeatherArmor = itemBuilder.isLeatherArmor;
+        this.isArmor = itemBuilder.isArmor;
+
+        this.trimMaterial = itemBuilder.trimMaterial;
+        this.trimPattern = itemBuilder.trimPattern;
+        this.armorColor = itemBuilder.armorColor;
+
+        this.isBanner = itemBuilder.isBanner;
+        this.patterns = itemBuilder.patterns;
+
+        this.isShield = itemBuilder.isShield;
+
+        this.isMap = itemBuilder.isMap;
+        this.mapColor = itemBuilder.mapColor;
+
+        this.isFirework = itemBuilder.isFirework;
+        this.isFireworkStar = itemBuilder.isFireworkStar;
+        this.fireworkColor = itemBuilder.fireworkColor;
+        this.fireworkColors = itemBuilder.fireworkColors;
+        this.fireworkPower = itemBuilder.fireworkPower;
+
+        this.isUnbreakable = itemBuilder.isUnbreakable;
+
+        this.hideItemFlags = itemBuilder.hideItemFlags;
+        this.itemFlags = itemBuilder.itemFlags;
+
+        this.isGlowing = itemBuilder.isGlowing;
+
+        this.isSpawner = itemBuilder.isSpawner;
+        this.entityType = itemBuilder.entityType;
     }
 
     public ItemBuilder() {}
