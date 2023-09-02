@@ -2,7 +2,7 @@ plugins {
     id("root-plugin")
 }
 
-defaultTasks("build")
+defaultTasks("assemble")
 
 tasks {
     assemble {

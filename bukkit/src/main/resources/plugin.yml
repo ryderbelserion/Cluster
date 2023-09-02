@@ -1,6 +1,6 @@
 name: 'Cluster'
-main: 'com.ryderbelserion.cluster.plugin.Cluster'
+main: 'com.ryderbelserion.cluster.plugin.Example'
 
 version: '1.0'
 api-version: '1.20'
-description: 'An example project using commodore'
+description: 'fuck you'

@@ -2,9 +2,7 @@ package com.ryderbelserion.cluster.bukkit.items;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
 import com.ryderbelserion.cluster.bukkit.api.adventure.FancyLogger;
-import com.ryderbelserion.cluster.bukkit.api.registry.BukkitProvider;
 import com.ryderbelserion.cluster.bukkit.api.utils.ColorUtils;
 import com.ryderbelserion.cluster.bukkit.items.utils.DyeUtils;
 import net.kyori.adventure.text.Component;
@@ -25,7 +23,6 @@ import org.bukkit.inventory.meta.*;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -40,10 +37,6 @@ import java.util.concurrent.CompletableFuture;
 @SuppressWarnings("ALL")
 public class ItemBuilder {
 
-    private final @NotNull BukkitPlugin provider = BukkitProvider.get();
-
-    private final @NotNull JavaPlugin plugin = this.provider.getPlugin();
-
     // Items
     private Material material = Material.STONE;
     private ItemStack itemStack = null;
@@ -54,7 +47,7 @@ public class ItemBuilder {
 
     // Display
     private Component displayName = Component.empty();
-    private List<Component> displayLore = Collections.emptyList();
+    private List<Component> displayLore = new ArrayList<>();
     private int itemDamage = this.material.getMaxDurability();
 
     // Model Data
@@ -87,7 +80,7 @@ public class ItemBuilder {
 
     // Banners
     private boolean isBanner = false;
-    private List<Pattern> patterns = Collections.emptyList();
+    private List<Pattern> patterns = new ArrayList<>();
 
     // Shields
     private boolean isShield = false;
@@ -107,7 +100,7 @@ public class ItemBuilder {
     private boolean isUnbreakable = false;
 
     private boolean hideItemFlags = false;
-    private List<ItemFlag> itemFlags = Collections.emptyList();
+    private List<ItemFlag> itemFlags = new ArrayList<>();
 
     private boolean isGlowing = false;
 
@@ -176,7 +169,7 @@ public class ItemBuilder {
                     SkullMeta skullMeta = (SkullMeta) meta;
 
                     if (this.isURL) {
-                        PlayerProfile profile = this.plugin.getServer().createProfile(UUID.randomUUID());
+                        PlayerProfile profile = Bukkit.getServer().createProfile(UUID.randomUUID());
 
                         PlayerTextures textures = profile.getTextures();
 
@@ -326,10 +319,10 @@ public class ItemBuilder {
 
     public ItemBuilder setDisplayLore(List<String> displayLore) {
         if (displayLore != null) {
-            this.displayLore.clear();
+            if (!this.displayLore.isEmpty()) this.displayLore.clear();
 
             displayLore.forEach(line -> {
-                this.displayLore.add(ColorUtils.parse(line));
+                addDisplayLore(line);
             });
         }
 
@@ -574,13 +567,13 @@ public class ItemBuilder {
     }
 
     private @NotNull OfflinePlayer getOfflinePlayer(String player) {
-        CompletableFuture<UUID> future = CompletableFuture.supplyAsync(() -> this.plugin.getServer().getOfflinePlayer(player)).thenApply(OfflinePlayer::getUniqueId);
+        CompletableFuture<UUID> future = CompletableFuture.supplyAsync(() -> Bukkit.getServer().getOfflinePlayer(player)).thenApply(OfflinePlayer::getUniqueId);
 
-        return this.plugin.getServer().getOfflinePlayer(future.join());
+        return Bukkit.getServer().getOfflinePlayer(future.join());
     }
 
     private Player getPlayer(String player) {
-        return this.plugin.getServer().getPlayer(player);
+        return Bukkit.getServer().getPlayer(player);
     }
 
     private void addGlow() {
