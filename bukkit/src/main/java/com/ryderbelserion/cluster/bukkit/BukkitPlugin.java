@@ -5,7 +5,7 @@ import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import com.ryderbelserion.cluster.api.config.FileManager;
 import com.ryderbelserion.cluster.bukkit.commands.CommandManager;
 import com.ryderbelserion.cluster.bukkit.registry.BukkitRegistry;
-import com.ryderbelserion.cluster.plugin.storage.persist.DataManager;
+import com.ryderbelserion.cluster.plugin.storage.persist.RootManager;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
@@ -19,8 +19,9 @@ public class BukkitPlugin extends RootPlugin {
     private final Path path;
 
     private CommandManager commandManager;
-    private DataManager dataManager;
+    private RootManager dataManager;
     private FileManager fileManager;
+    private boolean isLegacy;
 
     public BukkitPlugin(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -37,8 +38,10 @@ public class BukkitPlugin extends RootPlugin {
         this.plugin = plugin;
     }
 
-    public void enable() {
+    public void enable(boolean value) {
         super.enable(this.plugin.getServer().getConsoleSender(), this.plugin.getName());
+
+        this.isLegacy = value;
 
         BukkitRegistry.start(this);
 
@@ -54,7 +57,7 @@ public class BukkitPlugin extends RootPlugin {
 
         if (!getPlugin().getDataFolder().exists()) getPlugin().getDataFolder().mkdirs();
 
-        this.dataManager = new DataManager(this.path);
+        this.dataManager = new RootManager(this.path);
         this.dataManager.load();
 
         this.commandManager = new CommandManager();
@@ -81,11 +84,16 @@ public class BukkitPlugin extends RootPlugin {
         return this.fileManager;
     }
 
+    @Override
+    public boolean isLegacy() {
+        return this.isLegacy;
+    }
+
     public CommandManager getCommandManager() {
         return this.commandManager;
     }
 
-    public DataManager getDataManager() {
+    public RootManager getDataManager() {
         return this.dataManager;
     }
 

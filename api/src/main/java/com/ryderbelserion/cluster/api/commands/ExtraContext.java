@@ -6,13 +6,13 @@ import net.kyori.adventure.text.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandContext {
+public class ExtraContext {
 
     private final ArrayList<String> args;
     private final Audience audience;
     private String label;
 
-    public CommandContext(Audience audience, String label, List<String> args) {
+    public ExtraContext(Audience audience, String label, List<String> args) {
         this.audience = audience;
         this.label = label;
 

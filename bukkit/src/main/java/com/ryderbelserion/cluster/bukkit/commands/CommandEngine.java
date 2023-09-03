@@ -3,14 +3,13 @@ package com.ryderbelserion.cluster.bukkit.commands;
 import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
 import com.ryderbelserion.cluster.bukkit.registry.BukkitProvider;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
-public class CommandEngine extends Command {
+public abstract class CommandEngine extends Command {
 
-    private final @NotNull BukkitPlugin plugin = BukkitProvider.get();
-    private final @NotNull CommandManager commandManager = this.plugin.getCommandManager();
+    private final @NotNull BukkitPlugin bukkitPlugin = BukkitProvider.get();
+    private final @NotNull CommandManager commandManager = this.bukkitPlugin.getCommandManager();
 
     private boolean isVisible = true;
 
@@ -18,10 +17,7 @@ public class CommandEngine extends Command {
         super(command, description, usage, aliases);
     }
 
-    @Override
-    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-        return false;
-    }
+    public abstract void perform(CommandContext context, String[] args);
 
     public void addSubCommand(CommandEngine command, String rootCommand) {
         this.commandManager.addCommand(command, rootCommand, false);

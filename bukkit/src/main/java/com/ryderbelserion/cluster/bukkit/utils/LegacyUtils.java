@@ -7,10 +7,10 @@ import java.util.regex.Pattern;
 @SuppressWarnings("deprecation")
 public class LegacyUtils {
 
-    private Pattern hexPattern;
+    private final static Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F\\d]{6}");;
 
-    public String parse(String message) {
-        Matcher matcher = this.hexPattern.matcher(message);
+    public static String parse(String message) {
+        Matcher matcher = HEX_PATTERN.matcher(message);
         StringBuilder buffer = new StringBuilder();
 
         while (matcher.find()) {
@@ -18,9 +18,5 @@ public class LegacyUtils {
         }
 
         return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
-    }
-
-    public void setHexPattern(Pattern hexPattern) {
-        this.hexPattern = hexPattern;
     }
 }

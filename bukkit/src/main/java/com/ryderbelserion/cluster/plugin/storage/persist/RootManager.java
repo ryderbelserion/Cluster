@@ -4,28 +4,29 @@ import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
 import com.ryderbelserion.cluster.bukkit.commands.CommandEngine;
 import com.ryderbelserion.cluster.bukkit.registry.BukkitProvider;
-import com.ryderbelserion.cluster.plugin.storage.persist.objects.CustomCommand;
+import com.ryderbelserion.cluster.plugin.storage.persist.objects.CommandData;
+import com.ryderbelserion.cluster.plugin.storage.persist.objects.CommandCustom;
 import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 
-public non-sealed class DataManager extends CommandData {
+public non-sealed class RootManager extends CommandRoot {
 
     private final @NotNull BukkitPlugin bukkitPlugin = BukkitProvider.get();
 
     private final Path path;
 
-    public DataManager(Path path) {
+    public RootManager(Path path) {
         super(path);
 
         this.path = path;
     }
 
     public void load() {
-        this.bukkitPlugin.getFileManager().addFile(new CommandData(this.path));
+        this.bukkitPlugin.getFileManager().addFile(new CommandRoot(this.path));
     }
 
     public void save() {
-        this.bukkitPlugin.getFileManager().saveFile(new CommandData(this.path));
+        this.bukkitPlugin.getFileManager().saveFile(new CommandRoot(this.path));
     }
 
     public void reload() {
@@ -35,32 +36,32 @@ public non-sealed class DataManager extends CommandData {
 
     public void addCommand(CommandEngine command) {
         if (!hasCommand(command.getLabel())) {
-            commands.put(command.getLabel(), new SubCommandData());
+            commands.put(command.getLabel(), new CommandData());
 
             reload();
         }
     }
 
-    public void addSubCommand(CommandEngine command, String rootCommand, CustomCommand customCommand) {
+    public void addSubCommand(CommandEngine command, String rootCommand, CommandCustom commandCustom) {
         if (command.getLabel().isEmpty()) {
             FancyLogger.debug("Sub command name is empty! We cannot add.");
             return;
         }
 
-        SubCommandData data = getCommand(rootCommand);
+        CommandData data = getCommand(rootCommand);
 
-        if (data.hasSubCommand(customCommand)) {
+        if (data.hasSubCommand(commandCustom)) {
             FancyLogger.debug("Cannot add command! The sub command already exists.");
             return;
         }
 
-        data.addSubCommand(customCommand);
+        data.addSubCommand(commandCustom);
 
         reload();
     }
 
     public void removeCommand(String command) {
-        SubCommandData data = getCommand(command);
+        CommandData data = getCommand(command);
 
         if (!data.getSubCommands().isEmpty()) data.purge();
 
@@ -69,7 +70,7 @@ public non-sealed class DataManager extends CommandData {
         reload();
     }
 
-    public SubCommandData getCommand(String command) {
+    public CommandData getCommand(String command) {
         if (!hasCommand(command)) return null;
 
         return commands.get(command);

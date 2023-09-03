@@ -8,9 +8,9 @@ import java.nio.file.Path;
 
 public abstract class RootPlugin {
 
-    public abstract Path getFolder();
-
     public abstract FileManager getFileManager();
+    public abstract boolean isLegacy();
+    public abstract Path getFolder();
 
     private static Audience console;
 

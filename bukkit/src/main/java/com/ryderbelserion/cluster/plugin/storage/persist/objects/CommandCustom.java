@@ -3,7 +3,7 @@ package com.ryderbelserion.cluster.plugin.storage.persist.objects;
 import com.ryderbelserion.cluster.api.commands.args.Argument;
 import java.util.LinkedList;
 
-public class CustomCommand {
+public class CommandCustom {
 
     private final LinkedList<Argument> optionalArgs = new LinkedList<>();
     private final LinkedList<Argument> requiredArgs = new LinkedList<>();
@@ -11,7 +11,7 @@ public class CustomCommand {
 
     private boolean isVisible = true;
 
-    public CustomCommand(String name) {
+    public CommandCustom(String name) {
         this.name = name;
     }
 
