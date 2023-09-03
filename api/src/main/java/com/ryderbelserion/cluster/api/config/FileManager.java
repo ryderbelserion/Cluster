@@ -13,24 +13,24 @@ public class FileManager implements FileContext {
     @Override
     public void addFile(FileEngine file) {
         switch (file.getFileType()) {
-            case FileType.JSON -> {
+            case JSON -> {
                 this.jsonFile = new JsonFile(file);
                 this.jsonFile.load();
             }
 
-            case FileType.YAML -> FancyLogger.info(file.getFileType().getName() + " is not supported yet.");
+            case YAML -> FancyLogger.info(file.getFileType().getName() + " is not supported yet.");
         }
     }
 
     @Override
     public void saveFile(FileEngine file) {
         switch (file.getFileType()) {
-            case FileType.JSON -> {
+            case JSON -> {
                 this.jsonFile = new JsonFile(file);
                 this.jsonFile.save();
             }
 
-            case FileType.YAML -> FancyLogger.info(file.getFileType().getName() + " is not supported yet.");
+            case YAML -> FancyLogger.info(file.getFileType().getName() + " is not supported yet.");
         }
     }
 

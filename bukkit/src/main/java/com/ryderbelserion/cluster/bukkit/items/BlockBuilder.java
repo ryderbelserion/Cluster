@@ -1,39 +1,41 @@
 package com.ryderbelserion.cluster.bukkit.items;
 
-import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.jetbrains.annotations.NotNull;
 
 public class BlockBuilder {
 
     private final Block block;
-    private final Material material;
 
     protected BlockBuilder(Block block) {
         this.block = block;
-
-        this.material = block.getType();
     }
 
-    public Block build() {
-        if (!isAir()) {
+    public void build() {
 
-        } else {
-            FancyLogger.warn("Material cannot be air or null.");
-        }
-
-        return getBlock();
     }
 
-    private boolean isAir() {
-        return this.material.isAir();
+    public BlockBuilder setBlock(Material material) {
+        getBlock().setType(material);
+
+        return this;
     }
 
-    private Block getBlock() {
+    public BlockBuilder setBlock(Material material, boolean applyPhysics) {
+        getBlock().setType(material, applyPhysics);
+
+        return this;
+    }
+
+    public BlockBuilder setBiome(Biome biome) {
+        getBlock().setBiome(biome);
+
+        return this;
+    }
+
+    private @NotNull Block getBlock() {
         return this.block;
-    }
-
-    private Material getMaterial() {
-        return this.material;
     }
 }
