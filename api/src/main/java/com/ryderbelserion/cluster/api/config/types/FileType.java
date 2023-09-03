@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.bukkit.api.config.types;
+package com.ryderbelserion.cluster.api.config.types;
 
 public enum FileType {
 

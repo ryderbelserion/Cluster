@@ -1,6 +1,7 @@
-package com.ryderbelserion.cluster.bukkit.api.utils;
+package com.ryderbelserion.cluster.api.utils;
 
-import com.ryderbelserion.cluster.bukkit.api.adventure.FancyLogger;
+import com.ryderbelserion.cluster.api.adventure.FancyLogger;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;

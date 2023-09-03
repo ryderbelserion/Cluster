@@ -1,9 +1,8 @@
 package com.ryderbelserion.cluster.bukkit.items;
 
-import com.ryderbelserion.cluster.bukkit.api.adventure.FancyLogger;
+import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 
 public class BlockBuilder {
 

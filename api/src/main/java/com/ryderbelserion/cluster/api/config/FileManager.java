@@ -1,7 +1,9 @@
-package com.ryderbelserion.cluster.bukkit.api.config;
+package com.ryderbelserion.cluster.api.config;
 
-import com.ryderbelserion.cluster.bukkit.api.adventure.FancyLogger;
-import com.ryderbelserion.cluster.bukkit.api.config.types.file.JsonFile;
+import com.ryderbelserion.cluster.api.adventure.FancyLogger;
+import com.ryderbelserion.cluster.api.config.types.FileType;
+import com.ryderbelserion.cluster.api.config.types.file.JsonFile;
+
 import java.io.File;
 
 public class FileManager implements FileContext {
@@ -11,24 +13,24 @@ public class FileManager implements FileContext {
     @Override
     public void addFile(FileEngine file) {
         switch (file.getFileType()) {
-            case JSON -> {
+            case FileType.JSON -> {
                 this.jsonFile = new JsonFile(file);
                 this.jsonFile.load();
             }
 
-            case YAML -> FancyLogger.info(file.getFileType().getName() + " is not supported yet.");
+            case FileType.YAML -> FancyLogger.info(file.getFileType().getName() + " is not supported yet.");
         }
     }
 
     @Override
     public void saveFile(FileEngine file) {
         switch (file.getFileType()) {
-            case JSON -> {
+            case FileType.JSON -> {
                 this.jsonFile = new JsonFile(file);
                 this.jsonFile.save();
             }
 
-            case YAML -> FancyLogger.info(file.getFileType().getName() + " is not supported yet.");
+            case FileType.YAML -> FancyLogger.info(file.getFileType().getName() + " is not supported yet.");
         }
     }
 

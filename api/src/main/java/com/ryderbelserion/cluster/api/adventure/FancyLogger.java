@@ -1,7 +1,7 @@
-package com.ryderbelserion.cluster.bukkit.api.adventure;
+package com.ryderbelserion.cluster.api.adventure;
 
-import com.ryderbelserion.cluster.bukkit.api.RootPlugin;
-import com.ryderbelserion.cluster.bukkit.api.utils.ColorUtils;
+import com.ryderbelserion.cluster.api.RootPlugin;
+import com.ryderbelserion.cluster.api.utils.ColorUtils;
 
 public class FancyLogger {
 

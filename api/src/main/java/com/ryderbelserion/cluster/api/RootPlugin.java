@@ -1,7 +1,7 @@
-package com.ryderbelserion.cluster.bukkit.api;
+package com.ryderbelserion.cluster.api;
 
-import com.ryderbelserion.cluster.bukkit.api.adventure.FancyLogger;
-import com.ryderbelserion.cluster.bukkit.api.registry.ClusterRegistry;
+import com.ryderbelserion.cluster.api.adventure.FancyLogger;
+import com.ryderbelserion.cluster.api.registry.RootRegistry;
 import net.kyori.adventure.audience.Audience;
 import java.nio.file.Path;
 
@@ -19,12 +19,12 @@ public abstract class RootPlugin {
         new FancyLogger(name);
 
         // Start registry.
-        ClusterRegistry.start(this);
+        RootRegistry.start(this);
     }
 
     public void disable() {
         // Stop registry.
-        ClusterRegistry.stop();
+        RootRegistry.stop();
     }
 
     public static Audience getConsole() {

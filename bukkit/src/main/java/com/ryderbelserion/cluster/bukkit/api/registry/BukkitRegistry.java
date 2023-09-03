@@ -1,7 +1,7 @@
 package com.ryderbelserion.cluster.bukkit.api.registry;
 
 import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
-import com.ryderbelserion.cluster.bukkit.api.adventure.FancyLogger;
+import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import org.jetbrains.annotations.ApiStatus;
 import java.lang.reflect.Method;
 

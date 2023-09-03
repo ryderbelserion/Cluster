@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.bukkit.api.config;
+package com.ryderbelserion.cluster.api.config;
 
 import java.io.File;
 

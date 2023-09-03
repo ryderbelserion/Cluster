@@ -1,7 +1,6 @@
 package com.ryderbelserion.cluster.bukkit.api.registry;
 
 import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
-import com.ryderbelserion.cluster.bukkit.api.exceptions.PluginInitializeException;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 

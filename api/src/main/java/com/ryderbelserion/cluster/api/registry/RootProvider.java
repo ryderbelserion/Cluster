@@ -1,15 +1,15 @@
-package com.ryderbelserion.cluster.bukkit.api.registry;
+package com.ryderbelserion.cluster.api.registry;
 
-import com.ryderbelserion.cluster.bukkit.api.RootPlugin;
+import com.ryderbelserion.cluster.api.RootPlugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-public class ClusterProvider {
+public class RootProvider {
 
     private static RootPlugin root = null;
 
     public static @NotNull RootPlugin get() {
-        RootPlugin instance = ClusterProvider.root;
+        RootPlugin instance = RootProvider.root;
 
         if (instance == null) throw new RuntimeException("Failed to utilize root provider. Did it get enabled?");
 
@@ -18,11 +18,11 @@ public class ClusterProvider {
 
     @ApiStatus.Internal
     public static void start(RootPlugin root) {
-        ClusterProvider.root = root;
+        RootProvider.root = root;
     }
 
     @ApiStatus.Internal
     public static void stop() {
-        ClusterProvider.root = null;
+        RootProvider.root = null;
     }
 }

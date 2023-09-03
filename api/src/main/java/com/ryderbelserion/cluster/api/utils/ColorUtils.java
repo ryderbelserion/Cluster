@@ -1,6 +1,6 @@
-package com.ryderbelserion.cluster.bukkit.api.utils;
+package com.ryderbelserion.cluster.api.utils;
 
-import com.ryderbelserion.cluster.bukkit.api.RootPlugin;
+import com.ryderbelserion.cluster.api.RootPlugin;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;

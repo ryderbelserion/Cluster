@@ -1,6 +1,6 @@
 package com.ryderbelserion.cluster.bukkit.gui;
 
-import com.ryderbelserion.cluster.bukkit.api.utils.ColorUtils;
+import com.ryderbelserion.cluster.api.utils.ColorUtils;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;

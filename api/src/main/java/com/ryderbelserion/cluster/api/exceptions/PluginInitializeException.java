@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.bukkit.api.exceptions;
+package com.ryderbelserion.cluster.api.exceptions;
 
 public class PluginInitializeException extends IllegalAccessException {
 

@@ -1,9 +1,9 @@
-package com.ryderbelserion.cluster.bukkit.api.config.types.file;
+package com.ryderbelserion.cluster.api.config.types.file;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.ryderbelserion.cluster.bukkit.api.adventure.FancyLogger;
-import com.ryderbelserion.cluster.bukkit.api.config.FileEngine;
+import com.ryderbelserion.cluster.api.adventure.FancyLogger;
+import com.ryderbelserion.cluster.api.config.FileEngine;
 import java.io.*;
 import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;

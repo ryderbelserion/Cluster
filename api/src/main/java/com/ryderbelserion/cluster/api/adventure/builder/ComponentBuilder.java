@@ -1,6 +1,6 @@
-package com.ryderbelserion.cluster.bukkit.api.adventure.builder;
+package com.ryderbelserion.cluster.api.adventure.builder;
 
-import com.ryderbelserion.cluster.bukkit.api.utils.ColorUtils;
+import com.ryderbelserion.cluster.api.utils.ColorUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;

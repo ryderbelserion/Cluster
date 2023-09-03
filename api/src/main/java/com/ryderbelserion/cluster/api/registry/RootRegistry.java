@@ -1,21 +1,21 @@
-package com.ryderbelserion.cluster.bukkit.api.registry;
+package com.ryderbelserion.cluster.api.registry;
 
-import com.ryderbelserion.cluster.bukkit.api.RootPlugin;
-import com.ryderbelserion.cluster.bukkit.api.adventure.FancyLogger;
+import com.ryderbelserion.cluster.api.RootPlugin;
+import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import org.jetbrains.annotations.ApiStatus;
 import java.lang.reflect.Method;
 
-public class ClusterRegistry {
+public class RootRegistry {
 
     private static final Method start;
     private static final Method stop;
 
     static {
         try {
-            start = ClusterProvider.class.getDeclaredMethod("start", RootPlugin.class);
+            start = RootProvider.class.getDeclaredMethod("start", RootPlugin.class);
             start.setAccessible(true);
 
-            stop = ClusterProvider.class.getDeclaredMethod("stop");
+            stop = RootProvider.class.getDeclaredMethod("stop");
             stop.setAccessible(true);
         } catch (NoSuchMethodException exception) {
             throw new ExceptionInInitializerError(exception);

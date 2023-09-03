@@ -2,8 +2,8 @@ package com.ryderbelserion.cluster.bukkit.items;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.ryderbelserion.cluster.bukkit.api.adventure.FancyLogger;
-import com.ryderbelserion.cluster.bukkit.api.utils.ColorUtils;
+import com.ryderbelserion.cluster.api.adventure.FancyLogger;
+import com.ryderbelserion.cluster.api.utils.ColorUtils;
 import com.ryderbelserion.cluster.bukkit.items.utils.DyeUtils;
 import net.kyori.adventure.text.Component;
 import net.minecraft.nbt.TagParser;
@@ -211,16 +211,6 @@ public class ItemBuilder {
                 return CraftItemStack.asBukkitCopy(nmsItem);
             }
 
-            /*if (this.isHead) { // Has to go 1st due to it removing all data when finished.
-                if (this.isHash) { // Sauce: https://github.com/deanveloper/SkullCreator
-                    if (this.isURL) {
-                        SkullUtils.itemWithUrl(getItemStack(), player);
-                    } else {
-                        SkullUtils.itemWithBase64(getItemStack(), player);
-                    }
-                }
-            }*/
-
             getItemStack().setAmount(this.itemAmount);
 
             getItemStack().editMeta(meta -> {
@@ -228,6 +218,7 @@ public class ItemBuilder {
                     SkullMeta skullMeta = (SkullMeta) meta;
 
                     if (this.isURL) {
+                        //TODO() This doesn't work.
                         PlayerProfile profile = Bukkit.getServer().createProfile(UUID.randomUUID());
 
                         PlayerTextures textures = profile.getTextures();
@@ -239,9 +230,9 @@ public class ItemBuilder {
                             FancyLogger.debug(exception.getMessage());
                         }
                     } else {
-                        OfflinePlayer offlinePlayer = getPlayer(this.player) != null ? getPlayer(this.player) : getOfflinePlayer(this.player);
+                        OfflinePlayer person = getPlayer(this.player) != null ? getPlayer(this.player) : getOfflinePlayer(this.player);
 
-                        skullMeta.setOwningPlayer(offlinePlayer);
+                        skullMeta.setOwningPlayer(person);
                     }
                 }
 
