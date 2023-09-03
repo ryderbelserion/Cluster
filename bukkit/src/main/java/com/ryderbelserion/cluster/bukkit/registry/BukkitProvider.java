@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.bukkit.api.registry;
+package com.ryderbelserion.cluster.bukkit.registry;
 
 import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
 import org.jetbrains.annotations.ApiStatus;

@@ -15,3 +15,19 @@ dependencies {
 
     compileOnly("net.kyori", "adventure-api", "4.14.0")
 }
+
+val component: SoftwareComponent = components["java"]
+
+tasks {
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                groupId = project.group.toString()
+                artifactId = "${rootProject.name.lowercase()}-${project.name.lowercase()}"
+                version = rootProject.version.toString()
+
+                from(component)
+            }
+        }
+    }
+}

@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.bukkit.api.registry;
+package com.ryderbelserion.cluster.bukkit.registry;
 
 import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;

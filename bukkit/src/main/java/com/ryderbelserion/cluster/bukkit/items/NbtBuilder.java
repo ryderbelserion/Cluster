@@ -1,7 +1,7 @@
 package com.ryderbelserion.cluster.bukkit.items;
 
 import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
-import com.ryderbelserion.cluster.bukkit.api.registry.BukkitProvider;
+import com.ryderbelserion.cluster.bukkit.registry.BukkitProvider;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;

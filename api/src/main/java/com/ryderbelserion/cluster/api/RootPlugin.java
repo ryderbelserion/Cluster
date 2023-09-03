@@ -1,6 +1,7 @@
 package com.ryderbelserion.cluster.api;
 
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
+import com.ryderbelserion.cluster.api.config.FileManager;
 import com.ryderbelserion.cluster.api.registry.RootRegistry;
 import net.kyori.adventure.audience.Audience;
 import java.nio.file.Path;
@@ -8,6 +9,8 @@ import java.nio.file.Path;
 public abstract class RootPlugin {
 
     public abstract Path getFolder();
+
+    public abstract FileManager getFileManager();
 
     private static Audience console;
 
