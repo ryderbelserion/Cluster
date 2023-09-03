@@ -3,9 +3,7 @@ package com.ryderbelserion.cluster.bukkit;
 import com.ryderbelserion.cluster.api.RootPlugin;
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import com.ryderbelserion.cluster.api.config.FileManager;
-import com.ryderbelserion.cluster.bukkit.commands.CommandManager;
 import com.ryderbelserion.cluster.bukkit.registry.BukkitRegistry;
-import com.ryderbelserion.cluster.plugin.storage.persist.RootManager;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
@@ -17,11 +15,7 @@ public class BukkitPlugin extends RootPlugin {
 
     private JavaPlugin plugin;
     private final Path path;
-
-    private CommandManager commandManager;
-    private RootManager dataManager;
     private FileManager fileManager;
-    private boolean isLegacy;
 
     public BukkitPlugin(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -38,10 +32,8 @@ public class BukkitPlugin extends RootPlugin {
         this.plugin = plugin;
     }
 
-    public void enable(boolean value) {
+    public void enable() {
         super.enable(this.plugin.getServer().getConsoleSender(), this.plugin.getName());
-
-        this.isLegacy = value;
 
         BukkitRegistry.start(this);
 
@@ -56,11 +48,6 @@ public class BukkitPlugin extends RootPlugin {
         }
 
         if (!getPlugin().getDataFolder().exists()) getPlugin().getDataFolder().mkdirs();
-
-        this.dataManager = new RootManager(this.path);
-        this.dataManager.load();
-
-        this.commandManager = new CommandManager();
     }
 
     public void disable() {
@@ -82,19 +69,6 @@ public class BukkitPlugin extends RootPlugin {
     @Override
     public FileManager getFileManager() {
         return this.fileManager;
-    }
-
-    @Override
-    public boolean isLegacy() {
-        return this.isLegacy;
-    }
-
-    public CommandManager getCommandManager() {
-        return this.commandManager;
-    }
-
-    public RootManager getDataManager() {
-        return this.dataManager;
     }
 
     public void registerCommand(PluginCommand pluginCommand, TabCompleter tabCompleter, CommandExecutor commandExecutor) {

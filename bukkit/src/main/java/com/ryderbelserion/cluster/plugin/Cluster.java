@@ -11,7 +11,7 @@ public class Cluster extends JavaPlugin {
     @Override
     public void onEnable() {
         this.bukkitPlugin = new BukkitPlugin(this);
-        this.bukkitPlugin.enable(false);
+        this.bukkitPlugin.enable();
 
         FancyLogger.info("Cluster is ready for use!");
     }
