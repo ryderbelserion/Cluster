@@ -4,6 +4,7 @@ import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
 import com.ryderbelserion.cluster.bukkit.registry.BukkitProvider;
 import com.ryderbelserion.cluster.plugin.storage.persist.RootManager;
 import com.ryderbelserion.cluster.plugin.storage.persist.objects.CommandCustom;
+import com.ryderbelserion.cluster.plugin.storage.persist.objects.CommandData;
 import org.jetbrains.annotations.NotNull;
 
 public class CommandManager {
@@ -39,5 +40,19 @@ public class CommandManager {
         this.dataManager.getCommand(rootCommand).removeSubCommand(commandCustom);
 
         this.dataManager.reload();
+    }
+
+    public CommandData getCommand(String rootCommand) {
+        return this.dataManager.getCommand(rootCommand);
+    }
+
+    public CommandCustom getSubCommand(CommandEngine command, String rootCommand) {
+        CommandCustom commandCustom = new CommandCustom(command.getLabel());
+
+        for (CommandCustom value : getCommand(rootCommand).getSubCommands()) {
+            if (value.getName().equals(commandCustom.getName())) return commandCustom;
+        }
+
+        return null;
     }
 }
