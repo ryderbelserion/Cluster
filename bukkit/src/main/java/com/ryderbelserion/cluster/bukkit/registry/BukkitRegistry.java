@@ -2,8 +2,8 @@ package com.ryderbelserion.cluster.bukkit.registry;
 
 import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
-import org.jetbrains.annotations.ApiStatus;
 import java.lang.reflect.Method;
+import static org.jetbrains.annotations.ApiStatus.Internal;
 
 public class BukkitRegistry {
 
@@ -17,28 +17,28 @@ public class BukkitRegistry {
 
             stop = BukkitProvider.class.getDeclaredMethod("stop");
             stop.setAccessible(true);
-        } catch (NoSuchMethodException e) {
-            throw new ExceptionInInitializerError(e);
+        } catch (NoSuchMethodException exception) {
+            throw new ExceptionInInitializerError(exception);
         }
     }
 
-    @ApiStatus.Internal
+    @Internal
     public static void start(BukkitPlugin bukkit) {
         try {
             start.invoke(null, bukkit);
         } catch (Exception exception) {
             FancyLogger.error("Failed to enable cluster bukkit api.");
-            FancyLogger.debug("Reason: " + exception.getMessage());
+            FancyLogger.debug(exception.getMessage());
         }
     }
 
-    @ApiStatus.Internal
+    @Internal
     public static void stop() {
         try {
             stop.invoke(null);
         } catch (Exception exception) {
             FancyLogger.error("Failed to disable cluster bukkit api.");
-            FancyLogger.debug("Reason: " + exception.getMessage());
+            FancyLogger.debug(exception.getMessage());
         }
     }
 }

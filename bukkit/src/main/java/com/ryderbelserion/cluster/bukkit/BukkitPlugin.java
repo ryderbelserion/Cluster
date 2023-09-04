@@ -26,14 +26,17 @@ public class BukkitPlugin extends RootPlugin {
     public void setPlugin(JavaPlugin plugin) {
         // If the plugin is already registered,
         // return as we don't want it registered again.
-        if (this.plugin != null) return;
+        if (this.plugin != null) {
+            FancyLogger.warn("The plugin variable is already set. You cannot register or overwrite it.");
+            return;
+        }
 
         // Set the plugin variable.
         this.plugin = plugin;
     }
 
-    public void enable() {
-        super.enable(this.plugin.getServer().getConsoleSender(), this.plugin.getName());
+    public void enable(String pluginName) {
+        super.enable(this.plugin.getServer().getConsoleSender(), pluginName);
 
         BukkitRegistry.start(this);
 
@@ -44,7 +47,7 @@ public class BukkitPlugin extends RootPlugin {
         if (!file.exists()) {
             file.mkdirs();
         } else {
-            FancyLogger.debug("Could not create " + file.getName() + " folder because it already exists.");
+            FancyLogger.info("Could not create " + file.getName() + " folder because it already exists.");
         }
 
         if (!getPlugin().getDataFolder().exists()) getPlugin().getDataFolder().mkdirs();
