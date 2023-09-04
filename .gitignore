@@ -1,29 +1,22 @@
 .gradle
 .idea
 
-paper/.gradle
-paper/build
+buildSrc/.gradle
+buildSrc/build
 
-folia/.gradle
-folia/build
-
-folia-small/.gradle
-folia-small/build
+bukkit/.gradle
+bukkit/build
 
 api/.gradle
 api/build
 
-buildSrc/.gradle
-buildSrc/build
+run
 
-paper-small/.gradle
-paper-small/build
-
-paper-v2/.gradle
-paper-v2/build
+!bukkit/run/config
+!bukkit/run/eula.txt
+!bukkit/run/bukkit.yml
+!bukkit/run/server.properties
 
 build
 
-example/run
-!example/run/eula.txt
-!example/run/server.properties
+jars

@@ -18,6 +18,6 @@ tasks {
     }
 
     reobfJar {
-        outputJar.set(file("$buildDir/libs/${rootProject.name.lowercase()}-${project.name}-${rootProject.version}.jar"))
+        outputJar.set(file("${layout.projectDirectory}/build/libs/${rootProject.name}-${project.version}.jar"))
     }
 }

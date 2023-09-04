@@ -6,7 +6,9 @@ plugins {
 }
 
 repositories {
-    maven("https://libraries.minecraft.net")
+    maven("https://repo.crazycrew.us/snapshots/")
+
+    maven("https://repo.crazycrew.us/releases/")
 
     maven("https://jitpack.io")
 

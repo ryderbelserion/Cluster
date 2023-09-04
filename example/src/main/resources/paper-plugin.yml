@@ -1,6 +1,0 @@
-name: 'Crafty'
-main: '${group}.Crafty'
-
-version: '${version}'
-api-version: '${apiVersion}'
-description: '${description}'

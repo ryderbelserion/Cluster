@@ -1,24 +1,28 @@
 plugins {
-    id("root-plugin")
+    id("xyz.jpenilla.run-paper") version "2.1.0"
+
+    id("paper-plugin")
 }
 
 base {
     archivesName.set("${rootProject.name.lowercase()}-${project.name}")
 }
 
-project.group = "${rootProject.group}.api"
+project.group = "${rootProject.group}.bukkit"
 
 dependencies {
-    compileOnly("net.kyori", "adventure-text-minimessage", "4.14.0")
-
-    compileOnly("com.google.code.gson", "gson", "2.10.1")
-
-    compileOnly("net.kyori", "adventure-api", "4.14.0")
+    api(project(":api"))
 }
 
 val component: SoftwareComponent = components["java"]
 
 tasks {
+    runServer {
+        minecraftVersion("1.20.1")
+
+        jvmArgs("-Dnet.kyori.ansi.colorLevel=truecolor")
+    }
+
     publishing {
         publications {
             create<MavenPublication>("maven") {
@@ -29,5 +33,9 @@ tasks {
                 from(component)
             }
         }
+    }
+
+    shadowJar {
+        dependsOn(":api:shadowJar")
     }
 }
