@@ -31,6 +31,10 @@ public class FancyLogger {
         send("[" + name + "] <yellow>DEBUG</yellow> " + message);
     }
 
+    public static void success(String message) {
+        send("[" + name + "] <green>SUCCESS</green> " + message);
+    }
+
     private static void send(String message) {
         RootPlugin.getConsole().sendMessage(ColorUtils.parse(message));
     }

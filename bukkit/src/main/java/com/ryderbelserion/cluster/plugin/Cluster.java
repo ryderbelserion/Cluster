@@ -13,13 +13,13 @@ public class Cluster extends JavaPlugin {
         this.bukkitPlugin = new BukkitPlugin(this);
         this.bukkitPlugin.enable();
 
-        FancyLogger.info("Cluster is ready for use!");
+        FancyLogger.success("Cluster is ready for use!");
     }
 
     @Override
     public void onDisable() {
         this.bukkitPlugin.disable();
 
-        FancyLogger.info("Cluster is shutting down.");
+        FancyLogger.success("Cluster is shutting down.");
     }
 }
