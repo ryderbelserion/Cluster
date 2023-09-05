@@ -11,28 +11,24 @@ public class FancyLogger {
         FancyLogger.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public static void info(String message) {
-        send("[" + name + "] <blue>INFO</blue> " + message);
+        send(name + " <blue>INFO</blue> " + message);
     }
 
     public static void warn(String message) {
-        send("[" + name + "] <gold>WARNING</gold> " + message);
+        send(name + " <gold>WARNING</gold> " + message);
     }
 
     public static void error(String message) {
-        send("[" + name + "] <red>ERROR</red> " + message);
+        send(name + " <red>ERROR</red> " + message);
     }
 
     public static void debug(String message) {
-        send("[" + name + "] <yellow>DEBUG</yellow> " + message);
+        send(name + " <yellow>DEBUG</yellow> " + message);
     }
 
     public static void success(String message) {
-        send("[" + name + "] <green>SUCCESS</green> " + message);
+        send(name + " <green>SUCCESS</green> " + message);
     }
 
     private static void send(String message) {
