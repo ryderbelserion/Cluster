@@ -7,8 +7,10 @@ public class FancyLogger {
 
     private static String name;
 
-    public FancyLogger(String name) {
-        FancyLogger.name = name;
+    public static void setName(String prefix) {
+        if (!name.isBlank() || prefix.isBlank()) return;
+
+        name = prefix;
     }
 
     public static void info(String message) {
