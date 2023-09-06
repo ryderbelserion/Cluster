@@ -5,7 +5,7 @@ import com.ryderbelserion.cluster.api.utils.ColorUtils;
 
 public class FancyLogger {
 
-    private static String name;
+    private static String name = "";
 
     public static void setName(String prefix) {
         if (!name.isBlank() || prefix.isBlank()) return;
