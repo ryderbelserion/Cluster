@@ -12,7 +12,7 @@ public abstract class RootPlugin {
 
     private static Audience console;
 
-    public void enable(Audience console, String name) {
+    public void enable(Audience console) {
         // Bind console to whatever the server impl's console sender is.
         RootPlugin.console = console;
 

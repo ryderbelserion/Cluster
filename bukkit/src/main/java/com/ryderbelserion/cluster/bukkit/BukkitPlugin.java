@@ -35,8 +35,8 @@ public class BukkitPlugin extends RootPlugin {
         this.plugin = plugin;
     }
 
-    public void enable(String pluginName) {
-        super.enable(this.plugin.getServer().getConsoleSender(), pluginName);
+    public void enable() {
+        super.enable(this.plugin.getServer().getConsoleSender());
 
         BukkitRegistry.start(this);
 
