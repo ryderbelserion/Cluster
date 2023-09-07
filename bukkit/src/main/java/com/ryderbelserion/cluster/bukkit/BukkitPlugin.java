@@ -44,11 +44,7 @@ public class BukkitPlugin extends RootPlugin {
 
         File file = this.path.toFile();
 
-        if (!file.exists()) {
-            file.mkdirs();
-        } else {
-            FancyLogger.info("Could not create " + file.getName() + " folder because it already exists.");
-        }
+        if (!file.exists()) file.mkdirs();
 
         if (!getPlugin().getDataFolder().exists()) getPlugin().getDataFolder().mkdirs();
     }
