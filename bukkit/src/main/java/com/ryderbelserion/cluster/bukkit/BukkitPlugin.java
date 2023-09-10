@@ -3,6 +3,7 @@ package com.ryderbelserion.cluster.bukkit;
 import com.ryderbelserion.cluster.api.RootPlugin;
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import com.ryderbelserion.cluster.api.config.FileManager;
+import com.ryderbelserion.cluster.api.utils.FileUtils;
 import com.ryderbelserion.cluster.bukkit.registry.BukkitRegistry;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
@@ -15,6 +16,7 @@ public class BukkitPlugin extends RootPlugin {
 
     private JavaPlugin plugin;
     private final Path path;
+    private FileUtils fileUtils;
     private FileManager fileManager;
 
     public BukkitPlugin(JavaPlugin plugin) {
@@ -40,6 +42,7 @@ public class BukkitPlugin extends RootPlugin {
 
         BukkitRegistry.start(this);
 
+        this.fileUtils = new FileUtils();
         this.fileManager = new FileManager();
 
         File file = this.path.toFile();
@@ -68,6 +71,11 @@ public class BukkitPlugin extends RootPlugin {
     @Override
     public FileManager getFileManager() {
         return this.fileManager;
+    }
+
+    @Override
+    public FileUtils getFileUtils() {
+        return this.fileUtils;
     }
 
     public void registerCommand(PluginCommand pluginCommand, TabCompleter tabCompleter, CommandExecutor commandExecutor) {

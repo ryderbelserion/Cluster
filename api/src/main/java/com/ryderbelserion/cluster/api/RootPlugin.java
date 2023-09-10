@@ -2,12 +2,14 @@ package com.ryderbelserion.cluster.api;
 
 import com.ryderbelserion.cluster.api.config.FileManager;
 import com.ryderbelserion.cluster.api.registry.RootRegistry;
+import com.ryderbelserion.cluster.api.utils.FileUtils;
 import net.kyori.adventure.audience.Audience;
 import java.nio.file.Path;
 
 public abstract class RootPlugin {
 
     public abstract FileManager getFileManager();
+    public abstract FileUtils getFileUtils();
     public abstract Path getFolder();
 
     private static Audience console;
