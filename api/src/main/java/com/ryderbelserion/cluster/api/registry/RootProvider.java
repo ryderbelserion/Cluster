@@ -11,7 +11,9 @@ public class RootProvider {
     public static @NotNull RootPlugin get() {
         RootPlugin instance = RootProvider.root;
 
-        if (instance == null) throw new RuntimeException("Failed to utilize root provider. Did it get enabled?");
+        if (instance == null) {
+            throw new RuntimeException("Failed to utilize root provider. Did it get enabled?");
+        }
 
         return root;
     }

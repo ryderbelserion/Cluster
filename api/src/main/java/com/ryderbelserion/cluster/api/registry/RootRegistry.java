@@ -3,6 +3,7 @@ package com.ryderbelserion.cluster.api.registry;
 import com.ryderbelserion.cluster.api.RootPlugin;
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import org.jetbrains.annotations.ApiStatus;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class RootRegistry {
@@ -26,9 +27,8 @@ public class RootRegistry {
     public static void start(RootPlugin root) {
         try {
             start.invoke(null, root);
-        } catch (Exception exception) {
-            FancyLogger.error("Failed to enable cluster root plugin.");
-            FancyLogger.debug("Reason: " + exception.getMessage());
+        } catch (IllegalAccessException | InvocationTargetException exception) {
+            FancyLogger.error("Failed to enable cluster api", exception);
         }
     }
 
@@ -36,9 +36,8 @@ public class RootRegistry {
     public static void stop() {
         try {
             stop.invoke(null);
-        } catch (Exception exception) {
-            FancyLogger.error("Failed to disable cluster root plugin.");
-            FancyLogger.debug("Reason: " + exception.getMessage());
+        } catch (IllegalAccessException | InvocationTargetException exception) {
+            FancyLogger.error("Failed to disable cluster api", exception);
         }
     }
 }

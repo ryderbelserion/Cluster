@@ -2,6 +2,7 @@ package com.ryderbelserion.cluster.bukkit.registry;
 
 import com.ryderbelserion.cluster.bukkit.BukkitPlugin;
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import static org.jetbrains.annotations.ApiStatus.Internal;
 
@@ -26,9 +27,8 @@ public class BukkitRegistry {
     public static void start(BukkitPlugin bukkit) {
         try {
             start.invoke(null, bukkit);
-        } catch (Exception exception) {
-            FancyLogger.error("Failed to enable cluster bukkit api.");
-            FancyLogger.debug(exception.getMessage());
+        } catch (IllegalAccessException | InvocationTargetException exception) {
+            FancyLogger.error("Failed to enable cluster bukkit api", exception);
         }
     }
 
@@ -36,9 +36,8 @@ public class BukkitRegistry {
     public static void stop() {
         try {
             stop.invoke(null);
-        } catch (Exception exception) {
-            FancyLogger.error("Failed to disable cluster bukkit api.");
-            FancyLogger.debug(exception.getMessage());
+        } catch (IllegalAccessException | InvocationTargetException exception) {
+            FancyLogger.error("Failed to disable cluster bukkit api", exception);
         }
     }
 }

@@ -22,7 +22,9 @@ public class FileUtils {
         File dir = directory.toFile();
 
         if (!dir.exists()) {
-            if (dir.mkdirs()) FancyLogger.debug("Created " + dir.getName() + " because we couldn't find it.");
+            if (dir.mkdirs()) {
+                FancyLogger.debug("Created " + dir.getName() + " because we couldn't find it.");
+            }
         }
 
         ClassLoader loader = getClass().getClassLoader();
@@ -40,7 +42,7 @@ public class FileUtils {
         try {
             grab(resource.openStream(), file);
         } catch (Exception exception) {
-            FancyLogger.error("Failed to copy file: " + url);
+            FancyLogger.error("Failed to copy file: " + url, exception);
         }
     }
 
