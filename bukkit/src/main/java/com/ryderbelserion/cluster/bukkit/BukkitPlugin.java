@@ -48,7 +48,9 @@ public class BukkitPlugin extends RootPlugin {
 
         //if (!file.exists()) file.mkdirs();
 
-        if (!getPlugin().getDataFolder().exists()) getPlugin().getDataFolder().mkdirs();
+        if (!getPlugin().getDataFolder().exists()) {
+            getPlugin().getDataFolder().mkdirs();
+        }
     }
 
     public void disable() {
@@ -81,7 +83,9 @@ public class BukkitPlugin extends RootPlugin {
         if (pluginCommand != null) {
             pluginCommand.setExecutor(commandExecutor);
 
-            if (tabCompleter != null) pluginCommand.setTabCompleter(tabCompleter);
+            if (tabCompleter != null) {
+                pluginCommand.setTabCompleter(tabCompleter);
+            }
         }
     }
 }
