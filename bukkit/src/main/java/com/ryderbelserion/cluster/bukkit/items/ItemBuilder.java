@@ -237,8 +237,7 @@ public class ItemBuilder {
                         try {
                             textures.setSkin(new URL(this.player));
                         } catch (MalformedURLException exception) {
-                            FancyLogger.warn("Failed to set skin: " + this.player + " to profile.");
-                            FancyLogger.debug(exception.getMessage());
+                            FancyLogger.warn("Failed to set skin: " + this.player + " to profile.", exception);
                         }
                     } else {
                         OfflinePlayer person = getPlayer(this.player) != null ? getPlayer(this.player) : getOfflinePlayer(this.player);
@@ -569,8 +568,7 @@ public class ItemBuilder {
 
                     this.potionType = potionType;
                 } catch (Exception exception) {
-                    FancyLogger.warn("Failed to set potion type " + metaData + ".");
-                    FancyLogger.debug(exception.getMessage());
+                    FancyLogger.warn("Failed to set potion type " + metaData + ".", exception);
                 }
 
                 this.potionColor = DyeUtils.getColor(metaData);
@@ -652,11 +650,12 @@ public class ItemBuilder {
             String[] split = stringPattern.split(":");
 
             for (PatternType pattern : PatternType.values()) {
-
                 if (split[0].equalsIgnoreCase(pattern.name()) || split[0].equalsIgnoreCase(pattern.getIdentifier())) {
                     DyeColor color = DyeUtils.getDyeColor(split[1]);
 
-                    if (color != null) addPattern(new Pattern(color, pattern));
+                    if (color != null) {
+                        addPattern(new Pattern(color, pattern));
+                    }
 
                     break;
                 }
