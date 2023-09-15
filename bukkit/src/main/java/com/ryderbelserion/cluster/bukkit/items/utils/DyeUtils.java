@@ -2,84 +2,71 @@ package com.ryderbelserion.cluster.bukkit.items.utils;
 
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
+import java.util.HashMap;
 
 public class DyeUtils {
 
-    public static Color getColor(String color) {
-        if (color != null) {
-            switch (color.toUpperCase()) {
-                case "AQUA" -> {
-                    return Color.AQUA;
-                }
-                case "BLACK" -> {
-                    return Color.BLACK;
-                }
-                case "BLUE" -> {
-                    return Color.BLUE;
-                }
-                case "FUCHSIA" -> {
-                    return Color.FUCHSIA;
-                }
-                case "GRAY" -> {
-                    return Color.GRAY;
-                }
-                case "GREEN" -> {
-                    return Color.GREEN;
-                }
-                case "LIME" -> {
-                    return Color.LIME;
-                }
-                case "MAROON" -> {
-                    return Color.MAROON;
-                }
-                case "NAVY" -> {
-                    return Color.NAVY;
-                }
-                case "OLIVE" -> {
-                    return Color.OLIVE;
-                }
-                case "ORANGE" -> {
-                    return Color.ORANGE;
-                }
-                case "PURPLE" -> {
-                    return Color.PURPLE;
-                }
-                case "RED" -> {
-                    return Color.RED;
-                }
-                case "SILVER" -> {
-                    return Color.SILVER;
-                }
-                case "TEAL" -> {
-                    return Color.TEAL;
-                }
-                case "WHITE" -> {
-                    return Color.WHITE;
-                }
-                case "YELLOW" -> {
-                    return Color.YELLOW;
-                }
-            }
+    private static final HashMap<String, Color> colors = createMap();
 
-            try {
-                String[] rgb = color.split(",");
-                return Color.fromRGB(Integer.parseInt(rgb[0]), Integer.parseInt(rgb[1]), Integer.parseInt(rgb[2]));
-            } catch (Exception ignore) {}
-        }
+    private static HashMap<String, Color> createMap() {
+        HashMap<String, Color> map = new HashMap<>();
+        map.put("AQUA", Color.AQUA);
+        map.put("BLACK", Color.BLACK);
+        map.put("BLUE", Color.BLUE);
+        map.put("FUCHSIA", Color.FUCHSIA);
+        map.put("GRAY", Color.GRAY);
+        map.put("GREEN", Color.GREEN);
+        map.put("LIME", Color.LIME);
+        map.put("MAROON", Color.MAROON);
+        map.put("NAVY", Color.NAVY);
+        map.put("OLIVE", Color.OLIVE);
+        map.put("ORANGE", Color.ORANGE);
+        map.put("PURPLE", Color.PURPLE);
+        map.put("RED", Color.RED);
+        map.put("SILVER", Color.SILVER);
+        map.put("TEAL", Color.TEAL);
+        map.put("WHITE", Color.WHITE);
+        map.put("YELLOW", Color.YELLOW);
+        return map;
+    }
+
+    public static Color getColor(String color) {
+        if (color == null || color.isBlank()) return null;
+
+        Color mappedColor = colors.get(color.toUpperCase());
+
+        if (mappedColor != null) return mappedColor;
+
+        try {
+            String[] rgb = color.split(",");
+
+            if (rgb.length != 3) return null;
+
+            int red = Integer.parseInt(rgb[0]);
+            int green = Integer.parseInt(rgb[1]);
+            int blue = Integer.parseInt(rgb[2]);
+            return Color.fromRGB(red, green, blue);
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException ignore) {}
 
         return null;
     }
 
     public static DyeColor getDyeColor(String color) {
-        if (color != null) {
+        if (color == null || color.isBlank()) return null;
+
+        try {
+            return DyeColor.valueOf(color.toUpperCase());
+        } catch (Exception exception) {
+            String[] rgb = color.split(",");
+
+            if (rgb.length != 3) return null;
+
             try {
-                return DyeColor.valueOf(color.toUpperCase());
-            } catch (Exception exception) {
-                try {
-                    String[] rgb = color.split(",");
-                    return DyeColor.getByColor(Color.fromRGB(Integer.parseInt(rgb[0]), Integer.parseInt(rgb[1]), Integer.parseInt(rgb[2])));
-                } catch (Exception ignore) {}
-            }
+                int red = Integer.parseInt(rgb[0]);
+                int green = Integer.parseInt(rgb[1]);
+                int blue = Integer.parseInt(rgb[2]);
+                return DyeColor.getByColor(Color.fromRGB(red, green, blue));
+            } catch (Exception ignore) {}
         }
 
         return null;
