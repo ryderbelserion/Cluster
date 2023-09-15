@@ -1,6 +1,5 @@
 package com.ryderbelserion.cluster.api;
 
-import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +25,6 @@ public class RootService {
     @ApiStatus.Internal
     public static void setService(RootPlugin rootPlugin) {
         if (RootService.rootPlugin != null) {
-            FancyLogger.warn("Cluster's root service is not null. You cannot override it.");
             return;
         }
 
@@ -36,7 +34,6 @@ public class RootService {
     @ApiStatus.Internal
     public static void stopService() {
         if (RootService.rootPlugin == null) {
-            FancyLogger.warn("Cluster's root service is already null.");
             return;
         }
 
