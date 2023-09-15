@@ -13,15 +13,12 @@ import java.nio.file.Path;
 
 public class BukkitPlugin extends RootPlugin {
 
-    private JavaPlugin plugin;
-    //private final Path path;
-    private FileUtils fileUtils;
     private FileManager fileManager;
+    private FileUtils fileUtils;
+    private JavaPlugin plugin;
 
     public BukkitPlugin(JavaPlugin plugin) {
         this.plugin = plugin;
-
-        //this.path = this.plugin.getServer().getPluginsFolder().toPath().resolve("Cluster");
     }
 
     public void setPlugin(JavaPlugin plugin) {
@@ -44,12 +41,8 @@ public class BukkitPlugin extends RootPlugin {
         this.fileUtils = new FileUtils();
         this.fileManager = new FileManager();
 
-        //File file = this.path.toFile();
-
-        //if (!file.exists()) file.mkdirs();
-
-        if (!getPlugin().getDataFolder().exists()) {
-            getPlugin().getDataFolder().mkdirs();
+        if (!this.plugin.getDataFolder().exists()) {
+            this.plugin.getDataFolder().mkdirs();
         }
     }
 
@@ -60,15 +53,6 @@ public class BukkitPlugin extends RootPlugin {
         BukkitRegistry.stop();
     }
 
-    public JavaPlugin getPlugin() {
-        return this.plugin;
-    }
-
-    @Override
-    public Path getFolder() {
-        return getPlugin().getDataFolder().toPath();
-    }
-
     @Override
     public FileManager getFileManager() {
         return this.fileManager;
@@ -77,6 +61,11 @@ public class BukkitPlugin extends RootPlugin {
     @Override
     public FileUtils getFileUtils() {
         return this.fileUtils;
+    }
+
+    @Override
+    public Path getFolder() {
+        return this.plugin.getDataFolder().toPath();
     }
 
     public void registerCommand(PluginCommand pluginCommand, TabCompleter tabCompleter, CommandExecutor commandExecutor) {
