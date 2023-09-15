@@ -3,7 +3,6 @@ package com.ryderbelserion.cluster.api.config;
 import com.google.gson.GsonBuilder;
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import com.ryderbelserion.cluster.api.config.types.FileType;
-
 import java.io.File;
 import java.nio.file.Path;
 

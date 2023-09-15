@@ -1,9 +1,7 @@
 package com.ryderbelserion.cluster.api.config;
 
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
-import com.ryderbelserion.cluster.api.config.types.FileType;
 import com.ryderbelserion.cluster.api.config.types.file.JsonFile;
-
 import java.io.File;
 
 public class FileManager implements FileContext {
