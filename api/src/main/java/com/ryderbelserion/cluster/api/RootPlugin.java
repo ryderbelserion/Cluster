@@ -13,10 +13,14 @@ public abstract class RootPlugin {
 
     private static Audience console;
 
-    public void enable(Audience console) {
+    public static void setConsole(Audience console) {
+        if (RootPlugin.console != null) return;
+
         // Bind console to whatever the server impl's console sender is.
         RootPlugin.console = console;
+    }
 
+    public void enable() {
         // Start the root service.
         RootService.setService(this);
     }

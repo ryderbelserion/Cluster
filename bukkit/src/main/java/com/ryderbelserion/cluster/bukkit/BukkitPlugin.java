@@ -18,9 +18,11 @@ public class BukkitPlugin extends RootPlugin {
 
     public BukkitPlugin(JavaPlugin plugin) {
         this.plugin = plugin;
+
+        super.enable();
     }
 
-    public void setPlugin(JavaPlugin plugin) {
+    public void setPlugin(JavaPlugin plugin, boolean initApi) {
         // If the plugin is already registered,
         // return as we don't want it registered again.
         if (this.plugin != null) {
@@ -30,11 +32,12 @@ public class BukkitPlugin extends RootPlugin {
 
         // Set the plugin variable.
         this.plugin = plugin;
+
+        // Just in case.
+        if (initApi) super.enable();
     }
 
     public void enable() {
-        super.enable(this.plugin.getServer().getConsoleSender());
-
         BukkitService.setService(this);
 
         this.fileUtils = new FileUtils();
