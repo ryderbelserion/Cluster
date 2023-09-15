@@ -4,7 +4,6 @@ import com.ryderbelserion.cluster.api.RootPlugin;
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import com.ryderbelserion.cluster.api.config.FileManager;
 import com.ryderbelserion.cluster.api.utils.FileUtils;
-import com.ryderbelserion.cluster.bukkit.registry.BukkitRegistry;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
@@ -36,7 +35,7 @@ public class BukkitPlugin extends RootPlugin {
     public void enable() {
         super.enable(this.plugin.getServer().getConsoleSender());
 
-        BukkitRegistry.start(this);
+        BukkitService.setService(this);
 
         this.fileUtils = new FileUtils();
         this.fileManager = new FileManager();
@@ -50,7 +49,7 @@ public class BukkitPlugin extends RootPlugin {
         super.disable();
 
         // This must go last.
-        BukkitRegistry.stop();
+        BukkitService.stopService();
     }
 
     @Override
