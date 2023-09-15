@@ -9,20 +9,19 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
-import java.io.File;
 import java.nio.file.Path;
 
 public class BukkitPlugin extends RootPlugin {
 
     private JavaPlugin plugin;
-    private final Path path;
+    //private final Path path;
     private FileUtils fileUtils;
     private FileManager fileManager;
 
     public BukkitPlugin(JavaPlugin plugin) {
         this.plugin = plugin;
 
-        this.path = this.plugin.getServer().getPluginsFolder().toPath().resolve("Cluster");
+        //this.path = this.plugin.getServer().getPluginsFolder().toPath().resolve("Cluster");
     }
 
     public void setPlugin(JavaPlugin plugin) {
@@ -45,9 +44,9 @@ public class BukkitPlugin extends RootPlugin {
         this.fileUtils = new FileUtils();
         this.fileManager = new FileManager();
 
-        File file = this.path.toFile();
+        //File file = this.path.toFile();
 
-        if (!file.exists()) file.mkdirs();
+        //if (!file.exists()) file.mkdirs();
 
         if (!getPlugin().getDataFolder().exists()) getPlugin().getDataFolder().mkdirs();
     }
