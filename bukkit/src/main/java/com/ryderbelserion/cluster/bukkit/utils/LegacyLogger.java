@@ -45,7 +45,7 @@ public class LegacyLogger {
     }
 
     public static void success(String message) {
-        send(name + "&aSUCCESS &r" + message);
+        send(name + " &aSUCCESS &r" + message);
     }
 
     public static void success(String message, Throwable cause) {
