@@ -9,42 +9,45 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class NbtBuilder {
 
     private final JavaPlugin plugin;
+    private final ItemStack itemStack;
 
-    public NbtBuilder(JavaPlugin plugin) {
+    public NbtBuilder(JavaPlugin plugin, ItemStack itemStack) {
         this.plugin = plugin;
+
+        this.itemStack = itemStack;
     }
 
-    public ItemStack setString(ItemStack itemStack, String key, String value) {
-        itemStack.editMeta(meta -> meta.getPersistentDataContainer().set(new NamespacedKey(this.plugin, key), PersistentDataType.STRING, value));
+    public ItemStack setString(String key, String value) {
+        this.itemStack.editMeta(meta -> meta.getPersistentDataContainer().set(new NamespacedKey(this.plugin, key), PersistentDataType.STRING, value));
 
-        return itemStack;
+        return this.itemStack;
     }
 
-    public boolean hasString(ItemStack itemStack, String key) {
-        ItemMeta meta = itemStack.getItemMeta();
+    public boolean hasString(String key) {
+        ItemMeta meta = this.itemStack.getItemMeta();
 
         if (meta == null) return false;
 
         return meta.getPersistentDataContainer().has(new NamespacedKey(this.plugin, key));
     }
 
-    public String getString(ItemStack itemStack, String key) {
-        ItemMeta meta = itemStack.getItemMeta();
+    public String getString(String key) {
+        ItemMeta meta = this.itemStack.getItemMeta();
 
         if (meta == null) return null;
 
         return meta.getPersistentDataContainer().get(new NamespacedKey(this.plugin, key), PersistentDataType.STRING);
     }
 
-    public ItemStack setBoolean(ItemStack itemStack, String key, boolean value) {
-        itemStack.editMeta(meta -> meta.getPersistentDataContainer().set(new NamespacedKey(this.plugin, key), PersistentDataType.BOOLEAN, value));
+    public ItemStack setBoolean(String key, boolean value) {
+        this.itemStack.editMeta(meta -> meta.getPersistentDataContainer().set(new NamespacedKey(this.plugin, key), PersistentDataType.BOOLEAN, value));
 
-        return itemStack;
+        return this.itemStack;
     }
 
-    public ItemStack removeTag(ItemStack itemStack, String key) {
-        itemStack.editMeta(meta -> meta.getPersistentDataContainer().remove(new NamespacedKey(this.plugin, key)));
+    public ItemStack removeTag(String key) {
+        this.itemStack.editMeta(meta -> meta.getPersistentDataContainer().remove(new NamespacedKey(this.plugin, key)));
 
-        return itemStack;
+        return this.itemStack;
     }
 }
