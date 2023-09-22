@@ -50,4 +50,8 @@ public class NbtBuilder {
 
         return this.itemStack;
     }
+
+    public ItemStack getItemStack() {
+        return this.itemStack;
+    }
 }
