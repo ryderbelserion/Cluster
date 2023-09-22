@@ -20,6 +20,14 @@ public class NbtBuilder {
         return itemStack;
     }
 
+    public boolean hasString(ItemStack itemStack, String key) {
+        ItemMeta meta = itemStack.getItemMeta();
+
+        if (meta == null) return false;
+
+        return meta.getPersistentDataContainer().has(new NamespacedKey(this.plugin, key));
+    }
+
     public String getString(ItemStack itemStack, String key) {
         ItemMeta meta = itemStack.getItemMeta();
 
