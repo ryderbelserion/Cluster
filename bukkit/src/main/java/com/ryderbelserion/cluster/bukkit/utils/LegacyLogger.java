@@ -13,7 +13,7 @@ public class LegacyLogger {
     }
 
     public static void info(String message) {
-        send(name + " &bINFO &r" + message);
+        send(name + "&bINFO &r" + message);
     }
 
     public static void info(String message, Throwable cause) {
@@ -21,7 +21,7 @@ public class LegacyLogger {
     }
 
     public static void warn(String message) {
-        send(name + " &6WARNING &r" + message);
+        send(name + "&6WARNING &r" + message);
     }
 
     public static void warn(String message, Throwable cause) {
@@ -29,7 +29,7 @@ public class LegacyLogger {
     }
 
     public static void error(String message) {
-        send(name + " &cERROR &r" + message);
+        send(name + "&cERROR &r" + message);
     }
 
     public static void error(String message, Throwable cause) {
@@ -37,7 +37,7 @@ public class LegacyLogger {
     }
 
     public static void debug(String message) {
-        send(name + " &eDEBUG &r" + message);
+        send(name + "&eDEBUG &r" + message);
     }
 
     public static void debug(String message, Throwable cause) {
@@ -45,7 +45,7 @@ public class LegacyLogger {
     }
 
     public static void success(String message) {
-        send(name + " &aSUCCESS &r" + message);
+        send(name + "&aSUCCESS &r" + message);
     }
 
     public static void success(String message, Throwable cause) {

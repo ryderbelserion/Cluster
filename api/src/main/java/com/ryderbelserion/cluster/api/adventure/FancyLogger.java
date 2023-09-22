@@ -14,7 +14,7 @@ public class FancyLogger {
     }
 
     public static void info(String message) {
-        send(name + " <blue>INFO</blue> " + message);
+        send(name + "<blue>INFO</blue> " + message);
     }
 
     public static void info(String message, Throwable cause) {
@@ -22,7 +22,7 @@ public class FancyLogger {
     }
 
     public static void warn(String message) {
-        send(name + " <gold>WARNING</gold> " + message);
+        send(name + "<gold>WARNING</gold> " + message);
     }
 
     public static void warn(String message, Throwable cause) {
@@ -30,7 +30,7 @@ public class FancyLogger {
     }
 
     public static void error(String message) {
-        send(name + " <red>ERROR</red> " + message);
+        send(name + "<red>ERROR</red> " + message);
     }
 
     public static void error(String message, Throwable cause) {
@@ -38,7 +38,7 @@ public class FancyLogger {
     }
 
     public static void debug(String message) {
-        send(name + " <yellow>DEBUG</yellow> " + message);
+        send(name + "<yellow>DEBUG</yellow> " + message);
     }
 
     public static void debug(String message, Throwable cause) {
@@ -46,7 +46,7 @@ public class FancyLogger {
     }
 
     public static void success(String message) {
-        send(name + " <green>SUCCESS</green> " + message);
+        send(name + "<green>SUCCESS</green> " + message);
     }
 
     public static void success(String message, Throwable cause) {
