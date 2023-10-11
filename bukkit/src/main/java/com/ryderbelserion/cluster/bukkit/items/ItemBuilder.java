@@ -497,6 +497,39 @@ public class ItemBuilder {
         return this;
     }
 
+    public boolean isUnbreakable() {
+        return this.isUnbreakable;
+    }
+
+    public void setUnbreakable(boolean unbreakable) {
+        this.isUnbreakable = unbreakable;
+    }
+
+    public ItemBuilder addItemFlag(ItemFlag itemFlag) {
+        if (itemFlag != null) this.itemFlags.add(itemFlag);
+
+        return this;
+    }
+
+    public ItemBuilder addFlag(String flag) {
+        ItemFlag value = getFlag(flag);
+
+        if (value != null) this.itemFlags.add(value);
+        return this;
+    }
+
+    public ItemBuilder addItemFlags(List<String> flags) {
+        for (String flag : flags) {
+            try {
+                ItemFlag itemFlag = ItemFlag.valueOf(flag.toUpperCase());
+
+                addItemFlag(itemFlag);
+            } catch (Exception ignored) {}
+        }
+
+        return this;
+    }
+
     public ItemBuilder setEffect(FireworkEffect.Builder... effects) {
         return setEffect(Arrays.asList(effects));
     }
@@ -724,5 +757,13 @@ public class ItemBuilder {
                 }
             }
         } catch (Exception ignored) {}
+    }
+
+    private ItemFlag getFlag(String flagString) {
+        for (ItemFlag flag : ItemFlag.values()) {
+            if (flag.name().equalsIgnoreCase(flagString)) return flag;
+        }
+
+        return null;
     }
 }
