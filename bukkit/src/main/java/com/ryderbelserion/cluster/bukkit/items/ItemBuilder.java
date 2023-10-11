@@ -236,7 +236,7 @@ public class ItemBuilder {
             getItemStack().setAmount(this.itemAmount);
 
             getItemStack().editMeta(meta -> {
-                if (this.isHead) {
+                if (this.isHead && !this.player.isBlank()) {
                     SkullMeta skullMeta = (SkullMeta) meta;
 
                     if (this.isURL) {
