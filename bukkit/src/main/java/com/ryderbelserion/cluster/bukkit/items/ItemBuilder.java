@@ -2,7 +2,6 @@ package com.ryderbelserion.cluster.bukkit.items;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.ryderbelserion.cluster.api.RootService;
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import com.ryderbelserion.cluster.api.utils.ColorUtils;
 import com.ryderbelserion.cluster.bukkit.items.utils.DyeUtils;
@@ -51,7 +50,7 @@ import java.util.concurrent.CompletableFuture;
 @SuppressWarnings("ALL")
 public class ItemBuilder {
 
-    private boolean isLegacy;
+    private boolean isLegacy = false;
 
     // Items
     private Material material = Material.STONE;
@@ -398,6 +397,12 @@ public class ItemBuilder {
 
     private ItemStack getItemStack() {
         return this.itemStack;
+    }
+
+    public ItemBuilder setLegacy(boolean toggle) {
+        this.isLegacy = toggle;
+
+        return this;
     }
 
     // Name
