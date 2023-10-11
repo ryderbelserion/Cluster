@@ -1,6 +1,7 @@
 package com.ryderbelserion.cluster.api.config;
 
 import com.google.gson.GsonBuilder;
+import com.ryderbelserion.cluster.api.RootService;
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import com.ryderbelserion.cluster.api.config.types.FileType;
 import java.io.File;
@@ -22,7 +23,11 @@ public abstract class FileEngine {
 
     public void setGsonBuilder(GsonBuilder gson) {
         if (this.fileType != FileType.JSON) {
-            FancyLogger.error("You cannot use json if the file type isn't " + FileType.JSON.getName());
+            if (RootService.getService().isLegacy()) {
+                System.out.println("You cannot use json if the file type isn't " + FileType.JSON.getName());
+            } else {
+                FancyLogger.warn("You cannot use json if the file type isn't " + FileType.JSON.getName());
+            }
 
             return;
         }

@@ -4,6 +4,7 @@ import com.ryderbelserion.cluster.api.RootPlugin;
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import com.ryderbelserion.cluster.api.config.FileManager;
 import com.ryderbelserion.cluster.api.utils.FileUtils;
+import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
@@ -16,17 +17,26 @@ public class BukkitPlugin extends RootPlugin {
     private FileUtils fileUtils;
     private JavaPlugin plugin;
 
-    public BukkitPlugin(JavaPlugin plugin) {
+    private final boolean isLegacy;
+
+    public BukkitPlugin(JavaPlugin plugin, boolean isLegacy) {
         this.plugin = plugin;
 
-        super.enable();
+        this.isLegacy = isLegacy;
+
+        super.enable(this.isLegacy);
     }
 
     public void setPlugin(JavaPlugin plugin, boolean initApi) {
         // If the plugin is already registered,
         // return as we don't want it registered again.
         if (this.plugin != null) {
-            FancyLogger.warn("The plugin variable is already set. You cannot register or overwrite it.");
+            if (this.isLegacy) {
+                LegacyLogger.warn("The plugin variable is already set. You cannot register or overwrite it.");
+            } else {
+                FancyLogger.warn("The plugin variable is already set. You cannot register or overwrite it.");
+            }
+
             return;
         }
 
@@ -34,7 +44,7 @@ public class BukkitPlugin extends RootPlugin {
         this.plugin = plugin;
 
         // Just in case.
-        if (initApi) super.enable();
+        if (initApi) super.enable(this.isLegacy);
     }
 
     public void enable() {
@@ -53,6 +63,10 @@ public class BukkitPlugin extends RootPlugin {
 
         // This must go last.
         BukkitService.stopService();
+    }
+
+    public boolean isLegacy() {
+        return this.isLegacy;
     }
 
     @Override

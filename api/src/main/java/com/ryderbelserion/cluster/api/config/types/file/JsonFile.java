@@ -2,6 +2,7 @@ package com.ryderbelserion.cluster.api.config.types.file;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.ryderbelserion.cluster.api.RootService;
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import com.ryderbelserion.cluster.api.config.FileEngine;
 import java.io.File;
@@ -25,10 +26,19 @@ public class JsonFile {
 
         try {
             if (file.createNewFile()) {
-                FancyLogger.debug("Created new file: " + file.getName());
+                if (RootService.getService().isLegacy()) {
+                    System.out.println("Created new file: " + file.getName());
+                } else {
+                    FancyLogger.debug("Created new file: " + file.getName());
+                }
             }
         } catch (IOException exception) {
-            FancyLogger.error("Failed to create " + file.getName(), exception);
+            if (RootService.getService().isLegacy()) {
+                System.out.println("Failed to create " + file.getName());
+                System.out.println(exception.getMessage());
+            } else {
+                FancyLogger.error("Failed to create " + file.getName(), exception);
+            }
         }
 
         this.jsonReader = new JsonReader(file, gson, context);

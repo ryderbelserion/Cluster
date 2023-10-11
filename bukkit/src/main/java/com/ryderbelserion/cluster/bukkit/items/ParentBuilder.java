@@ -10,12 +10,12 @@ public class ParentBuilder {
         return new ItemBuilder();
     }
 
-    public static ItemBuilder of(ItemStack itemStack) {
-        return new ItemBuilder(itemStack);
+    public static ItemBuilder of(ItemStack itemStack, boolean isLegacy) {
+        return new ItemBuilder(itemStack, isLegacy);
     }
 
-    public static ItemBuilder of(Material material) {
-        return new ItemBuilder(new ItemStack(material));
+    public static ItemBuilder of(Material material, boolean isLegacy) {
+        return new ItemBuilder(new ItemStack(material), isLegacy);
     }
 
     public static BlockBuilder of(Block block) {

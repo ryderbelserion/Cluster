@@ -1,5 +1,6 @@
 package com.ryderbelserion.cluster.api.utils;
 
+import com.ryderbelserion.cluster.api.RootService;
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,7 +24,11 @@ public class FileUtils {
 
         if (!dir.exists()) {
             if (dir.mkdirs()) {
-                FancyLogger.debug("Created " + dir.getName() + " because we couldn't find it.");
+                if (RootService.getService().isLegacy()) {
+                    System.out.println("Created " + dir.getName() + " because we couldn't find it.");
+                } else {
+                    FancyLogger.debug("Created " + dir.getName() + " because we couldn't find it.");
+                }
             }
         }
 
@@ -34,7 +39,11 @@ public class FileUtils {
         URL resource = loader.getResource(url);
 
         if (resource == null) {
-            FancyLogger.error("Failed to find file: " + url);
+            if (RootService.getService().isLegacy()) {
+                System.out.println("Failed to find file: " + url);
+            } else {
+                FancyLogger.error("Failed to find file: " + url);
+            }
 
             return;
         }
@@ -42,7 +51,12 @@ public class FileUtils {
         try {
             grab(resource.openStream(), file);
         } catch (Exception exception) {
-            FancyLogger.error("Failed to copy file: " + url, exception);
+            if (RootService.getService().isLegacy()) {
+                System.out.println("Failed to copy file: " + url);
+                System.out.println(exception.getMessage());
+            } else {
+                FancyLogger.error("Failed to copy file: " + url, exception);
+            }
         }
     }
 

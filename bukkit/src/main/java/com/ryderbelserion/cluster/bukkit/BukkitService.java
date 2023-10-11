@@ -1,6 +1,7 @@
 package com.ryderbelserion.cluster.bukkit;
 
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
+import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +27,14 @@ public class BukkitService {
     @ApiStatus.Internal
     public static void setService(BukkitPlugin bukkit) {
         if (BukkitService.bukkitPlugin != null) {
+            if (bukkit.isLegacy()) {
+                LegacyLogger.error("Cluster's bukkit service is not null, You cannot override it.");
+
+                return;
+            }
+
             FancyLogger.error("Cluster's bukkit service is not null, You cannot override it.");
+
             return;
         }
 
@@ -36,7 +44,6 @@ public class BukkitService {
     @ApiStatus.Internal
     public static void stopService() {
         if (BukkitService.bukkitPlugin == null) {
-            FancyLogger.error("Cluster's bukkit service is already null.");
             return;
         }
 
