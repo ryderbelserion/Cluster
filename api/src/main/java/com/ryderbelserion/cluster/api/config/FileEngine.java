@@ -23,11 +23,7 @@ public abstract class FileEngine {
 
     public void setGsonBuilder(GsonBuilder gson) {
         if (this.fileType != FileType.JSON) {
-            if (RootService.getService().isLegacy()) {
-                System.out.println("You cannot use json if the file type isn't " + FileType.JSON.getName());
-            } else {
-                FancyLogger.warn("You cannot use json if the file type isn't " + FileType.JSON.getName());
-            }
+            FancyLogger.warn("You cannot use json if the file type isn't " + FileType.JSON.getName());
 
             return;
         }

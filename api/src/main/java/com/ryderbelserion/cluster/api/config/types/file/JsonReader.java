@@ -2,7 +2,6 @@ package com.ryderbelserion.cluster.api.config.types.file;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.ryderbelserion.cluster.api.RootService;
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,19 +27,9 @@ public class JsonReader {
         try (InputStreamReader reader = new InputStreamReader(new FileInputStream(this.file), StandardCharsets.UTF_8)) {
             this.gson.fromJson(reader, this.context.getClass());
         } catch (IOException exception) {
-            if (RootService.getService().isLegacy()) {
-                System.out.println("Failed to read " + this.file.getName());
-                System.out.println(exception.getMessage());
-            } else {
-                FancyLogger.error("Failed to read " + this.file.getName(), exception);
-            }
+            FancyLogger.error("Failed to read " + this.file.getName(), exception);
         } catch (JsonSyntaxException exception) {
-            if (RootService.getService().isLegacy()) {
-                System.out.println("Failed to parse json from " + this.file.getName());
-                System.out.println(exception.getMessage());
-            } else {
-                FancyLogger.error("Failed to parse json from " + this.file.getName(), exception);
-            }
+            FancyLogger.error("Failed to parse json from " + this.file.getName(), exception);
         }
     }
 
@@ -51,12 +40,7 @@ public class JsonReader {
                 writer.write(values);
             }
         } catch (IOException exception) {
-            if (RootService.getService().isLegacy()) {
-                System.out.println("Failed to write to " + this.file.getName());
-                System.out.println(exception.getMessage());
-            } else {
-                FancyLogger.error("Failed to write to " + this.file.getName(), exception);
-            }
+            FancyLogger.error("Failed to write to " + this.file.getName(), exception);
         }
     }
 }

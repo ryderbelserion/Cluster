@@ -1,8 +1,6 @@
 package com.ryderbelserion.cluster.api.config;
 
-import com.ryderbelserion.cluster.api.RootService;
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
-import com.ryderbelserion.cluster.api.config.types.FileType;
 import com.ryderbelserion.cluster.api.config.types.file.JsonFile;
 import java.io.File;
 
@@ -18,13 +16,7 @@ public class FileManager implements FileContext {
                 this.jsonFile.load();
             }
 
-            case YAML -> {
-                if (RootService.getService().isLegacy()) {
-                    System.out.println(file.getFileType().getName() + " is not supported yet.");
-                } else {
-                    FancyLogger.info(file.getFileType().getName() + " is not supported yet.");
-                }
-            }
+            case YAML -> FancyLogger.info(file.getFileType().getName() + " is not supported yet.");
         }
     }
 
@@ -36,13 +28,7 @@ public class FileManager implements FileContext {
                 this.jsonFile.save();
             }
 
-            case YAML -> {
-                if (RootService.getService().isLegacy()) {
-                    System.out.println(file.getFileType().getName() + " is not supported yet.");
-                } else {
-                    FancyLogger.info(file.getFileType().getName() + " is not supported yet.");
-                }
-            }
+            case YAML -> FancyLogger.info(file.getFileType().getName() + " is not supported yet.");
         }
     }
 
@@ -51,11 +37,7 @@ public class FileManager implements FileContext {
         File type = file.getFilePath().toFile();
 
         if (type.exists()) if (type.delete()) {
-            if (RootService.getService().isLegacy()) {
-                System.out.println("Deleted file " + type.getName());
-            } else {
-                FancyLogger.debug("Deleted file " + type.getName());
-            }
+            FancyLogger.debug("Deleted file " + type.getName());
         }
     }
 

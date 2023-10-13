@@ -5,8 +5,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import com.ryderbelserion.cluster.api.utils.ColorUtils;
 import com.ryderbelserion.cluster.bukkit.items.utils.DyeUtils;
-import com.ryderbelserion.cluster.bukkit.utils.LegacyLogger;
-import com.ryderbelserion.cluster.bukkit.utils.LegacyUtils;
 import net.kyori.adventure.text.Component;
 import net.minecraft.nbt.TagParser;
 import org.apache.commons.lang.WordUtils;
@@ -50,8 +48,6 @@ import java.util.concurrent.CompletableFuture;
 @SuppressWarnings("ALL")
 public class ItemBuilder {
 
-    private boolean isLegacy = false;
-
     // Items
     private Material material = Material.STONE;
     private ItemStack itemStack = null;
@@ -62,9 +58,7 @@ public class ItemBuilder {
 
     // Display
     private Component displayName = Component.empty();
-    private String legacyDisplayName = "";
     private List<Component> displayLore = new ArrayList<>();
-    private List<String> legacyDisplayLore = new ArrayList<>();
     private int itemDamage = this.material.getMaxDurability();
 
     // Model Data
@@ -125,9 +119,7 @@ public class ItemBuilder {
     private EntityType entityType = EntityType.BAT;
 
     // Create a new item.
-    public ItemBuilder(ItemStack itemStack, boolean isLegacy) {
-        this.isLegacy = isLegacy;
-
+    public ItemBuilder(ItemStack itemStack) {
         this.itemStack = itemStack;
 
         this.material = itemStack.getType();
@@ -152,9 +144,7 @@ public class ItemBuilder {
     }
 
     // De-duplicate an item builder.
-    public ItemBuilder(ItemBuilder itemBuilder, boolean isLegacy) {
-        this.isLegacy = itemBuilder.isLegacy;
-
+    public ItemBuilder(ItemBuilder itemBuilder) {
         this.material = itemBuilder.material;
         this.itemStack = itemBuilder.itemStack;
         this.itemAmount = itemBuilder.itemAmount;
@@ -247,11 +237,7 @@ public class ItemBuilder {
                         try {
                             textures.setSkin(new URL(this.player));
                         } catch (MalformedURLException exception) {
-                            if (this.isLegacy) {
-                                LegacyLogger.warn("Failed to set skin: " + this.player + " to profile.", exception);
-                            } else {
-                                FancyLogger.warn("Failed to set skin: " + this.player + " to profile.", exception);
-                            }
+                            FancyLogger.warn("Failed to set skin: " + this.player + " to profile.", exception);
                         }
                     } else {
                         OfflinePlayer person = getPlayer(this.player) != null ? getPlayer(this.player) : getOfflinePlayer(this.player);
@@ -260,35 +246,19 @@ public class ItemBuilder {
                     }
                 }
 
-                if (this.isLegacy) {
-                    if (!this.legacyDisplayName.isBlank()) {
-                        meta.setDisplayName(this.legacyDisplayName);
-                    }
+                // Set the display name.
+                if (!this.displayName.equals(Component.empty())) {
+                    meta.displayName(this.displayName);
+                }
 
-                    if (!this.legacyDisplayLore.isEmpty()) {
-                        meta.setLore(this.legacyDisplayLore);
-                    }
-                } else {
-                    // Set the display name.
-                    if (!this.displayName.equals(Component.empty())) {
-                        meta.displayName(this.displayName);
-                    }
-
-                    // Set the lore.
-                    if (!this.displayLore.isEmpty()) {
-                        meta.lore(this.displayLore);
-                    }
+                // Set the lore.
+                if (!this.displayLore.isEmpty()) {
+                    meta.lore(this.displayLore);
                 }
 
                 if (this.isSpawner) {
-                    if (this.isLegacy) {
-                        if (this.legacyDisplayName.isBlank()) {
-                            meta.setDisplayName(LegacyUtils.color(WordUtils.capitalizeFully(this.entityType.getKey().getKey().replaceAll("_", "")) + " Spawner"));
-                        }
-                    } else {
-                        if (this.displayName.equals(Component.empty())) {
-                            meta.displayName(ColorUtils.parse(WordUtils.capitalizeFully(this.entityType.getKey().getKey().replaceAll("_", " ")) + " Spawner"));
-                        }
+                    if (this.displayName.equals(Component.empty())) {
+                        meta.displayName(ColorUtils.parse(WordUtils.capitalizeFully(this.entityType.getKey().getKey().replaceAll("_", " ")) + " Spawner"));
                     }
 
                     BlockStateMeta blockState = (BlockStateMeta) meta;
@@ -379,11 +349,7 @@ public class ItemBuilder {
                 meta.setUnbreakable(this.isUnbreakable);
             });
         } else {
-            if (this.isLegacy) {
-                LegacyLogger.warn("Material cannot be air or null.");;
-            } else {
-                FancyLogger.warn("Material cannot be air or null.");
-            }
+            FancyLogger.warn("Material cannot be air or null.");
         }
 
         addGlow();
@@ -399,28 +365,10 @@ public class ItemBuilder {
         return this.itemStack;
     }
 
-    public ItemBuilder setLegacy(boolean toggle) {
-        this.isLegacy = toggle;
-
-        return this;
-    }
-
     // Name
     public ItemBuilder setDisplayName(String displayName) {
         if (displayName.isEmpty() || displayName.isBlank()) {
-            if (this.isLegacy) {
-                this.legacyDisplayName = LegacyUtils.color(this.material.name());
-
-                return this;
-            }
-
             this.displayName = ColorUtils.parse(this.material.name());
-            return this;
-        }
-
-        if (this.isLegacy) {
-            this.legacyDisplayName = LegacyUtils.color(displayName);
-
             return this;
         }
 
@@ -442,13 +390,8 @@ public class ItemBuilder {
     }
 
     public ItemBuilder addDisplayLore(String lore) {
-        if (this.isLegacy) {
-            this.legacyDisplayLore.add(LegacyUtils.color(lore));
-
-            return this;
-        }
-
         this.displayLore.add(ColorUtils.parse(lore));
+
         return this;
     }
 
@@ -628,11 +571,7 @@ public class ItemBuilder {
                     "Material cannot be null or empty, Output: " + material + ".",
                     "Please take a screenshot of this before asking for support."
             ).forEach(line -> {
-                if (this.isLegacy) {
-                    LegacyLogger.warn(line);
-                } else {
-                    FancyLogger.warn(line);
-                }
+                FancyLogger.warn(line);
             });
 
             return this;
@@ -665,11 +604,7 @@ public class ItemBuilder {
 
                     this.potionType = potionType;
                 } catch (Exception exception) {
-                    if (this.isLegacy) {
-                        LegacyLogger.warn("Failed to set potion type " + metaData + ".", exception);
-                    } else {
-                        FancyLogger.warn("Failed to set potion type " + metaData + ".", exception);
-                    }
+                    FancyLogger.warn("Failed to set potion type " + metaData + ".", exception);
                 }
 
                 this.potionColor = DyeUtils.getColor(metaData);

@@ -13,8 +13,6 @@ public abstract class RootPlugin {
 
     private static Audience console;
 
-    private boolean isLegacy;
-
     public static void setConsole(Audience console) {
         if (RootPlugin.console != null) return;
 
@@ -22,15 +20,9 @@ public abstract class RootPlugin {
         RootPlugin.console = console;
     }
 
-    public void enable(boolean isLegacy) {
-        this.isLegacy = isLegacy;
-
+    public void enable() {
         // Start the root service.
         RootService.setService(this);
-    }
-
-    public boolean isLegacy() {
-        return this.isLegacy;
     }
 
     public void disable() {
