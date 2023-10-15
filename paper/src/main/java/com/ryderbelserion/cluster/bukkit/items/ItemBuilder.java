@@ -47,7 +47,6 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
-@SuppressWarnings("ALL")
 public class ItemBuilder {
 
     private JavaPlugin plugin;
@@ -74,7 +73,7 @@ public class ItemBuilder {
     private Color potionColor = Color.RED;
     private PotionEffectType potionType = null;
     private int potionDuration = -1;
-    private int potionAmpilifier = 1;
+    private int potionAmplifier = 1;
 
     // Player Heads
     private String player = "";
@@ -136,7 +135,7 @@ public class ItemBuilder {
             case FIREWORK_STAR -> this.isFireworkStar = true;
             case TIPPED_ARROW -> this.isTippedArrow = true;
             case FIREWORK_ROCKET -> this.isFirework = true;
-            case FILLED_MAP -> this.isShield = true;
+            case FILLED_MAP -> this.isMap = true;
             case PLAYER_HEAD -> this.isHead = true;
             case SPAWNER -> this.isSpawner = true;
             case SHIELD -> this.isShield = true;
@@ -167,7 +166,7 @@ public class ItemBuilder {
         this.potionColor = itemBuilder.potionColor;
         this.potionType = itemBuilder.potionType;
         this.potionDuration = itemBuilder.potionDuration;
-        this.potionAmpilifier = itemBuilder.potionAmpilifier;
+        this.potionAmplifier = itemBuilder.potionAmplifier;
 
         this.player = itemBuilder.player;
         this.isHead = itemBuilder.isHead;
@@ -219,9 +218,7 @@ public class ItemBuilder {
         if (this.itemStack == null) {
             this.itemStack = new ItemStack(Material.STONE);
 
-            this.itemStack.editMeta(meta -> {
-                meta.displayName(parse("<red>An error has occured with the item builder."));
-            });
+            this.itemStack.editMeta(meta -> meta.displayName(parse("<red>An error has occurred with the item builder.")));
 
             return this.itemStack;
         }
@@ -320,7 +317,7 @@ public class ItemBuilder {
 
                     // Single potion effect.
                     if (this.potionType != null) {
-                        PotionEffect effect = new PotionEffect(this.potionType, this.potionDuration, this.potionAmpilifier);
+                        PotionEffect effect = new PotionEffect(this.potionType, this.potionDuration, this.potionAmplifier);
 
                         potionMeta.addCustomEffect(effect, true);
 
@@ -399,9 +396,7 @@ public class ItemBuilder {
         if (displayLore != null) {
             if (!this.displayLore.isEmpty()) this.displayLore.clear();
 
-            displayLore.forEach(line -> {
-                addDisplayLore(line);
-            });
+            displayLore.forEach(this::addDisplayLore);
         }
 
         return this;
@@ -409,7 +404,6 @@ public class ItemBuilder {
 
     public ItemBuilder addDisplayLore(String lore) {
         this.displayLore.add(parse(lore));
-
         return this;
     }
 
@@ -448,8 +442,8 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder setPotionAmpilifier(int potionAmpilifier) {
-        this.potionAmpilifier = potionAmpilifier;
+    public ItemBuilder setPotionAmplifier(int potionAmplifier) {
+        this.potionAmplifier = potionAmplifier;
         return this;
     }
 
@@ -473,7 +467,6 @@ public class ItemBuilder {
 
     public ItemBuilder addItemFlag(ItemFlag itemFlag) {
         if (itemFlag != null) this.itemFlags.add(itemFlag);
-
         return this;
     }
 
@@ -618,11 +611,9 @@ public class ItemBuilder {
                 this.itemDamage = Integer.parseInt(metaData);
             } else {
                 try {
-                    PotionEffectType potionType = Registry.POTION_EFFECT_TYPE.get(NamespacedKey.minecraft(metaData));
-
-                    this.potionType = potionType;
+                    this.potionType = Registry.POTION_EFFECT_TYPE.get(NamespacedKey.minecraft(metaData));
                 } catch (Exception exception) {
-                    //FancyLogger.warn("Failed to set potion type " + metaData + ".", exception);
+                    this.plugin.getLogger().log(Level.WARNING, "Failed to set potion type " + metaData + ".", exception);
                 }
 
                 this.potionColor = DyeUtils.getColor(metaData);
@@ -654,7 +645,7 @@ public class ItemBuilder {
             case FIREWORK_STAR -> this.isFireworkStar = true;
             case TIPPED_ARROW -> this.isTippedArrow = true;
             case FIREWORK_ROCKET -> this.isFirework = true;
-            case FILLED_MAP -> this.isShield = true;
+            case FILLED_MAP -> this.isMap = true;
             case PLAYER_HEAD -> this.isHead = true;
             case SPAWNER -> this.isSpawner = true;
             case SHIELD -> this.isShield = true;
