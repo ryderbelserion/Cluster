@@ -4,6 +4,10 @@ plugins {
     id("paper-plugin")
 }
 
+dependencies {
+    implementation(project(":paper"))
+}
+
 tasks {
     runServer {
         jvmArgs("-Dnet.kyori.ansi.colorLevel=truecolor")

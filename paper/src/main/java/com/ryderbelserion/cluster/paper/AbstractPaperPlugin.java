@@ -17,13 +17,9 @@ public class AbstractPaperPlugin extends AbstractPlugin {
 
     public AbstractPaperPlugin(JavaPlugin plugin) {
         this.plugin = plugin;
-
-        super.enable();
     }
 
-    public AbstractPaperPlugin() {
-        super.enable();
-    }
+    public AbstractPaperPlugin() {}
 
     @Override
     public void enable() {

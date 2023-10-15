@@ -1,16 +1,20 @@
 package com.ryderbelserion.testplugin;
 
+import com.ryderbelserion.cluster.paper.AbstractPaperPlugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class TestPlugin extends JavaPlugin {
 
+    private AbstractPaperPlugin plugin;
+
     @Override
     public void onEnable() {
-        getLogger().info("Starting up...");
+        this.plugin = new AbstractPaperPlugin(this);
+        this.plugin.enable();
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("Shutting down...");
+        this.plugin.disable();
     }
 }
