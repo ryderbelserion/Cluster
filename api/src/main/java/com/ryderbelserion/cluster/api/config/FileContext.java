@@ -4,12 +4,12 @@ import java.io.File;
 
 public interface FileContext {
 
-    void addFile(FileEngine file);
+    void addFile(FileData file);
 
-    void saveFile(FileEngine file);
+    void saveFile(FileData file);
 
-    void removeFile(FileEngine file);
+    void removeFile(FileData file);
 
-    File getFile(FileEngine file);
+    File getFile(FileData file);
 
 }
