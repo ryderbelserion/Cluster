@@ -1,6 +1,5 @@
 package com.ryderbelserion.cluster.bukkit;
 
-import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,8 +25,6 @@ public class PaperService {
     @ApiStatus.Internal
     public static void setService(AbstractPaperPlugin bukkit) {
         if (PaperService.abstractPaperPlugin != null) {
-            FancyLogger.error("Cluster's bukkit service is not null, You cannot override it.");
-
             return;
         }
 

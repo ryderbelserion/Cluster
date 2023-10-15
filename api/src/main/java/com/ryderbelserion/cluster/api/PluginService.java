@@ -7,7 +7,7 @@ public class PluginService {
 
     private static AbstractPlugin abstractPlugin = null;
 
-    public static @NotNull AbstractPlugin getService() {
+    public static @NotNull AbstractPlugin get() {
         AbstractPlugin instance = PluginService.abstractPlugin;
 
         if (instance == null) {

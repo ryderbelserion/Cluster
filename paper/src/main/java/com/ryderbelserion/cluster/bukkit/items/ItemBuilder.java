@@ -2,10 +2,10 @@ package com.ryderbelserion.cluster.bukkit.items;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.ryderbelserion.cluster.api.adventure.FancyLogger;
-import com.ryderbelserion.cluster.api.utils.ColorUtils;
 import com.ryderbelserion.cluster.bukkit.utils.DyeUtils;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.minecraft.nbt.TagParser;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
@@ -30,6 +30,7 @@ import org.bukkit.inventory.meta.*;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -44,9 +45,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Level;
 
 @SuppressWarnings("ALL")
 public class ItemBuilder {
+
+    private JavaPlugin plugin;
 
     // Items
     private Material material = Material.STONE;
@@ -119,7 +123,9 @@ public class ItemBuilder {
     private EntityType entityType = EntityType.BAT;
 
     // Create a new item.
-    public ItemBuilder(ItemStack itemStack) {
+    public ItemBuilder(JavaPlugin plugin, ItemStack itemStack) {
+        this.plugin = plugin;
+
         this.itemStack = itemStack;
 
         this.material = itemStack.getType();
@@ -201,14 +207,20 @@ public class ItemBuilder {
         this.entityType = itemBuilder.entityType;
     }
 
-    public ItemBuilder() {}
+    public ItemBuilder(JavaPlugin plugin) {
+        this.plugin = plugin;
+    }
+
+    private Component parse(String message) {
+        return MiniMessage.miniMessage().deserialize(message).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
+    }
 
     public ItemStack build() {
         if (this.itemStack == null) {
             this.itemStack = new ItemStack(Material.STONE);
 
             this.itemStack.editMeta(meta -> {
-                meta.displayName(ColorUtils.parse("<red>An error has occured with the item builder."));
+                meta.displayName(parse("<red>An error has occured with the item builder."));
             });
 
             return this.itemStack;
@@ -243,7 +255,7 @@ public class ItemBuilder {
                         try {
                             textures.setSkin(new URL(this.player));
                         } catch (MalformedURLException exception) {
-                            FancyLogger.warn("Failed to set skin: " + this.player + " to profile.", exception);
+                            this.plugin.getLogger().log(Level.WARNING, "Failed to set skin: " + this.player + " to profile.", exception);
                         }
                     } else {
                         OfflinePlayer person = getPlayer(this.player) != null ? getPlayer(this.player) : getOfflinePlayer(this.player);
@@ -264,7 +276,7 @@ public class ItemBuilder {
 
                 if (this.isSpawner) {
                     if (this.displayName.equals(Component.empty())) {
-                        meta.displayName(ColorUtils.parse(WordUtils.capitalizeFully(this.entityType.getKey().getKey().replaceAll("_", " ")) + " Spawner"));
+                        meta.displayName(parse(WordUtils.capitalizeFully(this.entityType.getKey().getKey().replaceAll("_", " ")) + " Spawner"));
                     }
 
                     BlockStateMeta blockState = (BlockStateMeta) meta;
@@ -355,7 +367,7 @@ public class ItemBuilder {
                 meta.setUnbreakable(this.isUnbreakable);
             });
         } else {
-            FancyLogger.warn("Material cannot be air or null.");
+            this.plugin.getLogger().warning("Material cannot be air or null.");
         }
 
         addGlow();
@@ -374,11 +386,11 @@ public class ItemBuilder {
     // Name
     public ItemBuilder setDisplayName(String displayName) {
         if (displayName.isEmpty() || displayName.isBlank()) {
-            this.displayName = ColorUtils.parse(this.material.name());
+            this.displayName = parse(this.material.name());
             return this;
         }
 
-        this.displayName = ColorUtils.parse(displayName);
+        this.displayName = parse(displayName);
 
         return this;
     }
@@ -396,7 +408,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder addDisplayLore(String lore) {
-        this.displayLore.add(ColorUtils.parse(lore));
+        this.displayLore.add(parse(lore));
 
         return this;
     }
@@ -577,7 +589,7 @@ public class ItemBuilder {
                     "Material cannot be null or empty, Output: " + material + ".",
                     "Please take a screenshot of this before asking for support."
             ).forEach(line -> {
-                FancyLogger.warn(line);
+                this.plugin.getLogger().warning(line);
             });
 
             return this;
@@ -610,7 +622,7 @@ public class ItemBuilder {
 
                     this.potionType = potionType;
                 } catch (Exception exception) {
-                    FancyLogger.warn("Failed to set potion type " + metaData + ".", exception);
+                    //FancyLogger.warn("Failed to set potion type " + metaData + ".", exception);
                 }
 
                 this.potionColor = DyeUtils.getColor(metaData);

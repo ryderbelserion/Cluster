@@ -2,11 +2,12 @@ package com.ryderbelserion.cluster.api.config.types.file;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.ryderbelserion.cluster.api.adventure.FancyLogger;
+import com.ryderbelserion.cluster.api.PluginService;
 import com.ryderbelserion.cluster.api.config.FileEngine;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
+import java.util.logging.Level;
 
 public class JsonFile {
 
@@ -24,11 +25,9 @@ public class JsonFile {
         Gson gson = (context.getGson() != null) ? context.getGson().create() : builder.create();
 
         try {
-            if (file.createNewFile()) {
-                FancyLogger.debug("Created new file: " + file.getName());
-            }
+            file.createNewFile();
         } catch (IOException exception) {
-            FancyLogger.error("Failed to create " + file.getName(), exception);
+            PluginService.get().getLogger().log(Level.SEVERE, "Failed to create " + file.getName(), exception);
         }
 
         this.jsonReader = new JsonReader(file, gson, context);
