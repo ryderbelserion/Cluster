@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.bukkit;
+package com.ryderbelserion.cluster.paper;
 
 import com.ryderbelserion.cluster.api.AbstractPlugin;
 import com.ryderbelserion.cluster.api.config.FileManager;

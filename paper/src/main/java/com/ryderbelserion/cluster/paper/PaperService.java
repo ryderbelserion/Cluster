@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.bukkit;
+package com.ryderbelserion.cluster.paper;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;

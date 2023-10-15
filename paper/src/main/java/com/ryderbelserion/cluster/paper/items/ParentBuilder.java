@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.bukkit.items;
+package com.ryderbelserion.cluster.paper.items;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

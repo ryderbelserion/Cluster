@@ -1,8 +1,8 @@
-package com.ryderbelserion.cluster.bukkit.items;
+package com.ryderbelserion.cluster.paper.items;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.ryderbelserion.cluster.bukkit.utils.DyeUtils;
+import com.ryderbelserion.cluster.paper.utils.DyeUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;

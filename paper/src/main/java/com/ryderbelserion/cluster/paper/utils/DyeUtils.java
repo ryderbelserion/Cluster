@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.bukkit.utils;
+package com.ryderbelserion.cluster.paper.utils;
 
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
