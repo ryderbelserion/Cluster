@@ -10,11 +10,11 @@ import java.util.List;
 
 public class FileUtils {
 
-    public void copyFiles(Path directory, String folder, List<String> names) {
-        names.forEach(name -> copyFile(directory, folder, name));
+    public void copyResources(Path directory, String folder, List<String> names) {
+        names.forEach(name -> copyResource(directory, folder, name));
     }
 
-    public void copyFile(Path directory, String folder, String name) {
+    public void copyResource(Path directory, String folder, String name) {
         File file = directory.resolve(name).toFile();
 
         if (file.exists()) return;
@@ -40,20 +40,16 @@ public class FileUtils {
         }
 
         try {
-            grab(resource.openStream(), file);
+            try (InputStream inputStream = resource.openStream(); FileOutputStream outputStream = new FileOutputStream(file)) {
+                byte[] buf = new byte[1024];
+                int i;
+
+                while ((i = inputStream.read(buf)) != -1) {
+                    outputStream.write(buf, 0, i);
+                }
+            }
         } catch (Exception exception) {
             FancyLogger.error("Failed to copy file: " + url, exception);
-        }
-    }
-
-    private void grab(InputStream input, File output) throws Exception {
-        try (InputStream inputStream = input; FileOutputStream outputStream = new FileOutputStream(output)) {
-            byte[] buf = new byte[1024];
-            int i;
-
-            while ((i = inputStream.read(buf)) != -1) {
-                outputStream.write(buf, 0, i);
-            }
         }
     }
 }

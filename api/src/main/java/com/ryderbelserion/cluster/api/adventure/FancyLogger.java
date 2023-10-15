@@ -1,6 +1,6 @@
 package com.ryderbelserion.cluster.api.adventure;
 
-import com.ryderbelserion.cluster.api.RootPlugin;
+import com.ryderbelserion.cluster.api.AbstractPlugin;
 import com.ryderbelserion.cluster.api.utils.ColorUtils;
 
 public class FancyLogger {
@@ -54,6 +54,6 @@ public class FancyLogger {
     }
 
     private static void send(String message) {
-        RootPlugin.getConsole().sendMessage(ColorUtils.parse(message));
+        AbstractPlugin.getConsole().sendMessage(ColorUtils.parse(message));
     }
 }

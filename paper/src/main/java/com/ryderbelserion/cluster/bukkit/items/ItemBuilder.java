@@ -4,7 +4,7 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import com.ryderbelserion.cluster.api.utils.ColorUtils;
-import com.ryderbelserion.cluster.bukkit.items.utils.DyeUtils;
+import com.ryderbelserion.cluster.bukkit.utils.DyeUtils;
 import net.kyori.adventure.text.Component;
 import net.minecraft.nbt.TagParser;
 import org.apache.commons.lang.WordUtils;
@@ -205,6 +205,12 @@ public class ItemBuilder {
 
     public ItemStack build() {
         if (this.itemStack == null) {
+            this.itemStack = new ItemStack(Material.STONE);
+
+            this.itemStack.editMeta(meta -> {
+                meta.displayName(ColorUtils.parse("<red>An error has occured with the item builder."));
+            });
+
             return this.itemStack;
         }
 

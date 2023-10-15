@@ -1,6 +1,6 @@
 package com.ryderbelserion.cluster.bukkit;
 
-import com.ryderbelserion.cluster.api.RootPlugin;
+import com.ryderbelserion.cluster.api.AbstractPlugin;
 import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import com.ryderbelserion.cluster.api.config.FileManager;
 import com.ryderbelserion.cluster.api.utils.FileUtils;
@@ -10,19 +10,23 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.nio.file.Path;
 
-public class BukkitPlugin extends RootPlugin {
+public class AbstractPaperPlugin extends AbstractPlugin {
 
     private FileManager fileManager;
     private FileUtils fileUtils;
     private JavaPlugin plugin;
 
-    public BukkitPlugin(JavaPlugin plugin) {
+    public AbstractPaperPlugin(JavaPlugin plugin) {
         this.plugin = plugin;
 
         super.enable();
     }
 
-    public void setPlugin(JavaPlugin plugin, boolean initApi) {
+    public AbstractPaperPlugin() {
+        super.enable();
+    }
+
+    public void setPlugin(JavaPlugin plugin) {
         // If the plugin is already registered,
         // return as we don't want it registered again.
         if (this.plugin != null) {
@@ -33,13 +37,10 @@ public class BukkitPlugin extends RootPlugin {
 
         // Set the plugin variable.
         this.plugin = plugin;
-
-        // Just in case.
-        if (initApi) super.enable();
     }
 
     public void enable() {
-        BukkitService.setService(this);
+        PaperService.setService(this);
 
         this.fileUtils = new FileUtils();
         this.fileManager = new FileManager();
@@ -53,7 +54,7 @@ public class BukkitPlugin extends RootPlugin {
         super.disable();
 
         // This must go last.
-        BukkitService.stopService();
+        PaperService.stopService();
     }
 
     @Override

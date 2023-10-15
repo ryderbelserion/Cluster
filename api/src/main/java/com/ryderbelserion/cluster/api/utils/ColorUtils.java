@@ -1,6 +1,6 @@
 package com.ryderbelserion.cluster.api.utils;
 
-import com.ryderbelserion.cluster.api.RootPlugin;
+import com.ryderbelserion.cluster.api.AbstractPlugin;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -17,7 +17,7 @@ public class ColorUtils {
     }
 
     public static void console(String message) {
-        RootPlugin.getConsole().sendMessage(parse(message));
+        AbstractPlugin.getConsole().sendMessage(parse(message));
     }
 
     public static void player(Audience audience, String message) {

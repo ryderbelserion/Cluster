@@ -4,42 +4,42 @@ import com.ryderbelserion.cluster.api.adventure.FancyLogger;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-public class BukkitService {
+public class PaperService {
 
-    private static BukkitPlugin bukkitPlugin = null;
+    private static AbstractPaperPlugin abstractPaperPlugin = null;
 
-    public static @NotNull BukkitPlugin getService() {
-        BukkitPlugin instance = BukkitService.bukkitPlugin;
+    public static @NotNull AbstractPaperPlugin getService() {
+        AbstractPaperPlugin instance = PaperService.abstractPaperPlugin;
 
         if (instance == null)  {
             throw new RuntimeException("Cluster bukkit service not set. Please call the method setService before you try to use it!");
         }
 
-        return bukkitPlugin;
+        return abstractPaperPlugin;
     }
 
     @ApiStatus.Internal
-    private BukkitService()  {
+    private PaperService()  {
         throw new UnsupportedOperationException("This class cannot be instantiated");
     }
 
     @ApiStatus.Internal
-    public static void setService(BukkitPlugin bukkit) {
-        if (BukkitService.bukkitPlugin != null) {
+    public static void setService(AbstractPaperPlugin bukkit) {
+        if (PaperService.abstractPaperPlugin != null) {
             FancyLogger.error("Cluster's bukkit service is not null, You cannot override it.");
 
             return;
         }
 
-        BukkitService.bukkitPlugin = bukkit;
+        PaperService.abstractPaperPlugin = bukkit;
     }
 
     @ApiStatus.Internal
     public static void stopService() {
-        if (BukkitService.bukkitPlugin == null) {
+        if (PaperService.abstractPaperPlugin == null) {
             return;
         }
 
-        BukkitService.bukkitPlugin = null;
+        PaperService.abstractPaperPlugin = null;
     }
 }

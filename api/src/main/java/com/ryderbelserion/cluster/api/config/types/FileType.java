@@ -2,8 +2,8 @@ package com.ryderbelserion.cluster.api.config.types;
 
 public enum FileType {
 
-    JSON("JSON"),
-    YAML("YAML");
+    json("json"),
+    yaml("yaml");
 
     private final String name;
 

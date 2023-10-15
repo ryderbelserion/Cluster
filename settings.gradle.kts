@@ -9,4 +9,4 @@ pluginManagement {
 
 rootProject.name = "Cluster"
 
-include("bukkit", "api")
+include("paper", "api")
