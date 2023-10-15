@@ -11,7 +11,7 @@ public class PluginService {
         AbstractPlugin instance = PluginService.abstractPlugin;
 
         if (instance == null) {
-            throw new RuntimeException("Cluster root service not set. Please call the method setService before you try to use it!");
+            throw new RuntimeException("The API has not been properly initialized! Likely did not use the setService method.");
         }
 
         return abstractPlugin;

@@ -7,11 +7,11 @@ public class PaperService {
 
     private static AbstractPaperPlugin abstractPaperPlugin = null;
 
-    public static @NotNull AbstractPaperPlugin getService() {
+    public static @NotNull AbstractPaperPlugin get() {
         AbstractPaperPlugin instance = PaperService.abstractPaperPlugin;
 
         if (instance == null)  {
-            throw new RuntimeException("Cluster bukkit service not set. Please call the method setService before you try to use it!");
+            throw new RuntimeException("The API has not been properly initialized! Likely did not use the setService method.");
         }
 
         return abstractPaperPlugin;
