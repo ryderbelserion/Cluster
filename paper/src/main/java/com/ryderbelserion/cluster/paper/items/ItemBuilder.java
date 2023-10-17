@@ -1,7 +1,10 @@
 package com.ryderbelserion.cluster.paper.items;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.ryderbelserion.cluster.paper.enums.PluginSupport;
 import com.ryderbelserion.cluster.paper.utils.DyeUtils;
+import dev.lone.itemsadder.api.CustomStack;
+import io.th0rgal.oraxen.api.OraxenItems;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -63,6 +66,7 @@ public class ItemBuilder {
     // Model Data
     private boolean hasCustomModelData = false;
     private int customModelData = 0;
+    private String customMaterial;
 
     // Potions
     private boolean isPotion = false;
@@ -210,11 +214,21 @@ public class ItemBuilder {
 
     public ItemStack build() {
         if (this.itemStack == null) {
-            this.itemStack = new ItemStack(Material.STONE);
+            if (PluginSupport.items_adder.isPluginEnabled(this.plugin)) {
+                CustomStack customStack = CustomStack.getInstance("ia:" + this.customMaterial);
 
-            this.itemStack.editMeta(meta -> meta.displayName(parse("<red>An error has occurred with the item builder.")));
+                if (customStack != null) this.itemStack = customStack.getItemStack();
+            } else if (PluginSupport.oraxen.isPluginEnabled(this.plugin)) {
+                io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
 
-            return this.itemStack;
+                if (oraxenItem != null) this.itemStack = oraxenItem.build();
+            } else {
+                this.itemStack = new ItemStack(Material.STONE);
+
+                this.itemStack.editMeta(meta -> meta.displayName(parse("<red>An error has occurred with the item builder.")));
+
+                return this.itemStack;
+            }
         }
 
         if (!isAir()) {
@@ -565,6 +579,8 @@ public class ItemBuilder {
         }
 
         String metaData;
+
+        this.customMaterial = material;
 
         if (material.contains(":")) {
             String[] section = material.split(":");

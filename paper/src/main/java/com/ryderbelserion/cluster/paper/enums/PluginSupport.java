@@ -1,12 +1,11 @@
-package com.ryderbelserion.cluster.enums;
+package com.ryderbelserion.cluster.paper.enums;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
 public enum PluginSupport {
 
     oraxen("Oraxen"),
-    items_adder("ItemsAdder"),
-    head_database("HeadDatabase");
+    items_adder("ItemsAdder");
 
     private final String pluginName;
 

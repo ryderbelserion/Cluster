@@ -10,6 +10,12 @@ project.group = "${rootProject.group}.paper"
 
 dependencies {
     api(project(":api"))
+
+    compileOnly("com.github.LoneDev6", "API-ItemsAdder", "3.5.0b")
+
+    compileOnly("com.github.oraxen", "oraxen", "1.160.0") {
+        exclude("*", "*")
+    }
 }
 
 val component: SoftwareComponent = components["java"]
