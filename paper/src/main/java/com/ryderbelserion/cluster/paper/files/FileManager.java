@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
 public class FileManager {
@@ -50,14 +51,18 @@ public class FileManager {
             if (!newFile.exists()) {
                 try {
                     this.javaPlugin.saveResource(file, false);
-                    this.configurations.put(file, YamlConfiguration.loadConfiguration(newFile));
+                    YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
+
+                    this.configurations.put(file, configuration);
                 } catch (Exception exception) {
                     this.plugin.getLogger().log(Level.SEVERE, "Failed to load: " + newFile.getName(), exception);
 
                     continue;
                 }
             } else {
-                this.configurations.put(file, YamlConfiguration.loadConfiguration(newFile));
+                YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
+
+                this.configurations.put(file, configuration);
             }
 
             if (this.plugin.isLogging()) this.plugin.getLogger().fine("Successfully loaded: " + newFile.getName());
@@ -221,7 +226,9 @@ public class FileManager {
     public void reloadStaticFile(String folder, String file) {
         File newFile = folder.isBlank() ? new File(this.plugin.getDataFolder(), "/" + file) : new File(this.plugin.getDataFolder(), folder + "/" + file);
 
-        this.configurations.put(file, YamlConfiguration.loadConfiguration(newFile));
+        YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
+
+        this.configurations.put(file, configuration);
     }
 
     public void clearStaticFiles() {
