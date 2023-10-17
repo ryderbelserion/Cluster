@@ -1,6 +1,6 @@
 package com.ryderbelserion.cluster.api;
 
-import com.ryderbelserion.cluster.api.config.FileManager;
+import com.ryderbelserion.cluster.api.config.StorageManager;
 import com.ryderbelserion.cluster.api.interfaces.PluginBase;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -19,6 +19,8 @@ import java.util.logging.Level;
 public abstract class AbstractPlugin implements PluginBase {
 
     public abstract StorageManager getStorageManager();
+
+    public abstract boolean isLogging();
 
     @Override
     public void copyResource(Path directory, String folder, String name) {
