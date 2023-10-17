@@ -1,7 +1,6 @@
 package com.ryderbelserion.cluster.api.config.context;
 
 import com.google.gson.GsonBuilder;
-
 import java.io.File;
 import java.nio.file.Path;
 
