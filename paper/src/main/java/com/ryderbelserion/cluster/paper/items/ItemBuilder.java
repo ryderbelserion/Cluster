@@ -40,6 +40,7 @@ import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -388,7 +389,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder setDisplayLore(List<String> displayLore) {
-        if (displayLore != null) {
+        if (displayLore != null && !displayLore.isEmpty()) {
             if (!this.displayLore.isEmpty()) this.displayLore.clear();
 
             displayLore.forEach(this::addDisplayLore);
