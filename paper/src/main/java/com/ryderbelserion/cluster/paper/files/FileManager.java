@@ -213,13 +213,23 @@ public class FileManager {
         return this.configurations.get(file);
     }
 
+    public void saveStaticFile(String file) {
+        try {
+            File newFile = new File(this.plugin.getDataFolder(), "/" + file);
+
+            this.configurations.get(file).save(newFile);
+        } catch (IOException exception) {
+            this.plugin.getLogger().log(Level.SEVERE, "Failed to save " + file + "!", exception);
+        }
+    }
+
     public void saveStaticFile(String folder, String file) {
         try {
             File newFile = new File(this.plugin.getDataFolder(), folder + "/" + file);
 
             this.configurations.get(file).save(newFile);
         } catch (IOException exception) {
-            throw new RuntimeException(exception);
+            this.plugin.getLogger().log(Level.SEVERE, "Failed to save " + folder + "/" + file + "!", exception);
         }
     }
 
