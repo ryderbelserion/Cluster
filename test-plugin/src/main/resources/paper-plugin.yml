@@ -8,5 +8,4 @@ description: '${description}'
 dependencies:
   server:
     HeadDatabase:
-      load: BEFORE
       required: false
