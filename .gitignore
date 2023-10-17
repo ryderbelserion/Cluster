@@ -12,10 +12,10 @@ api/build
 
 run
 
-!bukkit/run/config
-!bukkit/run/eula.txt
-!bukkit/run/bukkit.yml
-!bukkit/run/server.properties
+!test-plugin/run/config
+!test-plugin/run/eula.txt
+!test-plugin/run/bukkit.yml
+!test-plugin/run/server.properties
 
 build
 

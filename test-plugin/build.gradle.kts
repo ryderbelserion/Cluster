@@ -1,5 +1,5 @@
 plugins {
-    id("xyz.jpenilla.run-paper") version "2.1.0"
+    id("xyz.jpenilla.run-paper") version "2.2.0"
 
     id("paper-plugin")
 }
@@ -17,7 +17,7 @@ tasks {
 
     processResources {
         val props = mapOf(
-            "name" to rootProject.name,
+            "name" to "TestPlugin",
             "group" to rootProject.group,
             "version" to rootProject.version,
             "description" to rootProject.description,
