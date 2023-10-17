@@ -18,7 +18,7 @@ import java.util.logging.Level;
 
 public abstract class AbstractPlugin implements PluginBase {
 
-    public abstract FileManager getFileManager();
+    public abstract StorageManager getStorageManager();
 
     @Override
     public void copyResource(Path directory, String folder, String name) {

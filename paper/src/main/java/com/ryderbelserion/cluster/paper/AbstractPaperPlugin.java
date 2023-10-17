@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 public class AbstractPaperPlugin extends AbstractPlugin {
 
     private FileManager fileManager;
+    private StorageManager storageManager;
     private JavaPlugin plugin;
 
     public AbstractPaperPlugin(JavaPlugin plugin) {
@@ -25,7 +26,7 @@ public class AbstractPaperPlugin extends AbstractPlugin {
     public void enable() {
         super.enable();
 
-        this.fileManager = new FileManager();
+        this.storageManager = new StorageManager();
 
         if (!this.plugin.getDataFolder().exists()) {
             this.plugin.getDataFolder().mkdirs();
@@ -41,8 +42,8 @@ public class AbstractPaperPlugin extends AbstractPlugin {
     }
 
     @Override
-    public FileManager getFileManager() {
-        return this.fileManager;
+    public StorageManager getStorageManager() {
+        return this.storageManager;
     }
 
     @Override

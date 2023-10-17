@@ -1,11 +1,14 @@
 package com.ryderbelserion.cluster.api.config;
 
+import com.ryderbelserion.cluster.api.PluginService;
 import com.ryderbelserion.cluster.api.config.context.FileContext;
 import com.ryderbelserion.cluster.api.config.context.FileData;
 import com.ryderbelserion.cluster.api.config.types.json.JsonFile;
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
 
-public class FileManager implements FileContext {
+public class StorageManager implements FileContext {
 
     private JsonFile jsonFile;
 
@@ -15,6 +18,16 @@ public class FileManager implements FileContext {
             case json -> {
                 this.jsonFile = new JsonFile(file);
                 this.jsonFile.loadFile();
+            }
+
+            case other -> {
+                if (file.getFile().exists()) return;
+
+                try {
+                    file.getFile().createNewFile();
+                } catch (IOException exception) {
+                    PluginService.get().getLogger().log(Level.WARNING, "The file " + file.getFile().getName() + " already exists.", exception);
+                }
             }
         }
     }
@@ -26,6 +39,8 @@ public class FileManager implements FileContext {
                 this.jsonFile = new JsonFile(file);
                 this.jsonFile.saveFile();
             }
+
+            case other -> {}
         }
     }
 
@@ -35,6 +50,12 @@ public class FileManager implements FileContext {
             case json -> {
                 this.jsonFile = new JsonFile(file);
                 this.jsonFile.removeFile();
+            }
+
+            case other -> {
+                if (!file.getFile().exists()) return;
+
+                file.getFile().delete();
             }
         }
     }
