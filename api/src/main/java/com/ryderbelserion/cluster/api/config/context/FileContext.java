@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.api.config;
+package com.ryderbelserion.cluster.api.config.context;
 
 import java.io.File;
 

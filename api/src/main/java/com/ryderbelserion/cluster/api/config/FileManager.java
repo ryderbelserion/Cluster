@@ -1,5 +1,7 @@
 package com.ryderbelserion.cluster.api.config;
 
+import com.ryderbelserion.cluster.api.config.context.FileContext;
+import com.ryderbelserion.cluster.api.config.context.FileData;
 import com.ryderbelserion.cluster.api.config.types.json.JsonFile;
 import java.io.File;
 
@@ -9,20 +11,32 @@ public class FileManager implements FileContext {
 
     @Override
     public void addFile(FileData file) {
-        this.jsonFile = new JsonFile(file);
-        this.jsonFile.loadFile();
+        switch (file.getType()) {
+            case json -> {
+                this.jsonFile = new JsonFile(file);
+                this.jsonFile.loadFile();
+            }
+        }
     }
 
     @Override
     public void saveFile(FileData file) {
-        this.jsonFile = new JsonFile(file);
-        this.jsonFile.saveFile();
+        switch (file.getType()) {
+            case json -> {
+                this.jsonFile = new JsonFile(file);
+                this.jsonFile.saveFile();
+            }
+        }
     }
 
     @Override
     public void removeFile(FileData file) {
-        this.jsonFile = new JsonFile(file);
-        this.jsonFile.removeFile();
+        switch (file.getType()) {
+            case json -> {
+                this.jsonFile = new JsonFile(file);
+                this.jsonFile.removeFile();
+            }
+        }
     }
 
     @Override

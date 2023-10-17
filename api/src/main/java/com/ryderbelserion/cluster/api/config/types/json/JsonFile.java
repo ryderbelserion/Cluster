@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.ryderbelserion.cluster.api.PluginService;
-import com.ryderbelserion.cluster.api.config.FileData;
+import com.ryderbelserion.cluster.api.config.context.FileData;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -25,13 +25,17 @@ public class JsonFile {
     public JsonFile(FileData fileData) {
         this.fileData = fileData;
 
-        GsonBuilder builder = new GsonBuilder()
-                .disableHtmlEscaping()
-                .enableComplexMapKeySerialization()
-                .excludeFieldsWithModifiers(Modifier.TRANSIENT)
-                .excludeFieldsWithoutExposeAnnotation();
+        if (this.fileData.getGson() != null) {
+            this.gson = this.fileData.getGson().create();
+        } else {
+            GsonBuilder builder = new GsonBuilder()
+                    .disableHtmlEscaping()
+                    .enableComplexMapKeySerialization()
+                    .excludeFieldsWithModifiers(Modifier.TRANSIENT)
+                    .excludeFieldsWithoutExposeAnnotation();
 
-        this.gson = fileData.isData() ? builder.create() : builder.setPrettyPrinting().create();
+            this.gson = fileData.isData() ? builder.create() : builder.setPrettyPrinting().create();
+        }
 
         this.file = fileData.getFile();
 
