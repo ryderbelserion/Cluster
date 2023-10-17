@@ -377,7 +377,7 @@ public class ItemBuilder {
 
     // Name
     public ItemBuilder setDisplayName(String displayName) {
-        if (displayName.isEmpty() || displayName.isBlank()) {
+        if (displayName.isEmpty()) {
             this.displayName = parse(this.material.name());
             return this;
         }
