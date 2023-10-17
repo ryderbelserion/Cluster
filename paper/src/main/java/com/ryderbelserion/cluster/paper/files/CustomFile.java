@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
 public class CustomFile {
@@ -40,7 +41,7 @@ public class CustomFile {
         File newFile = new File(this.plugin.getDataFolder(), this.folder + "/" + this.fileName);
 
         if (newFile.exists()) {
-            this.configuration = YamlConfiguration.loadConfiguration(newFile);
+            this.configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
 
             return;
         }

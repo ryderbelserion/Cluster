@@ -99,9 +99,11 @@ public class FileManager {
 
                             this.javaPlugin.saveResource(folder + "/" + fileName, false);
 
-                            CustomFile customFile = new CustomFile(this.plugin,  newFile.getName(), folder);
+                            if (newFile.getName().toLowerCase().endsWith(".yml")) {
+                                CustomFile customFile = new CustomFile(this.plugin,  newFile.getName(), folder);
 
-                            if (newFile.getName().toLowerCase().endsWith(".yml")) addDynamicFile(customFile);
+                                addDynamicFile(customFile);
+                            }
 
                             if (this.plugin.isLogging()) this.plugin.getLogger().info("Created default file: " + newFile.getPath() + ".");
                         } catch (Exception exception) {
@@ -178,7 +180,9 @@ public class FileManager {
         try {
             File newFile = new File(this.plugin.getDataFolder(), customFile.getFolder() + "/" + customFile.getFileName());
 
-            customFile.setConfiguration(YamlConfiguration.loadConfiguration(newFile));
+            YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
+
+            customFile.setConfiguration(configuration);
 
             if (this.plugin.isLogging()) this.plugin.getLogger().info("Successfully reloaded " + customFile.getFileName() + ".");
         } catch (Exception exception) {
