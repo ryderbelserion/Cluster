@@ -1,7 +1,9 @@
 package com.ryderbelserion.cluster;
 
+import com.ryderbelserion.cluster.command.ReloadCommand;
 import com.ryderbelserion.cluster.config.ConfigManager;
 import com.ryderbelserion.cluster.paper.AbstractPaperPlugin;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class TestPlugin extends JavaPlugin {
@@ -14,6 +16,7 @@ public class TestPlugin extends JavaPlugin {
         this.plugin.enable();
 
         this.plugin.getFileManager()
+                .addStaticFile("config.yml")
                 .addDynamicFile("crates", "CrateExample.yml")
                 .addDynamicFile("schematics", "classic.nbt")
                 .addDynamicFile("schematics", "nether.nbt")
@@ -33,6 +36,22 @@ public class TestPlugin extends JavaPlugin {
         configManager.addSubValue("crates", "crates_two");
 
         configManager.reload();
+
+        FileConfiguration config = this.plugin.getFileManager().getStaticFile("config.yml");
+
+        boolean option = config.getBoolean("settings.test-option");
+
+        this.plugin.getLogger().warning("Option: " + option);
+
+        if (option) {
+            this.plugin.getLogger().warning("Enabled.");
+
+            this.plugin.getLogger().warning("Text: " + config.getString("settings.test-string"));
+        } else {
+            this.plugin.getLogger().warning("Not enabled.");
+        }
+
+        getServer().getCommandMap().register("test", new ReloadCommand(this));
     }
 
     @Override

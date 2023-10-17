@@ -37,7 +37,7 @@ public class CustomFile {
             return;
         }
 
-        File newFile = new File(this.folder, "/" + this.fileName);
+        File newFile = new File(this.plugin.getDataFolder(), this.folder + "/" + this.fileName);
 
         if (newFile.exists()) {
             this.configuration = YamlConfiguration.loadConfiguration(newFile);

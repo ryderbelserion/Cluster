@@ -45,7 +45,7 @@ public class FileManager {
         for (String file : this.staticFiles) {
             File newFile = new File(this.plugin.getDataFolder(), file);
 
-            if (this.plugin.isLogging()) this.plugin.getLogger().info("Loading " + newFile.getName());
+            if (this.plugin.isLogging()) this.plugin.getLogger().info("Loading static file: " + newFile.getName());
 
             if (!newFile.exists()) {
                 try {
@@ -56,6 +56,8 @@ public class FileManager {
 
                     continue;
                 }
+            } else {
+                this.configurations.put(file, YamlConfiguration.loadConfiguration(newFile));
             }
 
             if (this.plugin.isLogging()) this.plugin.getLogger().fine("Successfully loaded: " + newFile.getName());
@@ -74,7 +76,7 @@ public class FileManager {
                         CustomFile customFile = new CustomFile(this.plugin, file.getName(), folder);
 
                         if (customFile.exists()) {
-                            if (this.plugin.isLogging()) this.plugin.getLogger().info("Loading file: " + file.getName());
+                            if (this.plugin.isLogging()) this.plugin.getLogger().info("Loading custom file: " + file.getName());
 
                             addDynamicFile(customFile);
                         }
@@ -103,9 +105,9 @@ public class FileManager {
                     }
                 }
             }
-
-            if (this.plugin.isLogging()) this.plugin.getLogger().info("Finished loading custom files.");
         }
+
+        if (this.plugin.isLogging()) this.plugin.getLogger().info("Finished loading custom files.");
     }
 
     public FileManager addFolder(String folder) {
@@ -217,7 +219,7 @@ public class FileManager {
     }
 
     public void reloadStaticFile(String folder, String file) {
-        File newFile = new File(this.plugin.getDataFolder(), folder + "/" + file);
+        File newFile = folder.isBlank() ? new File(this.plugin.getDataFolder(), "/" + file) : new File(this.plugin.getDataFolder(), folder + "/" + file);
 
         this.configurations.put(file, YamlConfiguration.loadConfiguration(newFile));
     }

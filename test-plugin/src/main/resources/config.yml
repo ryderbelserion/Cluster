@@ -1,0 +1,3 @@
+settings:
+  test-option: false
+  test-string: 'beep beep'
