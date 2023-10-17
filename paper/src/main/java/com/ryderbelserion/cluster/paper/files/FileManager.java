@@ -1,9 +1,11 @@
 package com.ryderbelserion.cluster.paper.files;
 
 import com.ryderbelserion.cluster.paper.AbstractPaperPlugin;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,6 +27,8 @@ public class FileManager {
     private final HashSet<String> folders = new HashSet<>();
     private final HashSet<String> staticFiles = new HashSet<>();
     private final HashMap<String, String> dynamicFiles = new HashMap<>();
+    private final HashMap<String, FileConfiguration> configurations = new HashMap<>();
+    private final HashMap<String, FileConfiguration> customConfigurations = new HashMap<>();
 
     public void create() {
         if (!this.plugin.getDataFolder().exists()) this.plugin.getDataFolder().mkdirs();
@@ -43,6 +47,7 @@ public class FileManager {
             if (!newFile.exists()) {
                 try {
                     this.javaPlugin.saveResource(file, false);
+                    this.configurations.put(file, YamlConfiguration.loadConfiguration(newFile));
                 } catch (Exception exception) {
                     this.plugin.getLogger().log(Level.SEVERE, "Failed to load: " + newFile.getName(), exception);
 
@@ -82,7 +87,7 @@ public class FileManager {
 
                             this.javaPlugin.saveResource(folder + "/" + fileName, false);
 
-                            if (newFile.getName().toLowerCase().endsWith(".yml")) addDynamicFile(folder, newFile.getName());
+                            if (newFile.getName().toLowerCase().endsWith(".yml")) addDynamicFile(folder, newFile);
 
                             if (this.plugin.isLogging()) this.plugin.getLogger().info("Created default file: " + newFile.getPath() + ".");
                         } catch (Exception exception) {
@@ -122,6 +127,55 @@ public class FileManager {
         this.dynamicFiles.put(file, folder);
 
         return this;
+    }
+
+    public FileManager addDynamicFile(String folder, File file) {
+        if (!this.dynamicFiles.containsKey(file.getName())) {
+            this.dynamicFiles.put(file.getName(), folder);
+        }
+
+        if (!this.customConfigurations.containsKey(file.getName())) {
+            this.customConfigurations.put(file.getName(), YamlConfiguration.loadConfiguration(file));
+        }
+
+        return this;
+    }
+
+    public void saveDynamicFile(String folder, String file) {
+        FileConfiguration newFile = getDynamicFile(file);
+
+        if (newFile == null) {
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("The file " + file + ".yml could not be found!");
+            return;
+        }
+
+        try {
+            newFile.save(new File(this.plugin.getDataFolder(), folder + "/" + file));
+        } catch (IOException exception) {
+            this.plugin.getLogger().log(Level.SEVERE, "Could not save " + file + "!", exception);
+        }
+    }
+
+    public void reloadDynamicFile(String folder, String file) {
+        FileConfiguration newFile = getDynamicFile(file);
+
+        if (newFile == null) {
+            if (this.plugin.isLogging()) this.plugin.getLogger().warning("The file " + file + ".yml could not be found!");
+            return;
+        }
+
+        try {
+            YamlConfiguration configuration = YamlConfiguration.loadConfiguration(new File(this.plugin.getDataFolder(), folder + "/" + file));
+
+            this.customConfigurations.remove(file);
+            this.customConfigurations.put(file, configuration);
+        } catch (Exception exception) {
+            this.plugin.getLogger().log(Level.SEVERE, "Could not reload " + file + "!", exception);
+        }
+    }
+
+    public FileConfiguration getDynamicFile(String file) {
+        return this.configurations.get(file);
     }
 
     public Map<String, String> getDynamicFiles() {
