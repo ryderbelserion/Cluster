@@ -224,7 +224,15 @@ public class FileManager {
     }
 
     public void reloadStaticFile(String folder, String file) {
-        File newFile = folder.isBlank() ? new File(this.plugin.getDataFolder(), "/" + file) : new File(this.plugin.getDataFolder(), folder + "/" + file);
+        File newFile = new File(this.plugin.getDataFolder(), folder + "/" + file);
+
+        YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
+
+        this.configurations.put(file, configuration);
+    }
+
+    public void reloadStaticFile(String file) {
+        File newFile = new File(this.plugin.getDataFolder(), "/" + file);
 
         YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
 

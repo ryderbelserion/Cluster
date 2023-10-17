@@ -4,3 +4,9 @@ main: '${group}.${name}'
 version: '${version}'
 api-version: '${apiVersion}'
 description: '${description}'
+
+dependencies:
+  server:
+    HeadDatabase:
+      load: BEFORE
+      required: false

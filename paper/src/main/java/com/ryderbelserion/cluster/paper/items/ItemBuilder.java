@@ -1,6 +1,5 @@
 package com.ryderbelserion.cluster.paper.items;
 
-import com.destroystokyo.paper.profile.PlayerProfile;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.ryderbelserion.cluster.paper.utils.DyeUtils;
 import net.kyori.adventure.text.Component;
@@ -35,10 +34,7 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
-import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -78,7 +74,6 @@ public class ItemBuilder {
     // Player Heads
     private String player = "";
     private boolean isHead = false;
-    private boolean isURL = false;
 
     // Arrows
     private boolean isTippedArrow = false;
@@ -170,7 +165,6 @@ public class ItemBuilder {
 
         this.player = itemBuilder.player;
         this.isHead = itemBuilder.isHead;
-        this.isURL = itemBuilder.isURL;
 
         this.isTippedArrow = itemBuilder.isTippedArrow;
 
@@ -243,22 +237,9 @@ public class ItemBuilder {
                 if (this.isHead && !this.player.isBlank()) {
                     SkullMeta skullMeta = (SkullMeta) meta;
 
-                    if (this.isURL) {
-                        //TODO() This doesn't work.
-                        PlayerProfile profile = Bukkit.getServer().createProfile(UUID.randomUUID());
+                    OfflinePlayer person = getPlayer(this.player) != null ? getPlayer(this.player) : getOfflinePlayer(this.player);
 
-                        PlayerTextures textures = profile.getTextures();
-
-                        try {
-                            textures.setSkin(new URL(this.player));
-                        } catch (MalformedURLException exception) {
-                            this.plugin.getLogger().log(Level.WARNING, "Failed to set skin: " + this.player + " to profile.", exception);
-                        }
-                    } else {
-                        OfflinePlayer person = getPlayer(this.player) != null ? getPlayer(this.player) : getOfflinePlayer(this.player);
-
-                        skullMeta.setOwningPlayer(person);
-                    }
+                    skullMeta.setOwningPlayer(person);
                 }
 
                 // Set the display name.
@@ -543,13 +524,8 @@ public class ItemBuilder {
         return this;
     }
 
-    // Custom Heads
     public ItemBuilder setPlayer(String player) {
         this.player = player;
-
-        if (this.player != null && this.player.length() > 16) {
-            this.isURL = this.player.startsWith("http");
-        }
 
         return this;
     }

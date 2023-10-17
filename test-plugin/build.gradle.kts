@@ -6,6 +6,8 @@ plugins {
 
 dependencies {
     implementation(project(":paper"))
+
+    compileOnly("com.arcaniax", "HeadDatabase-API", "1.3.0")
 }
 
 tasks {
