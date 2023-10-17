@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 public class AbstractPaperPlugin extends AbstractPlugin {
 
     private final boolean isLogging;
-    private final FileManager fileManager;
+    private FileManager fileManager;
 
     private StorageManager storageManager;
     private JavaPlugin plugin;
@@ -25,13 +25,11 @@ public class AbstractPaperPlugin extends AbstractPlugin {
 
         this.isLogging = isLogging;
 
-        this.fileManager = new FileManager(this);
+        this.fileManager = new FileManager(this, this.plugin);
     }
 
     public AbstractPaperPlugin(boolean isLogging) {
         this.isLogging = isLogging;
-
-        this.fileManager = new FileManager(this);
     }
 
     @Override
@@ -99,10 +97,8 @@ public class AbstractPaperPlugin extends AbstractPlugin {
 
         // Set the plugin variable.
         this.plugin = plugin;
-    }
 
-    public JavaPlugin getJavaPlugin() {
-        return this.plugin;
+        this.fileManager = new FileManager(this, this.plugin);
     }
 
     public FileManager getFileManager() {

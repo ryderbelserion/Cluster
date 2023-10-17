@@ -1,6 +1,8 @@
 package com.ryderbelserion.cluster.paper.files;
 
 import com.ryderbelserion.cluster.paper.AbstractPaperPlugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,10 +13,13 @@ import java.util.logging.Level;
 
 public class FileManager {
 
+    private final JavaPlugin javaPlugin;
     private final AbstractPaperPlugin plugin;
 
-    public FileManager(AbstractPaperPlugin plugin) {
+    public FileManager(AbstractPaperPlugin plugin, JavaPlugin javaPlugin) {
         this.plugin = plugin;
+
+        this.javaPlugin = javaPlugin;
     }
 
     private final HashSet<String> folders = new HashSet<>();
@@ -37,7 +42,7 @@ public class FileManager {
 
             if (!newFile.exists()) {
                 try {
-                    this.plugin.getJavaPlugin().saveResource(file, false);
+                    this.javaPlugin.saveResource(file, false);
                 } catch (Exception exception) {
                     this.plugin.getLogger().log(Level.SEVERE, "Failed to load: " + newFile.getName(), exception);
 
@@ -75,7 +80,7 @@ public class FileManager {
                         try {
                             File newFile = new File(this.plugin.getDataFolder(), folder + "/" + fileName);
 
-                            this.plugin.getJavaPlugin().saveResource(folder + "/" + fileName, false);
+                            this.javaPlugin.saveResource(folder + "/" + fileName, false);
 
                             if (newFile.getName().toLowerCase().endsWith(".yml")) addDynamicFile(folder, newFile.getName());
 
