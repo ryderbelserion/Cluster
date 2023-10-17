@@ -10,8 +10,20 @@ public class TestPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.plugin = new AbstractPaperPlugin(this);
+        this.plugin = new AbstractPaperPlugin(this, true);
         this.plugin.enable();
+
+        this.plugin.getFileManager()
+                .addDynamicFile("crates", "CrateExample.yml")
+                .addDynamicFile("schematics", "classic.nbt")
+                .addDynamicFile("schematics", "nether.nbt")
+                .addDynamicFile("schematics", "outdoors.nbt")
+                .addDynamicFile("schematics", "sea.nbt")
+                .addDynamicFile("schematics", "soul.nbt")
+                .addDynamicFile("schematics", "wooden.nbt")
+                .addFolder("crates")
+                .addFolder("schematics")
+                .create();
 
         ConfigManager configManager = new ConfigManager(getDataFolder().toPath(), this);
 

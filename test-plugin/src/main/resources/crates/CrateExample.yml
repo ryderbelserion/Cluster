@@ -1,0 +1,134 @@
+crate:
+  # If the crate should be enabled.
+  enabled: true
+  # The crate type -> CSGO/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War
+  type: CSGO
+  # The name of the inventory.
+  name: '<green>Basic Crate'
+  # The amount of keys a player gets when they first join.
+  starting-keys: 0
+  # The amount of keys required to use the crate.
+  required-keys: 0
+  # The max amount of crates that can be opened using /cc max-open.
+  max-mass-open: 10
+  # This section is related to broadcasts
+  broadcast:
+    # If it should be enabled.
+    toggle: true
+    # The message to broadcast.
+    message: '{prefix}<gold>{player}<r> <gray>is opening a <gray>Basic Chest.'
+  # A section related to a default prize message.
+  prize-message:
+    # If we should send messages.
+    toggle: true
+    # The messages to send.
+    message:
+      - '<gray>You have won <red>{reward} <gray>from <red>{crate}'
+  # This section is related to what shows up in /cc gui.
+  gui:
+    # If it should be in the gui.
+    toggle: true
+    # The item that is used in the gui.
+    item: 'CHEST'
+    # If the crate should glow.
+    glowing: false
+    # The name used in the gui.
+    name: '&a&lBasic Chest'
+    # The lore used in the gui.
+    lore:
+      - '&7This crate contains strange objects.'
+      - '&7You have &6{keys} keys &7to open this crate with.'
+      - '&7&l(&e&l!&7&l) Right click to view rewards.'
+    # The slot it is in.
+    slot: 21
+  # This section is related to the crate preview. (shows up when right-clicking a crate.)
+  preview:
+    # If the preview should be enabled.
+    toggle: true
+    # The name of the preview gui.
+    name: '<green>Basic Crate Preview'
+    # The size of the gui.
+    rows: 6
+    glass:
+      # If the border should be enabled.
+      toggle: true
+      # The name of the item in the border.
+      name: ' '
+      # The item that shows in the border.
+      item: 'GRAY_STAINED_GLASS_PANE'
+  physical-key:
+    # The name of the item.
+    name: '<bold><gray>Basic Crate <blue>Key</bold>'
+    # The lore of the item.
+    lore:
+      - '<gray>A special key'
+      - '<gray>for a special Crate.'
+    # The material of the item.
+    item: 'TRIPWIRE_HOOK'
+    # If the item should glow.
+    glowing: true
+  # This section is related to the hologram.
+  hologram:
+    # If the hologram should be enabled.
+    toggle: true
+    # The height of the hologram above the crate.
+    height: 1.5
+    # The message displayed in the hologram.
+    message:
+      - '<gray>Basic Chest'
+      - '<yellow>A second line.'
+  prizes:
+    player_head:
+      # The name shown in the crate when you see this prize.
+      display-name: '&cAn example of a player head.'
+      # The item shown in the crate.
+      display-item: 'PLAYER_HEAD'
+      # The amount displayed.
+      display-amount: 1
+      # The lore of the item.
+      display-lore:
+        - '<gray>Want a player head?'
+        - ''
+        - '<red>Chance: <yellow>25%'
+      # The max range decides the percent chance of what you win.
+      #
+      # Available values: 100, 1000, 10000, 100000, 1000000, 10000000
+      max-range: 100
+      # 25 is 25% if the max range happens to be 100.
+      # Read more on "Chance" @ https://docs.crazycrew.us/crazycrates/info/crates/chance-system
+      chance: 25
+      # If the material is PLAYER_HEAD, this can be used to display a player head. A name can be used as well.
+      player: 'https://textures.minecraft.net/texture/1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e'
+
+      # If you do not want a player to be used, Set player: to look like this. Be wary of having 2 player's in a crate config.
+      # player: ''
+
+      items: # Give any item you want to the winning player & with a custom texture.
+        - 'Item:PLAYER_HEAD, Player:https://textures.minecraft.net/texture/1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e, Amount:1'
+
+      commands: # You can run any plugin command here.
+        - 'broadcast <bold><gold>{player}<r> <gray>won {reward}! WOW'
+      # If you do not want to send commands, Set the "Commands:" to look like the line below.
+      # commands: []
+
+      messages: # Send any message you want to the player.
+        - '<red>You won a <r>{reward}!'
+      # If you do not want to send messages, Set the "Messages:" to look like the line below.
+      # messages: []
+
+      # This allows for one time winnable prizes. If a player has one of the permissions then they will not be able to win it.
+      blacklisted-permissions: []
+
+      # This allows users who have won the same prize before to get alternative prizes. They must have the permission above to get an alternative prize.
+      alternative-prize:
+        # Toggle if the prize will use alternative prizes for the blacklisted permission.
+        toggle: false
+        # The messages to send.
+        messages:
+          - 'This is an example alternative message.'
+        # The commands to run.
+        commands:
+          - 'broadcast This is an example alternative command.'
+        # The items to give.
+        items:
+          - 'Item:GOLD_INGOT, Name:An example alternative item.'

@@ -1,7 +1,8 @@
 package com.ryderbelserion.cluster.paper;
 
 import com.ryderbelserion.cluster.api.AbstractPlugin;
-import com.ryderbelserion.cluster.api.config.FileManager;
+import com.ryderbelserion.cluster.api.config.StorageManager;
+import com.ryderbelserion.cluster.paper.files.FileManager;
 import net.kyori.adventure.audience.Audience;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
@@ -12,15 +13,26 @@ import java.util.logging.Logger;
 
 public class AbstractPaperPlugin extends AbstractPlugin {
 
-    private FileManager fileManager;
+    private final boolean isLogging;
+    private final FileManager fileManager;
+
     private StorageManager storageManager;
     private JavaPlugin plugin;
 
-    public AbstractPaperPlugin(JavaPlugin plugin) {
+
+    public AbstractPaperPlugin(JavaPlugin plugin, boolean isLogging) {
         this.plugin = plugin;
+
+        this.isLogging = isLogging;
+
+        this.fileManager = new FileManager(this);
     }
 
-    public AbstractPaperPlugin() {}
+    public AbstractPaperPlugin(boolean isLogging) {
+        this.isLogging = isLogging;
+
+        this.fileManager = new FileManager(this);
+    }
 
     @Override
     public void enable() {
@@ -44,6 +56,11 @@ public class AbstractPaperPlugin extends AbstractPlugin {
     @Override
     public StorageManager getStorageManager() {
         return this.storageManager;
+    }
+
+    @Override
+    public boolean isLogging() {
+        return this.isLogging;
     }
 
     @Override
@@ -82,5 +99,13 @@ public class AbstractPaperPlugin extends AbstractPlugin {
 
         // Set the plugin variable.
         this.plugin = plugin;
+    }
+
+    public JavaPlugin getJavaPlugin() {
+        return this.plugin;
+    }
+
+    public FileManager getFileManager() {
+        return this.fileManager;
     }
 }
