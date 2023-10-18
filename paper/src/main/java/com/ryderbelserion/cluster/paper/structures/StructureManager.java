@@ -71,16 +71,16 @@ public class StructureManager implements IStructureManager {
     }
 
     @Override
-    public void pasteStructure(Location location) {
+    public void pasteStructure(Location location, boolean storeBlocks) {
         try {
             // Get the blocks from the hashset and set them.
-            getBlocks(location);
+            if (storeBlocks) getBlocks(location);
 
             // Place the structure.
             this.structure.place(location.subtract(2, 0.0, 2), false, StructureRotation.NONE, Mirror.NONE, 0, 1F, new Random());
 
             // Get the structure blocks.
-            getStructureBlocks(location);
+            if (storeBlocks) getStructureBlocks(location);
         } catch (Exception exception) {
             this.plugin.getLogger().log(Level.SEVERE, "Could not paste structure", exception);
         }

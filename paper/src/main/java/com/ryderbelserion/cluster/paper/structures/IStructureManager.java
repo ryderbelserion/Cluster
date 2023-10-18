@@ -13,7 +13,7 @@ public interface IStructureManager {
 
     void saveStructure(File file, Location one, Location two, boolean includeEntities);
 
-    void pasteStructure(Location location);
+    void pasteStructure(Location location, boolean storeBlocks);
 
     void removeStructure();
 
