@@ -466,6 +466,10 @@ public class ItemBuilder {
         return this;
     }
 
+    public void hideItemFlags(boolean hideItemFlags) {
+        this.hideItemFlags = hideItemFlags;
+    }
+
     public ItemBuilder addFlag(String flag) {
         ItemFlag value = getFlag(flag);
 
