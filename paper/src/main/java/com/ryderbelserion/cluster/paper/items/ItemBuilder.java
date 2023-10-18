@@ -40,7 +40,6 @@ import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -400,56 +399,67 @@ public class ItemBuilder {
 
     public ItemBuilder addDisplayLore(String lore) {
         this.displayLore.add(parse(lore));
+
         return this;
     }
 
     public ItemBuilder addPatterns(List<String> patterns) {
         patterns.forEach(this::addPatterns);
+
         return this;
     }
 
     public ItemBuilder addPattern(Pattern pattern) {
         this.patterns.add(pattern);
+
         return this;
     }
 
     public ItemBuilder setPattern(List<Pattern> patterns) {
         this.patterns = patterns;
+
         return this;
     }
 
     public ItemBuilder setTrimMaterial(TrimMaterial trimMaterial) {
         this.trimMaterial = trimMaterial;
+
         return this;
     }
 
     public ItemBuilder setTrimPattern(TrimPattern trimPattern) {
         this.trimPattern = trimPattern;
+
         return this;
     }
 
     public ItemBuilder setItemDamage(int itemDamage) {
         this.itemDamage = itemDamage;
+
         return this;
     }
 
     public ItemBuilder setAmount(Integer amount) {
         this.itemAmount = amount;
+
         return this;
     }
 
     public ItemBuilder setPotionAmplifier(int potionAmplifier) {
         this.potionAmplifier = potionAmplifier;
+
         return this;
     }
 
     public ItemBuilder setPotionDuration(int potionDuration) {
         this.potionDuration = potionDuration;
+
         return this;
     }
 
     public ItemBuilder setGlowing(boolean isGlowing) {
         this.isGlowing = isGlowing;
+
         return this;
     }
 
@@ -457,23 +467,29 @@ public class ItemBuilder {
         return this.isUnbreakable;
     }
 
-    public void setUnbreakable(boolean unbreakable) {
+    public ItemBuilder setUnbreakable(boolean unbreakable) {
         this.isUnbreakable = unbreakable;
+
+        return this;
     }
 
     public ItemBuilder addItemFlag(ItemFlag itemFlag) {
         if (itemFlag != null) this.itemFlags.add(itemFlag);
+
         return this;
     }
 
-    public void hideItemFlags(boolean hideItemFlags) {
+    public ItemBuilder hideItemFlags(boolean hideItemFlags) {
         this.hideItemFlags = hideItemFlags;
+
+        return this;
     }
 
     public ItemBuilder addFlag(String flag) {
         ItemFlag value = getFlag(flag);
 
         if (value != null) this.itemFlags.add(value);
+
         return this;
     }
 
@@ -530,6 +546,7 @@ public class ItemBuilder {
 
     public ItemBuilder setEntityType(EntityType entityType) {
         this.entityType = entityType;
+
         return this;
     }
 

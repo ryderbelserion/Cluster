@@ -4,15 +4,21 @@ import com.ryderbelserion.cluster.TestPlugin;
 import com.ryderbelserion.cluster.enums.Files;
 import com.ryderbelserion.cluster.paper.files.CustomFile;
 import com.ryderbelserion.cluster.paper.items.ItemBuilder;
+import com.ryderbelserion.cluster.paper.items.NbtBuilder;
 import com.ryderbelserion.cluster.paper.items.ParentBuilder;
+import com.ryderbelserion.cluster.paper.structures.StructureManager;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +43,8 @@ public class BaseCommand extends Command {
                 "",
                 " <green>- /test help - <reset>Shows this menu",
                 " <green>- /test reload <gray>- <reset>Reloads the plugin",
-                " <green>- /test skull (player only) <gray>- <reset>Tests the item builder's skull function."
+                " <green>- /test skull (player only) <gray>- <reset>Tests the item builder's skull function.",
+                " <green>- /test structures <gray>- <reset>Tests the structure manager."
         );
 
         if (args.length == 0) {
@@ -98,6 +105,41 @@ public class BaseCommand extends Command {
 
                 sender.sendMessage(this.plugin.getPlugin().parse(" <red>[TestPlugin] You must be a player to run this command."));
             }
+
+            case "structures" -> {
+
+                if (sender instanceof Player player) {
+                    switch (args[1].toLowerCase()) {
+                        case "save" -> {
+                            StructureManager structureManager = new StructureManager(this.plugin);
+
+                            structureManager.createStructure();
+
+                            structureManager.saveStructure(new File(this.plugin.getDataFolder(), "example.nbt"), this.plugin.getBlocks().get(0), this.plugin.getBlocks().get(1), true);
+                        }
+
+                        case "paste" -> {
+                            StructureManager structureManager = new StructureManager(this.plugin, new File(this.plugin.getDataFolder(), "example.nbt"));
+
+                            structureManager.pasteStructure(player.getLocation());
+                        }
+
+                        case "wand" -> {
+                            ItemStack itemStack = ParentBuilder.of(this.plugin, Material.WOODEN_AXE).setAmount(1).setDisplayName("<red>Fancy Wand").addEnchantment(Enchantment.DAMAGE_ALL, 1, false).hideItemFlags(true).build();
+
+                            NbtBuilder nbtBuilder = new NbtBuilder(this.plugin, itemStack);
+
+                            nbtBuilder.setString("structure_wand", player.getUniqueId().toString());
+
+                            player.getInventory().addItem(nbtBuilder.getItemStack());
+                        }
+                    }
+
+                    return true;
+                }
+
+                sender.sendMessage(this.plugin.getPlugin().parse(" <red>[TestPlugin] You must be a player to run this command."));
+            }
         }
 
         return false;
@@ -111,8 +153,17 @@ public class BaseCommand extends Command {
             completions.add("help");
             completions.add("reload");
             completions.add("skull");
+            completions.add("structures");
 
             return StringUtil.copyPartialMatches(args[0], completions, new ArrayList<>());
+        }
+
+        if (args.length == 2) {
+            completions.add("save");
+            completions.add("wand");
+            completions.add("paste");
+
+            return StringUtil.copyPartialMatches(args[1], completions, new ArrayList<>());
         }
 
         return Collections.emptyList();

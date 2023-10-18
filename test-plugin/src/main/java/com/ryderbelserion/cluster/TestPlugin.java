@@ -2,12 +2,17 @@ package com.ryderbelserion.cluster;
 
 import com.ryderbelserion.cluster.command.BaseCommand;
 import com.ryderbelserion.cluster.config.ConfigManager;
+import com.ryderbelserion.cluster.listeners.StructureInteractEvent;
 import com.ryderbelserion.cluster.paper.AbstractPaperPlugin;
+import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
+import java.util.ArrayList;
 
 public class TestPlugin extends JavaPlugin {
 
     private AbstractPaperPlugin plugin;
+
+    private ArrayList<Location> blocks;
 
     @Override
     public void onEnable() {
@@ -27,6 +32,8 @@ public class TestPlugin extends JavaPlugin {
                 .addFolder("schematics")
                 .create();
 
+        this.blocks = new ArrayList<>();
+
         ConfigManager configManager = new ConfigManager(getDataFolder().toPath(), this);
 
         configManager.load();
@@ -37,6 +44,8 @@ public class TestPlugin extends JavaPlugin {
         configManager.reload();
 
         getServer().getCommandMap().register("test", new BaseCommand(this));
+
+        getServer().getPluginManager().registerEvents(new StructureInteractEvent(this), this);
     }
 
     @Override
@@ -46,5 +55,9 @@ public class TestPlugin extends JavaPlugin {
 
     public AbstractPaperPlugin getPlugin() {
         return this.plugin;
+    }
+
+    public ArrayList<Location> getBlocks() {
+        return this.blocks;
     }
 }
