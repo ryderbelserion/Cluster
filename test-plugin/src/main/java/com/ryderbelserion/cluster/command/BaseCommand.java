@@ -121,7 +121,7 @@ public class BaseCommand extends Command {
                         case "paste" -> {
                             StructureManager structureManager = new StructureManager(this.plugin, new File(this.plugin.getDataFolder(), "example.nbt"));
 
-                            structureManager.pasteStructure(player.getLocation());
+                            structureManager.pasteStructure(player.getLocation(), false);
                         }
 
                         case "wand" -> {
