@@ -11,18 +11,17 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ReloadCommand extends Command {
+public class BaseCommand extends Command {
 
     private final TestPlugin plugin;
 
-    public ReloadCommand(TestPlugin plugin) {
+    public BaseCommand(TestPlugin plugin) {
         super("test");
 
         this.plugin = plugin;

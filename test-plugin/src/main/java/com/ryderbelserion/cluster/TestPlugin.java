@@ -1,6 +1,6 @@
 package com.ryderbelserion.cluster;
 
-import com.ryderbelserion.cluster.command.ReloadCommand;
+import com.ryderbelserion.cluster.command.BaseCommand;
 import com.ryderbelserion.cluster.config.ConfigManager;
 import com.ryderbelserion.cluster.paper.AbstractPaperPlugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -36,7 +36,7 @@ public class TestPlugin extends JavaPlugin {
 
         configManager.reload();
 
-        getServer().getCommandMap().register("test", new ReloadCommand(this));
+        getServer().getCommandMap().register("test", new BaseCommand(this));
     }
 
     @Override
