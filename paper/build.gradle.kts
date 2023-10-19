@@ -18,8 +18,6 @@ dependencies {
     }
 }
 
-val component: SoftwareComponent = components["java"]
-
 tasks {
     publishing {
         publications {
@@ -28,7 +26,7 @@ tasks {
                 artifactId = "${rootProject.name.lowercase()}-${project.name.lowercase()}"
                 version = rootProject.version.toString()
 
-                from(component)
+                artifact(reobfJar)
             }
         }
     }
