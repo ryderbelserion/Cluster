@@ -23,12 +23,12 @@ public class PaperService {
     }
 
     @ApiStatus.Internal
-    public static void setService(PaperPlugin bukkit) {
+    public static void setService(PaperPlugin paperPlugin) {
         if (PaperService.paperPlugin != null) {
             return;
         }
 
-        PaperService.paperPlugin = bukkit;
+        PaperService.paperPlugin = paperPlugin;
     }
 
     @ApiStatus.Internal
