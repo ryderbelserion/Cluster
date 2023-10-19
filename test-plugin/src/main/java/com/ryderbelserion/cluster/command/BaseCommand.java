@@ -107,7 +107,6 @@ public class BaseCommand extends Command {
             }
 
             case "structures" -> {
-
                 if (sender instanceof Player player) {
                     switch (args[1].toLowerCase()) {
                         case "save" -> {
