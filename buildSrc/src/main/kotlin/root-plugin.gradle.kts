@@ -42,12 +42,12 @@ publishing {
                 this.password = System.getenv("gradle_password")
             }
 
-            if (isSnapshot) {
-                url = uri("https://repo.crazycrew.us/snapshots/")
-                return@maven
-            }
+            //if (isSnapshot) {
+            //    url = uri("https://repo.crazycrew.us/snapshots/")
+            //    return@maven
+            //}
 
-            url = uri("https://repo.crazycrew.us/releases/")
+            url = uri("https://repo.crazycrew.us/snapshots/")
         }
     }
 }
