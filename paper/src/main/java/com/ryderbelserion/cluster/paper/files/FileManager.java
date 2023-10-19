@@ -1,6 +1,6 @@
 package com.ryderbelserion.cluster.paper.files;
 
-import com.ryderbelserion.cluster.paper.AbstractPaperPlugin;
+import com.ryderbelserion.cluster.paper.PaperPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,9 +17,9 @@ import java.util.logging.Level;
 public class FileManager {
 
     private final JavaPlugin javaPlugin;
-    private final AbstractPaperPlugin plugin;
+    private final PaperPlugin plugin;
 
-    public FileManager(AbstractPaperPlugin plugin, JavaPlugin javaPlugin) {
+    public FileManager(PaperPlugin plugin, JavaPlugin javaPlugin) {
         this.plugin = plugin;
 
         this.javaPlugin = javaPlugin;

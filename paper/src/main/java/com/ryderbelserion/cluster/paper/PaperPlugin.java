@@ -11,7 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.logging.Logger;
 
-public class AbstractPaperPlugin extends AbstractPlugin {
+public class PaperPlugin extends AbstractPlugin {
 
     private final boolean isLogging;
     private FileManager fileManager;
@@ -20,7 +20,7 @@ public class AbstractPaperPlugin extends AbstractPlugin {
     private JavaPlugin plugin;
 
 
-    public AbstractPaperPlugin(JavaPlugin plugin, boolean isLogging) {
+    public PaperPlugin(JavaPlugin plugin, boolean isLogging) {
         this.plugin = plugin;
 
         this.isLogging = isLogging;
@@ -28,7 +28,7 @@ public class AbstractPaperPlugin extends AbstractPlugin {
         this.fileManager = new FileManager(this, this.plugin);
     }
 
-    public AbstractPaperPlugin(boolean isLogging) {
+    public PaperPlugin(boolean isLogging) {
         this.isLogging = isLogging;
     }
 

@@ -5,16 +5,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class PaperService {
 
-    private static AbstractPaperPlugin abstractPaperPlugin = null;
+    private static PaperPlugin paperPlugin = null;
 
-    public static @NotNull AbstractPaperPlugin get() {
-        AbstractPaperPlugin instance = PaperService.abstractPaperPlugin;
+    public static @NotNull PaperPlugin get() {
+        PaperPlugin instance = PaperService.paperPlugin;
 
         if (instance == null)  {
             throw new RuntimeException("The API has not been properly initialized! Likely did not use the setService method.");
         }
 
-        return abstractPaperPlugin;
+        return paperPlugin;
     }
 
     @ApiStatus.Internal
@@ -23,20 +23,20 @@ public class PaperService {
     }
 
     @ApiStatus.Internal
-    public static void setService(AbstractPaperPlugin bukkit) {
-        if (PaperService.abstractPaperPlugin != null) {
+    public static void setService(PaperPlugin bukkit) {
+        if (PaperService.paperPlugin != null) {
             return;
         }
 
-        PaperService.abstractPaperPlugin = bukkit;
+        PaperService.paperPlugin = bukkit;
     }
 
     @ApiStatus.Internal
     public static void stopService() {
-        if (PaperService.abstractPaperPlugin == null) {
+        if (PaperService.paperPlugin == null) {
             return;
         }
 
-        PaperService.abstractPaperPlugin = null;
+        PaperService.paperPlugin = null;
     }
 }

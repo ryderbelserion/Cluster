@@ -1,6 +1,6 @@
 package com.ryderbelserion.cluster.paper.files;
 
-import com.ryderbelserion.cluster.paper.AbstractPaperPlugin;
+import com.ryderbelserion.cluster.paper.PaperPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
@@ -10,7 +10,7 @@ import java.util.logging.Level;
 
 public class CustomFile {
 
-    private final AbstractPaperPlugin plugin;
+    private final PaperPlugin plugin;
 
     private final String strippedName;
     private final String fileName;
@@ -18,7 +18,7 @@ public class CustomFile {
 
     private FileConfiguration configuration;
 
-    public CustomFile(AbstractPaperPlugin plugin, String fileName, String folder) {
+    public CustomFile(PaperPlugin plugin, String fileName, String folder) {
         this.plugin = plugin;
 
         this.strippedName = fileName.replace(".yml", "");

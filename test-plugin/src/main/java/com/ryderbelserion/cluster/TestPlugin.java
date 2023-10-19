@@ -3,20 +3,20 @@ package com.ryderbelserion.cluster;
 import com.ryderbelserion.cluster.command.BaseCommand;
 import com.ryderbelserion.cluster.config.ConfigManager;
 import com.ryderbelserion.cluster.listeners.StructureInteractEvent;
-import com.ryderbelserion.cluster.paper.AbstractPaperPlugin;
+import com.ryderbelserion.cluster.paper.PaperPlugin;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 
 public class TestPlugin extends JavaPlugin {
 
-    private AbstractPaperPlugin plugin;
+    private PaperPlugin plugin;
 
     private ArrayList<Location> blocks;
 
     @Override
     public void onEnable() {
-        this.plugin = new AbstractPaperPlugin(this, true);
+        this.plugin = new PaperPlugin(this, true);
         this.plugin.enable();
 
         this.plugin.getFileManager()
@@ -53,7 +53,7 @@ public class TestPlugin extends JavaPlugin {
         this.plugin.disable();
     }
 
-    public AbstractPaperPlugin getPlugin() {
+    public PaperPlugin getPlugin() {
         return this.plugin;
     }
 
