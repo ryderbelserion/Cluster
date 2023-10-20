@@ -31,8 +31,7 @@ public class JsonFile {
             GsonBuilder builder = new GsonBuilder()
                     .disableHtmlEscaping()
                     .enableComplexMapKeySerialization()
-                    .excludeFieldsWithModifiers(Modifier.TRANSIENT)
-                    .excludeFieldsWithoutExposeAnnotation();
+                    .excludeFieldsWithModifiers(Modifier.TRANSIENT);
 
             this.gson = fileData.isData() ? builder.create() : builder.setPrettyPrinting().create();
         }

@@ -12,9 +12,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public sealed class ConfigData extends FileData permits ConfigManager {
 
     public ConfigData(Path path) {
-        super(FileType.json,"data.json", path.toString(), true, new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().enableComplexMapKeySerialization().excludeFieldsWithModifiers(Modifier.TRANSIENT).excludeFieldsWithoutExposeAnnotation());
+        super(FileType.json,"data.json", path.toString(), true, new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().enableComplexMapKeySerialization().excludeFieldsWithModifiers(Modifier.TRANSIENT));
     }
 
-    @Expose
     public static ConcurrentHashMap<String, String> commands = new ConcurrentHashMap<>();
 }
