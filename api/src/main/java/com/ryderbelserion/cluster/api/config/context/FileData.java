@@ -51,6 +51,8 @@ public abstract class FileData {
     }
 
     public void setGson(GsonBuilder gson) {
+        if (this.type != FileType.json) return;
+
         this.gson = gson;
     }
 
