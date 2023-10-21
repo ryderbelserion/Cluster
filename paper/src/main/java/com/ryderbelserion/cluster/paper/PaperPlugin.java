@@ -41,6 +41,8 @@ public class PaperPlugin extends AbstractPlugin {
         if (!this.plugin.getDataFolder().exists()) {
             this.plugin.getDataFolder().mkdirs();
         }
+
+        PaperService.setService(this);
     }
 
     @Override
