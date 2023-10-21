@@ -90,13 +90,13 @@ public class BaseCommand extends Command {
 
             case "skull" -> {
                 if (sender instanceof Player player) {
-                    ItemBuilder skull = ParentBuilder.of(this.plugin, Material.PLAYER_HEAD).setAmount(1).setPlayer(player.getName());
+                    ItemBuilder skull = ParentBuilder.of(Material.PLAYER_HEAD).setAmount(1).setPlayer(player.getName());
 
                     player.getInventory().addItem(skull.build());
 
                     HeadDatabaseAPI api = new HeadDatabaseAPI();
 
-                    ItemBuilder customHead = ParentBuilder.of(this.plugin, api.getItemHead("43547")).setAmount(3);
+                    ItemBuilder customHead = ParentBuilder.of(api.getItemHead("43547")).setAmount(3);
 
                     player.getInventory().addItem(customHead.build());
 
@@ -124,7 +124,7 @@ public class BaseCommand extends Command {
                         }
 
                         case "wand" -> {
-                            ItemStack itemStack = ParentBuilder.of(this.plugin, Material.WOODEN_AXE).setAmount(1).setDisplayName("<red>Fancy Wand").addEnchantment(Enchantment.DAMAGE_ALL, 1, false).hideItemFlags(true).build();
+                            ItemStack itemStack = ParentBuilder.of(Material.WOODEN_AXE).setAmount(1).setDisplayName("<red>Fancy Wand").addEnchantment(Enchantment.DAMAGE_ALL, 1, false).hideItemFlags(true).build();
 
                             NbtBuilder nbtBuilder = new NbtBuilder(this.plugin, itemStack);
 

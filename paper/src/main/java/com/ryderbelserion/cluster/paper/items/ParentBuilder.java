@@ -1,20 +1,20 @@
 package com.ryderbelserion.cluster.paper.items;
 
+import com.ryderbelserion.cluster.paper.PaperService;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class ParentBuilder {
 
-    public static ItemBuilder of(JavaPlugin plugin) {
-        return new ItemBuilder(plugin);
+    public static ItemBuilder of() {
+        return new ItemBuilder(PaperService.get().getPlugin());
     }
 
-    public static ItemBuilder of(JavaPlugin plugin, ItemStack itemStack) {
-        return new ItemBuilder(plugin, itemStack);
+    public static ItemBuilder of(ItemStack itemStack) {
+        return new ItemBuilder(PaperService.get().getPlugin(), itemStack);
     }
 
-    public static ItemBuilder of(JavaPlugin plugin, Material material) {
-        return new ItemBuilder(plugin, new ItemStack(material));
+    public static ItemBuilder of(Material material) {
+        return new ItemBuilder(PaperService.get().getPlugin(), new ItemStack(material));
     }
 }

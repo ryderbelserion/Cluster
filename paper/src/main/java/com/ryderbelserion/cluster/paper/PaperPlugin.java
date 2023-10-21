@@ -104,4 +104,8 @@ public class PaperPlugin extends AbstractPlugin {
     public FileManager getFileManager() {
         return this.fileManager;
     }
+
+    public JavaPlugin getPlugin() {
+        return this.plugin;
+    }
 }
