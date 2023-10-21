@@ -31,7 +31,7 @@ public abstract class FileData {
 
     private GsonBuilder gson;
 
-    public FileData(FileType type, String name, String path, boolean isData, GsonBuilder gson) {
+    public FileData(FileType type, String name, String path, GsonBuilder gson) {
         if (type != FileType.json) return;
 
         this.gson = gson;
@@ -40,8 +40,6 @@ public abstract class FileData {
 
         this.name = name;
         this.path = Path.of(path);
-
-        this.isData = isData;
     }
 
     public File getFile() {

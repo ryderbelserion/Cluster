@@ -1,6 +1,8 @@
 package com.ryderbelserion.cluster.config;
 
 import com.ryderbelserion.cluster.TestPlugin;
+import com.ryderbelserion.cluster.config.persist.Items;
+
 import java.nio.file.Path;
 
 public non-sealed class ConfigManager extends ConfigData {
@@ -17,11 +19,11 @@ public non-sealed class ConfigManager extends ConfigData {
     }
 
     public void load() {
-        this.plugin.getPlugin().getStorageManager().addFile(new ConfigData(this.path));
+        this.plugin.getPlugin().getStorageManager().addFile(new Items(this.path));
     }
 
     public void save() {
-        this.plugin.getPlugin().getStorageManager().saveFile(new ConfigData(this.path));
+        this.plugin.getPlugin().getStorageManager().saveFile(new Items(this.path));
     }
 
     public void reload() {
