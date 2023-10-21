@@ -149,6 +149,8 @@ public class ItemBuilder {
 
     // De-duplicate an item builder.
     public ItemBuilder(ItemBuilder itemBuilder) {
+        this.plugin = itemBuilder.plugin;
+
         this.material = itemBuilder.material;
         this.itemStack = itemBuilder.itemStack;
         this.itemAmount = itemBuilder.itemAmount;

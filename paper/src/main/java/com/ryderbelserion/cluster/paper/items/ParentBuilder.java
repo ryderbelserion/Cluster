@@ -14,6 +14,10 @@ public class ParentBuilder {
         return new ItemBuilder(PaperService.get().getPlugin(), itemStack);
     }
 
+    public static ItemBuilder of(ItemBuilder itemBuilder) {
+        return new ItemBuilder(itemBuilder);
+    }
+
     public static ItemBuilder of(Material material) {
         return new ItemBuilder(PaperService.get().getPlugin(), new ItemStack(material));
     }
