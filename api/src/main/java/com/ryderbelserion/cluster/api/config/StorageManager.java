@@ -15,10 +15,7 @@ public class StorageManager implements FileContext {
     @Override
     public void addFile(FileData file) {
         switch (file.getType()) {
-            case json -> {
-                this.jsonFile = new JsonFile(file);
-                this.jsonFile.loadFile();
-            }
+            case json -> this.jsonFile = new JsonFile(file);
 
             case other -> {
                 if (file.getFile().exists()) return;
@@ -37,7 +34,8 @@ public class StorageManager implements FileContext {
         switch (file.getType()) {
             case json -> {
                 this.jsonFile = new JsonFile(file);
-                this.jsonFile.saveFile();
+                this.jsonFile.read();
+                this.jsonFile.write();
             }
 
             case other -> {}

@@ -25,7 +25,6 @@ public non-sealed class ConfigManager extends ConfigData {
     }
 
     public void reload() {
-        load();
         save();
     }
 
