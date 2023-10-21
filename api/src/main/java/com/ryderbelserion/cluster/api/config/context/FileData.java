@@ -50,6 +50,10 @@ public abstract class FileData {
         return this.type;
     }
 
+    public void setGson(GsonBuilder gson) {
+        this.gson = gson;
+    }
+
     public GsonBuilder getGson() {
         return this.gson;
     }
