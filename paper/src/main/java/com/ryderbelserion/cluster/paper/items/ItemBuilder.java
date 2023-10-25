@@ -18,6 +18,8 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Registry;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Banner;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.banner.Pattern;
@@ -48,7 +50,7 @@ import java.util.logging.Level;
 
 public class ItemBuilder {
 
-    private JavaPlugin plugin;
+    private final JavaPlugin plugin;
 
     // Items
     private Material material = Material.STONE;
@@ -120,6 +122,10 @@ public class ItemBuilder {
     private boolean isSpawner = false;
     private EntityType entityType = EntityType.BAT;
 
+    // Attributes
+
+    private boolean isTool = false;
+
     // Create a new item.
     public ItemBuilder(JavaPlugin plugin, ItemStack itemStack) {
         this.plugin = plugin;
@@ -143,6 +149,8 @@ public class ItemBuilder {
         String name = this.material.name();
 
         this.isArmor = name.endsWith("_HELMET") || name.endsWith("_CHESTPLATE") || name.endsWith("_LEGGINGS") || name.endsWith("_BOOTS");
+
+        this.isTool = name.endsWith("_SWORD") || name.endsWith("_AXE") || name.endsWith("_SHOVEL") || name.endsWith("_SPADE");
 
         this.isBanner = name.endsWith("BANNER");
     }
@@ -204,6 +212,8 @@ public class ItemBuilder {
 
         this.isSpawner = itemBuilder.isSpawner;
         this.entityType = itemBuilder.entityType;
+
+        this.isTool = itemBuilder.isTool;
     }
 
     public ItemBuilder(JavaPlugin plugin) {
@@ -568,6 +578,22 @@ public class ItemBuilder {
         return this;
     }
 
+    // Attributes
+    public ItemBuilder addAttribute(Attribute attribute, AttributeModifier modifier) {
+        if (this.isTool) {
+            this.plugin.getLogger().warning("The item is not a tool, Cannot modify attributes.");
+            return this;
+        }
+
+        getItemStack().editMeta(meta -> meta.addAttributeModifier(attribute, modifier));
+
+        return this;
+    }
+
+    public boolean isTool() {
+        return this.isTool;
+    }
+
     // Enchantments
     public ItemBuilder addEnchantments(HashMap<Enchantment, Integer> enchantments, boolean unsafeEnchantments) {
         enchantments.forEach((enchantment, level) -> addEnchantment(enchantment, level, unsafeEnchantments));
@@ -670,6 +696,8 @@ public class ItemBuilder {
         String name = this.material.name();
 
         this.isArmor = name.endsWith("_HELMET") || name.endsWith("_CHESTPLATE") || name.endsWith("_LEGGINGS") || name.endsWith("_BOOTS");
+
+        this.isTool = name.endsWith("_SWORD") || name.endsWith("_AXE") || name.endsWith("_SHOVEL") || name.endsWith("_SPADE");
 
         this.isBanner = name.endsWith("BANNER");
 
