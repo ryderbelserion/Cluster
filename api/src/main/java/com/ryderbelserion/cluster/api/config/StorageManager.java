@@ -34,7 +34,6 @@ public class StorageManager implements FileContext {
         switch (file.getType()) {
             case json -> {
                 this.jsonFile = new JsonFile(file);
-                this.jsonFile.read();
                 this.jsonFile.write();
             }
 
