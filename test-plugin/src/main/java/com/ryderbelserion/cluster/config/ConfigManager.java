@@ -7,33 +7,40 @@ import java.nio.file.Path;
 
 public non-sealed class ConfigManager extends ConfigData {
 
-    private final Path path;
     private final TestPlugin plugin;
+
+    private final Items items;
+    private final ConfigData configData;
 
     public ConfigManager(Path path, TestPlugin plugin) {
         super(path);
 
-        this.path = path;
-
         this.plugin = plugin;
+
+        this.items = new Items(path);
+        this.configData = new ConfigData(path);
     }
 
     public void load() {
-        this.plugin.getPlugin().getStorageManager().addFile(new Items(this.path));
+        this.plugin.getPlugin().getStorageManager().addFile(this.items);
+
+        this.plugin.getPlugin().getStorageManager().addFile(this.configData);
     }
 
     public void save() {
-        this.plugin.getPlugin().getStorageManager().saveFile(new Items(this.path));
+        this.plugin.getPlugin().getStorageManager().saveFile(this.items);
+
+        this.plugin.getPlugin().getStorageManager().saveFile(this.configData);
     }
 
     public void reload() {
         save();
     }
 
-    public void addValue(String value, String other) {
+    public void addValue(String value, String subValue) {
         if (hasValue(value)) return;
 
-        commands.put(value, other);
+        commands.put(value, subValue);
     }
 
     public void addSubValue(String value, String subValue) {
@@ -47,5 +54,9 @@ public non-sealed class ConfigManager extends ConfigData {
 
     public boolean hasValue(String value) {
         return commands.containsKey(value);
+    }
+
+    public int size() {
+        return commands.size();
     }
 }
