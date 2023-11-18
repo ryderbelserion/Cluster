@@ -10,13 +10,6 @@ bukkit/build
 api/.gradle
 api/build
 
-run
-
-!test-plugin/run/config
-!test-plugin/run/eula.txt
-!test-plugin/run/bukkit.yml
-!test-plugin/run/server.properties
-
 build
 
 jars
