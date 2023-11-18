@@ -13,25 +13,25 @@ public abstract class FileData {
 
     private boolean isData;
 
-    public FileData(FileType type, String name, String path) {
+    public FileData(FileType type, String name, Path path) {
         this.type = type;
 
         this.name = name;
-        this.path = Path.of(path);
+        this.path = path;
     }
 
-    public FileData(FileType type, String name, String path, boolean isData) {
+    public FileData(FileType type, String name, Path path, boolean isData) {
         this.type = type;
 
         this.name = name;
-        this.path = Path.of(path);
+        this.path = path;
 
         if (this.type == FileType.json) this.isData = isData;
     }
 
     private GsonBuilder gson;
 
-    public FileData(FileType type, String name, String path, GsonBuilder gson) {
+    public FileData(FileType type, String name, Path path, GsonBuilder gson) {
         if (type != FileType.json) return;
 
         this.gson = gson;
@@ -39,7 +39,7 @@ public abstract class FileData {
         this.type = type;
 
         this.name = name;
-        this.path = Path.of(path);
+        this.path = path;
     }
 
     public File getFile() {

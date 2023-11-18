@@ -1,15 +1,13 @@
 package com.ryderbelserion.cluster.config;
 
 import com.ryderbelserion.cluster.TestPlugin;
-import com.ryderbelserion.cluster.config.persist.Items;
-
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 public non-sealed class ConfigManager extends ConfigData {
 
     private final TestPlugin plugin;
 
-    private final Items items;
     private final ConfigData configData;
 
     public ConfigManager(Path path, TestPlugin plugin) {
@@ -17,19 +15,10 @@ public non-sealed class ConfigManager extends ConfigData {
 
         this.plugin = plugin;
 
-        this.items = new Items(path);
-        this.configData = new ConfigData(path);
-    }
-
-    public void load() {
-        this.plugin.getPlugin().getStorageManager().addFile(this.items);
-
-        this.plugin.getPlugin().getStorageManager().addFile(this.configData);
+        this.configData = this;
     }
 
     public void save() {
-        this.plugin.getPlugin().getStorageManager().saveFile(this.items);
-
         this.plugin.getPlugin().getStorageManager().saveFile(this.configData);
     }
 
@@ -40,7 +29,8 @@ public non-sealed class ConfigManager extends ConfigData {
     public void addValue(String value, String subValue) {
         if (hasValue(value)) return;
 
-        commands.put(value, subValue);
+        commands.put(value, new ArrayList<>());
+        commands.get(value).add(subValue);
     }
 
     public void addSubValue(String value, String subValue) {
@@ -49,14 +39,10 @@ public non-sealed class ConfigManager extends ConfigData {
             return;
         }
 
-        commands.put(value, subValue);
+        commands.get(value).add(subValue);
     }
 
     public boolean hasValue(String value) {
         return commands.containsKey(value);
-    }
-
-    public int size() {
-        return commands.size();
     }
 }

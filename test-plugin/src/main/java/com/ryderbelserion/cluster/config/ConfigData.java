@@ -4,17 +4,18 @@ import com.google.gson.annotations.Expose;
 import com.ryderbelserion.cluster.api.config.context.FileData;
 import com.ryderbelserion.cluster.api.config.context.FileType;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 public sealed class ConfigData extends FileData permits ConfigManager {
 
     public ConfigData(Path path) {
-        super(FileType.json,"data.json", path.toString(), true);
+        super(FileType.json,"data.json", path, true);
     }
 
     @Expose
-    public static ConcurrentHashMap<String, String> commands = new ConcurrentHashMap<>();
+    protected static ConcurrentHashMap<String, ArrayList<String>> commands = new ConcurrentHashMap<>();
 
     @Expose
-    public static String testString = "Hello";
+    protected static String testString = "Hello";
 }

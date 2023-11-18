@@ -18,7 +18,7 @@ import java.util.List;
 public class Items extends FileData {
 
     public Items(Path path) {
-        super(FileType.json, "items.json", path.toString(), new GsonBuilder()
+        super(FileType.json, "items.json", path, new GsonBuilder()
                 .disableHtmlEscaping()
                 .setPrettyPrinting()
                 .enableComplexMapKeySerialization()
