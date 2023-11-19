@@ -1,7 +1,7 @@
 package com.ryderbelserion.cluster.items;
 
 import com.google.gson.annotations.Expose;
-import com.ryderbelserion.cluster.paper.PaperService;
+import com.ryderbelserion.cluster.paper.ClusterService;
 import com.ryderbelserion.cluster.paper.items.ItemBuilder;
 import com.ryderbelserion.cluster.paper.items.NbtBuilder;
 import com.ryderbelserion.cluster.paper.items.ParentBuilder;
@@ -35,7 +35,7 @@ public class SerializableItem {
 
         this.itemBuilder = ParentBuilder.of().setMaterial(material).setDisplayName(displayName).setDisplayLore(displayLore).setAmount(amount);
 
-        this.nbtBuilder = new NbtBuilder(PaperService.get().getPlugin(), this.itemStack = this.itemBuilder.build());
+        this.nbtBuilder = new NbtBuilder(ClusterService.get().getPlugin(), this.itemStack = this.itemBuilder.build());
     }
 
     public SerializableItem(Material material, String displayName, List<String> displayLore, int amount, String skullName) {
@@ -47,7 +47,7 @@ public class SerializableItem {
 
         this.itemBuilder = ParentBuilder.of().setMaterial(material).setDisplayName(displayName).setDisplayLore(displayLore).setAmount(amount).setPlayer(skullName);
 
-        this.nbtBuilder = new NbtBuilder(PaperService.get().getPlugin(), this.itemStack = this.itemBuilder.build());
+        this.nbtBuilder = new NbtBuilder(ClusterService.get().getPlugin(), this.itemStack = this.itemBuilder.build());
     }
 
     public Material getMaterial() {

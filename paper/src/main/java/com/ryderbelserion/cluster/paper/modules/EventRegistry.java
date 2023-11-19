@@ -1,6 +1,6 @@
 package com.ryderbelserion.cluster.paper.modules;
 
-import com.ryderbelserion.cluster.paper.PaperService;
+import com.ryderbelserion.cluster.paper.ClusterService;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,7 +11,7 @@ import java.util.List;
 public class EventRegistry {
 
     @NotNull
-    private final JavaPlugin plugin = PaperService.get().getPlugin();
+    private final JavaPlugin plugin = ClusterService.get().getPlugin();
 
     @NotNull
     private final List<Listener> listeners = new ArrayList<>();

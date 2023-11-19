@@ -1,6 +1,5 @@
 package com.ryderbelserion.cluster.api;
 
-import com.ryderbelserion.cluster.api.config.StorageFactory;
 import com.ryderbelserion.cluster.api.interfaces.PluginBase;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -17,8 +16,6 @@ import java.util.List;
 import java.util.logging.Level;
 
 public abstract class AbstractPlugin implements PluginBase {
-
-    public abstract StorageFactory getStorageFactory();
 
     public abstract boolean isLogging();
 

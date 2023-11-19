@@ -1,7 +1,6 @@
 package com.ryderbelserion.cluster.paper;
 
 import com.ryderbelserion.cluster.api.AbstractPlugin;
-import com.ryderbelserion.cluster.api.config.StorageFactory;
 import com.ryderbelserion.cluster.paper.files.FileManager;
 import net.kyori.adventure.audience.Audience;
 import org.bukkit.command.CommandExecutor;
@@ -11,15 +10,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.logging.Logger;
 
-public class PaperPlugin extends AbstractPlugin {
+public class ClusterFactory extends AbstractPlugin {
 
     private final boolean isLogging;
 
-    private StorageFactory storageFactory;
     private FileManager fileManager;
     private JavaPlugin plugin;
 
-    public PaperPlugin(JavaPlugin plugin, boolean isLogging) {
+    public ClusterFactory(JavaPlugin plugin, boolean isLogging) {
         this.plugin = plugin;
 
         this.isLogging = isLogging;
@@ -27,7 +25,7 @@ public class PaperPlugin extends AbstractPlugin {
         this.fileManager = new FileManager(this, this.plugin);
     }
 
-    public PaperPlugin(boolean isLogging) {
+    public ClusterFactory(boolean isLogging) {
         this.isLogging = isLogging;
     }
 
@@ -35,13 +33,11 @@ public class PaperPlugin extends AbstractPlugin {
     public void enable() {
         super.enable();
 
-        this.storageFactory = new StorageFactory();
-
         if (!this.plugin.getDataFolder().exists()) {
             this.plugin.getDataFolder().mkdirs();
         }
 
-        PaperService.setService(this);
+        ClusterService.setService(this);
     }
 
     @Override
@@ -49,12 +45,7 @@ public class PaperPlugin extends AbstractPlugin {
         super.disable();
 
         // This must go last.
-        PaperService.stopService();
-    }
-
-    @Override
-    public StorageFactory getStorageFactory() {
-        return this.storageFactory;
+        ClusterService.stopService();
     }
 
     @Override

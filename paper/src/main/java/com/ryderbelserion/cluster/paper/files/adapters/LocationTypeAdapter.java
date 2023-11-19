@@ -3,7 +3,7 @@ package com.ryderbelserion.cluster.paper.files.adapters;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.ryderbelserion.cluster.paper.PaperService;
+import com.ryderbelserion.cluster.paper.ClusterService;
 import org.bukkit.Location;
 import java.io.IOException;
 
@@ -46,6 +46,6 @@ public class LocationTypeAdapter extends TypeAdapter<Location> {
         reader.endObject();
 
         assert worldName != null;
-        return new Location(PaperService.get().getPlugin().getServer().getWorld(worldName), x, y, z, yaw, pitch);
+        return new Location(ClusterService.get().getPlugin().getServer().getWorld(worldName), x, y, z, yaw, pitch);
     }
 }

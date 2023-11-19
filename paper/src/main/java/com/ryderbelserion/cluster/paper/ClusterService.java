@@ -3,40 +3,40 @@ package com.ryderbelserion.cluster.paper;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-public class PaperService {
+public class ClusterService {
 
-    private static PaperPlugin paperPlugin = null;
+    private static ClusterFactory clusterFactory = null;
 
-    public static @NotNull PaperPlugin get() {
-        PaperPlugin instance = PaperService.paperPlugin;
+    public static @NotNull ClusterFactory get() {
+        ClusterFactory instance = ClusterService.clusterFactory;
 
         if (instance == null)  {
             throw new RuntimeException("The API has not been properly initialized! Likely did not use the setService method.");
         }
 
-        return paperPlugin;
+        return clusterFactory;
     }
 
     @ApiStatus.Internal
-    private PaperService()  {
+    private ClusterService()  {
         throw new UnsupportedOperationException("This class cannot be instantiated");
     }
 
     @ApiStatus.Internal
-    public static void setService(PaperPlugin paperPlugin) {
-        if (PaperService.paperPlugin != null) {
+    public static void setService(ClusterFactory clusterFactory) {
+        if (ClusterService.clusterFactory != null) {
             return;
         }
 
-        PaperService.paperPlugin = paperPlugin;
+        ClusterService.clusterFactory = clusterFactory;
     }
 
     @ApiStatus.Internal
     public static void stopService() {
-        if (PaperService.paperPlugin == null) {
+        if (ClusterService.clusterFactory == null) {
             return;
         }
 
-        PaperService.paperPlugin = null;
+        ClusterService.clusterFactory = null;
     }
 }

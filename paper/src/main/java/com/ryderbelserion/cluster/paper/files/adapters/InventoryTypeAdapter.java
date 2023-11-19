@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.ryderbelserion.cluster.paper.PaperService;
+import com.ryderbelserion.cluster.paper.ClusterService;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
@@ -89,7 +89,7 @@ public class InventoryTypeAdapter implements JsonSerializer<Inventory>, JsonDese
     }
 
     public static String toBase64(ItemStack[] is, int size) {
-        Inventory inventory = PaperService.get().getPlugin().getServer().createInventory(null, size);
+        Inventory inventory = ClusterService.get().getPlugin().getServer().createInventory(null, size);
         inventory.setContents(is);
         return toBase64(inventory);
     }
@@ -98,7 +98,7 @@ public class InventoryTypeAdapter implements JsonSerializer<Inventory>, JsonDese
         try {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
             BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
-            Inventory inventory = PaperService.get().getPlugin().getServer().createInventory(null, dataInput.readInt());
+            Inventory inventory = ClusterService.get().getPlugin().getServer().createInventory(null, dataInput.readInt());
 
             // Read the serialized inventory
             for (int i = 0; i < inventory.getSize(); i++) {
