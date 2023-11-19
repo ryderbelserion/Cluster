@@ -36,10 +36,14 @@ public class TestPlugin extends JavaPlugin {
 
         ConfigManager configManager = new ConfigManager(getDataFolder().toPath(), this);
 
+        configManager.load();
+
         configManager.addValue("crates", "crates_one");
         configManager.addSubValue("crates", "crates_two");
 
-        configManager.reload();
+        configManager.save();
+
+        configManager.addSubValue("crates", "crates_three");
 
         getServer().getCommandMap().register("test", new BaseCommand(this));
 

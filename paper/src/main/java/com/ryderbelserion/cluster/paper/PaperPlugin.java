@@ -1,7 +1,7 @@
 package com.ryderbelserion.cluster.paper;
 
 import com.ryderbelserion.cluster.api.AbstractPlugin;
-import com.ryderbelserion.cluster.api.config.StorageManager;
+import com.ryderbelserion.cluster.api.config.StorageFactory;
 import com.ryderbelserion.cluster.paper.files.FileManager;
 import net.kyori.adventure.audience.Audience;
 import org.bukkit.command.CommandExecutor;
@@ -14,11 +14,10 @@ import java.util.logging.Logger;
 public class PaperPlugin extends AbstractPlugin {
 
     private final boolean isLogging;
+
+    private StorageFactory storageFactory;
     private FileManager fileManager;
-
-    private StorageManager storageManager;
     private JavaPlugin plugin;
-
 
     public PaperPlugin(JavaPlugin plugin, boolean isLogging) {
         this.plugin = plugin;
@@ -36,7 +35,7 @@ public class PaperPlugin extends AbstractPlugin {
     public void enable() {
         super.enable();
 
-        this.storageManager = new StorageManager();
+        this.storageFactory = new StorageFactory();
 
         if (!this.plugin.getDataFolder().exists()) {
             this.plugin.getDataFolder().mkdirs();
@@ -54,8 +53,8 @@ public class PaperPlugin extends AbstractPlugin {
     }
 
     @Override
-    public StorageManager getStorageManager() {
-        return this.storageManager;
+    public StorageFactory getStorageFactory() {
+        return this.storageFactory;
     }
 
     @Override

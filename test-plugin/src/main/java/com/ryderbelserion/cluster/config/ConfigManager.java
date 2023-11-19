@@ -18,12 +18,12 @@ public non-sealed class ConfigManager extends ConfigData {
         this.configData = this;
     }
 
-    public void save() {
-        this.plugin.getPlugin().getStorageManager().saveFile(this.configData);
+    public void load() {
+        this.plugin.getPlugin().getStorageFactory().addFile(this.configData);
     }
 
-    public void reload() {
-        save();
+    public void save() {
+        this.plugin.getPlugin().getStorageFactory().saveFile(this.configData);
     }
 
     public void addValue(String value, String subValue) {

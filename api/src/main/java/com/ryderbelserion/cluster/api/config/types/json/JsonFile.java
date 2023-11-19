@@ -20,12 +20,14 @@ public class JsonFile {
 
     private final FileData fileData;
 
-    private final Gson gson;
-    private final File file;
+    private Gson gson;
+    private File file;
 
     public JsonFile(FileData fileData) {
         this.fileData = fileData;
+    }
 
+    public void load() {
         if (this.fileData.getGson() != null) {
             this.gson = this.fileData.getGson().create();
         } else {
