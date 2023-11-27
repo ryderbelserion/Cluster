@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.paper.structures;
+package com.ryderbelserion.cluster.paper.utils.structures;
 
 import com.google.common.collect.Lists;
 import org.bukkit.Location;
@@ -23,10 +23,10 @@ public class StructureManager implements IStructureManager {
     private final JavaPlugin plugin;
     private final File file;
 
-    private Structure structure;
-
     private final HashSet<Location> postStructurePasteBlocks = new HashSet<>();
     private final HashSet<Location> preStructurePasteBlocks = new HashSet<>();
+
+    private Structure structure;
 
     public StructureManager(JavaPlugin plugin, File file) {
         this.plugin = plugin;

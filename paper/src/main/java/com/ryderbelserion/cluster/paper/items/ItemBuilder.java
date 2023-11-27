@@ -161,6 +161,9 @@ public class ItemBuilder {
 
         this.material = itemBuilder.material;
         this.itemStack = itemBuilder.itemStack;
+
+        this.customMaterial = itemBuilder.customMaterial;
+
         this.itemAmount = itemBuilder.itemAmount;
         this.itemData = itemBuilder.itemData;
 
@@ -229,11 +232,15 @@ public class ItemBuilder {
             if (PluginSupport.items_adder.isPluginEnabled(this.plugin)) {
                 CustomStack customStack = CustomStack.getInstance("ia:" + this.customMaterial);
 
-                if (customStack != null) this.itemStack = customStack.getItemStack();
+                if (customStack != null) {
+                    this.itemStack = customStack.getItemStack();
+                }
             } else if (PluginSupport.oraxen.isPluginEnabled(this.plugin)) {
                 io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
 
-                if (oraxenItem != null) this.itemStack = oraxenItem.build();
+                if (oraxenItem != null) {
+                    this.itemStack = oraxenItem.build();
+                }
             } else {
                 this.itemStack = new ItemStack(Material.STONE);
 
@@ -601,17 +608,13 @@ public class ItemBuilder {
     }
 
     public ItemBuilder addEnchantment(Enchantment enchantment, int level, boolean unsafeEnchantments) {
-        getItemStack().editMeta(meta -> {
-            meta.addEnchant(enchantment, level, unsafeEnchantments);
-        });
+        getItemStack().editMeta(meta -> meta.addEnchant(enchantment, level, unsafeEnchantments));
 
         return this;
     }
 
     public ItemBuilder removeEnchantment(Enchantment enchantment) {
-        getItemStack().editMeta(meta -> {
-            meta.removeEnchant(enchantment);
-        });
+        getItemStack().editMeta(meta -> meta.removeEnchant(enchantment));
 
         return this;
     }
@@ -621,9 +624,7 @@ public class ItemBuilder {
             List.of(
                     "Material cannot be null or empty, Output: " + material + ".",
                     "Please take a screenshot of this before asking for support."
-            ).forEach(line -> {
-                this.plugin.getLogger().warning(line);
-            });
+            ).forEach(line -> this.plugin.getLogger().warning(line));
 
             return this;
         }

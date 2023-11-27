@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.paper.structures;
+package com.ryderbelserion.cluster.paper.utils.structures;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
