@@ -229,13 +229,7 @@ public class ItemBuilder {
 
     public ItemStack build() {
         if (this.itemStack == null) {
-            if (PluginSupport.items_adder.isPluginEnabled(this.plugin)) {
-                CustomStack customStack = CustomStack.getInstance("ia:" + this.customMaterial);
-
-                if (customStack != null) {
-                    this.itemStack = customStack.getItemStack();
-                }
-            } else if (PluginSupport.oraxen.isPluginEnabled(this.plugin)) {
+            if (PluginSupport.oraxen.isPluginEnabled(this.plugin)) {
                 io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
 
                 if (oraxenItem != null) {
