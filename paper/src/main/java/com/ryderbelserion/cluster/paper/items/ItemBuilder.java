@@ -584,7 +584,7 @@ public class ItemBuilder {
     HeadDatabaseAPI api = ClusterService.get().getDatabaseAPI();
 
     public ItemBuilder setSkull(String skull) {
-        if (!PluginSupport.headdatabase.isPluginEnabled(this.plugin)) {
+        if (!ClusterService.get().isHeadDatabaseEnabled()) {
             this.plugin.getLogger().warning("HeadDatabase is not enabled, Cannot use custom skulls.");
             return this;
         }

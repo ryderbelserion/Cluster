@@ -17,6 +17,7 @@ public class ClusterFactory extends AbstractPlugin {
     private final boolean isLogging;
 
     private HeadDatabaseAPI databaseAPI;
+    private boolean headDatabaseEnabled;
 
     private FileManager fileManager;
     private JavaPlugin plugin;
@@ -40,6 +41,8 @@ public class ClusterFactory extends AbstractPlugin {
         if (!this.plugin.getDataFolder().exists()) {
             this.plugin.getDataFolder().mkdirs();
         }
+
+        this.headDatabaseEnabled = PluginSupport.headdatabase.isPluginEnabled(this.plugin);
 
         ClusterService.setService(this);
     }
@@ -98,7 +101,7 @@ public class ClusterFactory extends AbstractPlugin {
     }
 
     public void setDatabaseAPI(HeadDatabaseAPI databaseAPI) {
-        if (!PluginSupport.headdatabase.isPluginEnabled(this.plugin)) {
+        if (!this.headDatabaseEnabled) {
             this.plugin.getLogger().warning("HeadDatabase is not enabled, Cannot use custom skulls.");
             return;
         }
@@ -106,8 +109,12 @@ public class ClusterFactory extends AbstractPlugin {
         this.databaseAPI = databaseAPI;
     }
 
+    public boolean isHeadDatabaseEnabled() {
+        return this.headDatabaseEnabled;
+    }
+
     public HeadDatabaseAPI getDatabaseAPI() {
-        if (!PluginSupport.headdatabase.isPluginEnabled(this.plugin)) {
+        if (!this.headDatabaseEnabled) {
             this.plugin.getLogger().warning("HeadDatabase is not enabled, Cannot use custom skulls.");
             return null;
         }
