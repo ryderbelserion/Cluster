@@ -7,6 +7,7 @@ base {
 }
 
 project.group = "${rootProject.group}.api"
+project.version = rootProject.version
 
 dependencies {
     compileOnly("net.kyori", "adventure-text-minimessage", "4.14.0")

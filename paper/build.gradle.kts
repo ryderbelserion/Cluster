@@ -7,6 +7,7 @@ base {
 }
 
 project.group = "${rootProject.group}.paper"
+project.version = rootProject.version
 
 dependencies {
     api(project(":api"))
