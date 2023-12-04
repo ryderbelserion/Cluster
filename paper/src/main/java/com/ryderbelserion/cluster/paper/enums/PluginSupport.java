@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public enum PluginSupport {
 
     oraxen("Oraxen"),
+    headdatabase("HeadDatabase"),
     items_adder("ItemsAdder");
 
     private final String pluginName;

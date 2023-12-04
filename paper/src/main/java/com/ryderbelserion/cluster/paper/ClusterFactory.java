@@ -1,6 +1,7 @@
 package com.ryderbelserion.cluster.paper;
 
 import com.ryderbelserion.cluster.api.AbstractPlugin;
+import com.ryderbelserion.cluster.paper.enums.PluginSupport;
 import com.ryderbelserion.cluster.paper.files.FileManager;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.kyori.adventure.audience.Audience;
@@ -97,15 +98,21 @@ public class ClusterFactory extends AbstractPlugin {
     }
 
     public void setDatabaseAPI(HeadDatabaseAPI databaseAPI) {
+        if (!PluginSupport.headdatabase.isPluginEnabled(this.plugin)) {
+            this.plugin.getLogger().warning("HeadDatabase is not enabled, Cannot use custom skulls.");
+            return;
+        }
+
         this.databaseAPI = databaseAPI;
     }
 
     public HeadDatabaseAPI getDatabaseAPI() {
-        try {
-            return this.databaseAPI;
-        } catch (Exception exception) {
-            return new HeadDatabaseAPI();
+        if (!PluginSupport.headdatabase.isPluginEnabled(this.plugin)) {
+            this.plugin.getLogger().warning("HeadDatabase is not enabled, Cannot use custom skulls.");
+            return null;
         }
+
+        return this.databaseAPI;
     }
 
     public FileManager getFileManager() {
