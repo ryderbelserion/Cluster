@@ -2,6 +2,7 @@ package com.ryderbelserion.cluster.paper;
 
 import com.ryderbelserion.cluster.api.AbstractPlugin;
 import com.ryderbelserion.cluster.paper.files.FileManager;
+import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.kyori.adventure.audience.Audience;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
@@ -13,6 +14,8 @@ import java.util.logging.Logger;
 public class ClusterFactory extends AbstractPlugin {
 
     private final boolean isLogging;
+
+    private HeadDatabaseAPI databaseAPI;
 
     private FileManager fileManager;
     private JavaPlugin plugin;
@@ -91,6 +94,18 @@ public class ClusterFactory extends AbstractPlugin {
         this.plugin = plugin;
 
         this.fileManager = new FileManager(this, this.plugin);
+    }
+
+    public void setDatabaseAPI(HeadDatabaseAPI databaseAPI) {
+        this.databaseAPI = databaseAPI;
+    }
+
+    public HeadDatabaseAPI getDatabaseAPI() {
+        try {
+            return this.databaseAPI;
+        } catch (Exception exception) {
+            return new HeadDatabaseAPI();
+        }
     }
 
     public FileManager getFileManager() {

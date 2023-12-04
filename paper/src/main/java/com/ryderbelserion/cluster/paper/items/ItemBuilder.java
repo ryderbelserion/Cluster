@@ -1,10 +1,12 @@
 package com.ryderbelserion.cluster.paper.items;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.ryderbelserion.cluster.paper.ClusterService;
 import com.ryderbelserion.cluster.paper.enums.PluginSupport;
 import com.ryderbelserion.cluster.paper.utils.DyeUtils;
 import dev.lone.itemsadder.api.CustomStack;
 import io.th0rgal.oraxen.api.OraxenItems;
+import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -575,6 +577,16 @@ public class ItemBuilder {
 
     public ItemBuilder setPlayer(String player) {
         this.player = player;
+
+        return this;
+    }
+
+    HeadDatabaseAPI api = ClusterService.get().getDatabaseAPI();
+
+    public ItemBuilder setSkull(String skull) {
+        if (api.isHead(skull)) {
+            this.itemStack = api.getItemHead(skull);
+        }
 
         return this;
     }
