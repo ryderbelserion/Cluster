@@ -1,0 +1,22 @@
+package com.ryderbelserion.cluster.common.utils;
+
+import java.util.List;
+
+public class StringUtils {
+
+    /**
+     * Loops through a string-list and returns a string builder
+     *
+     * @param list to convert
+     * @return the string-builder
+     */
+    public static String convertList(List<String> list) {
+        StringBuilder message = new StringBuilder();
+
+        for (String line : list) {
+            message.append(line).append("\n");
+        }
+
+        return message.toString();
+    }
+}

@@ -31,22 +31,56 @@ tasks {
     }
 }
 
-val isSnapshot = rootProject.version.toString().contains("snapshot")
+tasks {
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                from(components["java"])
 
-publishing {
-    repositories {
-        maven {
-            credentials {
-                this.username = System.getenv("gradle_username")
-                this.password = System.getenv("gradle_password")
+                pom {
+                    name.set("Cluster API")
+                    description.set("A library for my plugins.")
+                    url.set("https://github.com/ryderbelserion/Cluster")
+
+                    licenses {
+                        license {
+                            name.set("MIT")
+                            url.set("https://github.com/ryderbelserion/Cluster/blob/main/LICENSE")
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id.set("ryderbelserion")
+                            name.set("Ryder Belserion")
+                            url.set("https://github.com/ryderbelserion")
+                            email.set("no-reply@ryderbelserion.com")
+                        }
+                    }
+
+                    scm {
+                        connection.set("scm:git:https://github.com/ryderbelserion/Cluster.git")
+                        developerConnection.set("scm:git:git@github.com:ryderbelserion/Cluster.git")
+                        url.set("https://github.com/ryderbelserion/Cluster")
+                    }
+
+                    issueManagement {
+                        system.set("GitHub")
+                        url.set("https://github.com/ryderbelserion/Cluster/issues")
+                    }
+                }
             }
+        }
 
-            if (isSnapshot) {
+        repositories {
+            maven {
+                credentials {
+                    this.username = System.getenv("gradle_username")
+                    this.password = System.getenv("gradle_password")
+                }
+
                 url = uri("https://repo.crazycrew.us/snapshots/")
-                return@maven
             }
-
-            url = uri("https://repo.crazycrew.us/releases/")
         }
     }
 }

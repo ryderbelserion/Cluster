@@ -6,11 +6,10 @@ base {
     archivesName.set("${rootProject.name.lowercase()}-${project.name}")
 }
 
-project.group = "${rootProject.group}.paper"
 project.version = rootProject.version
 
 dependencies {
-    api(project(":api"))
+    api(project(":common"))
 
     compileOnly("com.github.LoneDev6", "API-ItemsAdder", "3.5.0b")
 
@@ -22,19 +21,7 @@ dependencies {
 }
 
 tasks {
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                groupId = project.group.toString()
-                artifactId = "${rootProject.name.lowercase()}-${project.name.lowercase()}"
-                version = rootProject.version.toString()
-
-                artifact(reobfJar)
-            }
-        }
-    }
-
     shadowJar {
-        dependsOn(":api:shadowJar")
+        dependsOn(":common:shadowJar")
     }
 }
