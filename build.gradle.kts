@@ -3,8 +3,6 @@ plugins {
     `maven-publish`
 }
 
-val component: SoftwareComponent = components["java"]
-
 subprojects {
     apply(plugin = "java-library")
     apply(plugin = "maven-publish")
@@ -46,45 +44,6 @@ subprojects {
         }
 
         publishing {
-            publications {
-                create<MavenPublication>("maven") {
-                    from(component)
-
-                    pom {
-                        name.set("Cluster API")
-                        description.set("A library for my plugins.")
-                        url.set("https://github.com/ryderbelserion/Cluster")
-
-                        licenses {
-                            license {
-                                name.set("MIT")
-                                url.set("https://github.com/ryderbelserion/Cluster/blob/main/LICENSE")
-                            }
-                        }
-
-                        developers {
-                            developer {
-                                id.set("ryderbelserion")
-                                name.set("Ryder Belserion")
-                                url.set("https://github.com/ryderbelserion")
-                                email.set("no-reply@ryderbelserion.com")
-                            }
-                        }
-
-                        scm {
-                            connection.set("scm:git:https://github.com/ryderbelserion/Cluster.git")
-                            developerConnection.set("scm:git:git@github.com:ryderbelserion/Cluster.git")
-                            url.set("https://github.com/ryderbelserion/Cluster")
-                        }
-
-                        issueManagement {
-                            system.set("GitHub")
-                            url.set("https://github.com/ryderbelserion/Cluster/issues")
-                        }
-                    }
-                }
-            }
-
             repositories {
                 maven {
                     credentials {

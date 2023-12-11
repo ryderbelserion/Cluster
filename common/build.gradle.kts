@@ -1,3 +1,7 @@
+plugins {
+    alias(libs.plugins.shadowjar)
+}
+
 base {
     archivesName.set("${rootProject.name.lowercase()}-${project.name}")
 }
