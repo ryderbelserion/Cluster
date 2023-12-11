@@ -4,7 +4,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.ryderbelserion.cluster.paper.ClusterService;
 import com.ryderbelserion.cluster.paper.enums.PluginSupport;
 import com.ryderbelserion.cluster.paper.utils.DyeUtils;
-import dev.lone.itemsadder.api.CustomStack;
 import io.th0rgal.oraxen.api.OraxenItems;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.kyori.adventure.text.Component;
@@ -26,7 +25,7 @@ import org.bukkit.block.Banner;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
-import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -52,7 +51,7 @@ import java.util.logging.Level;
 
 public class ItemBuilder {
 
-    private final JavaPlugin plugin;
+    private final JavaPlugin plugin = ClusterService.get().getPlugin();
 
     // Items
     private Material material = Material.STONE;
@@ -129,9 +128,7 @@ public class ItemBuilder {
     private boolean isTool = false;
 
     // Create a new item.
-    public ItemBuilder(JavaPlugin plugin, ItemStack itemStack) {
-        this.plugin = plugin;
-
+    public ItemBuilder(ItemStack itemStack) {
         this.itemStack = itemStack;
 
         this.material = itemStack.getType();
@@ -159,8 +156,6 @@ public class ItemBuilder {
 
     // De-duplicate an item builder.
     public ItemBuilder(ItemBuilder itemBuilder) {
-        this.plugin = itemBuilder.plugin;
-
         this.material = itemBuilder.material;
         this.itemStack = itemBuilder.itemStack;
 
@@ -221,9 +216,7 @@ public class ItemBuilder {
         this.isTool = itemBuilder.isTool;
     }
 
-    public ItemBuilder(JavaPlugin plugin) {
-        this.plugin = plugin;
-    }
+    public ItemBuilder() {}
 
     private Component parse(String message) {
         return MiniMessage.miniMessage().deserialize(message).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
@@ -253,8 +246,8 @@ public class ItemBuilder {
 
                 try {
                     nmsItem.setTag(TagParser.parseTag(this.itemData));
-                } catch (CommandSyntaxException e) {
-                    e.printStackTrace();
+                } catch (CommandSyntaxException exception) {
+                    this.plugin.getLogger().log(Level.WARNING, "Failed to set nms tag.", exception);
                 }
 
                 return CraftItemStack.asBukkitCopy(nmsItem);
@@ -581,11 +574,11 @@ public class ItemBuilder {
         return this;
     }
 
-    HeadDatabaseAPI api = ClusterService.get().getDatabaseAPI();
+    private final HeadDatabaseAPI api = ClusterService.get().getDatabaseAPI();
 
     public ItemBuilder setSkull(String skull) {
         if (!ClusterService.get().isHeadDatabaseEnabled()) {
-            this.plugin.getLogger().warning("HeadDatabase is not enabled, Cannot use custom skulls.");
+            this.plugin.getLogger().warning("HeadDatabase is not enabled, Cannot use skulls from minecraft-heads.com.");
             return this;
         }
 

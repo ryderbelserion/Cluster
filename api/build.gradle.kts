@@ -1,7 +1,3 @@
-plugins {
-    id("root-plugin")
-}
-
 base {
     archivesName.set("${rootProject.name.lowercase()}-${project.name}")
 }

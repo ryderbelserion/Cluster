@@ -9,4 +9,4 @@ pluginManagement {
 
 rootProject.name = "Cluster"
 
-include("common", "paper", "api", "test-plugin")
+include("common", "paper", "api")

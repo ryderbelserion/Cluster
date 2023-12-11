@@ -1,5 +1,6 @@
 plugins {
-    id("paper-plugin")
+    alias(libs.plugins.paperweight)
+    alias(libs.plugins.shadowjar)
 }
 
 base {
@@ -18,6 +19,8 @@ dependencies {
     compileOnly("com.github.oraxen", "oraxen", "1.160.0") {
         exclude("*", "*")
     }
+
+    paperweightDevelopmentBundle("io.papermc.paper:dev-bundle:1.20.4-R0.1-SNAPSHOT")
 }
 
 tasks {
