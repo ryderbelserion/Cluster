@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.common.utils;
+package com.ryderbelserion.cluster.utils;
 
 import java.util.List;
 
