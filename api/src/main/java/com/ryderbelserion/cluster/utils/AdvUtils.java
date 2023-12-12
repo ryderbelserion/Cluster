@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.paper.utils;
+package com.ryderbelserion.cluster.utils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
