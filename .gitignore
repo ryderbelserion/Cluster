@@ -1,23 +1,8 @@
+build
 .gradle
 .idea
 
-buildSrc/.gradle
-buildSrc/build
-
-bukkit/.gradle
-bukkit/build
-
-api/.gradle
-api/build
-
-build
-
 jars
 
-test-plugin/run
-
-!test-plugin/run/config
-!test-plugin/run/bukkit.yml
-!test-plugin/run/eula.txt
-!test-plugin/run/server.properties
-!test-plugin/run/spigot.yml
+paper/build
+paper/.gradle

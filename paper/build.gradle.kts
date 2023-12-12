@@ -1,12 +1,9 @@
 plugins {
-    id("paper-plugin")
+    alias(libs.plugins.paperweight)
+    alias(libs.plugins.shadowjar)
 }
 
-base {
-    archivesName.set("${rootProject.name.lowercase()}-${project.name}")
-}
-
-project.version = rootProject.version
+val mcVersion = rootProject.properties["minecraftVersion"] as String
 
 dependencies {
     api(project(":api"))
@@ -18,10 +15,20 @@ dependencies {
     compileOnly("com.github.oraxen", "oraxen", "1.160.0") {
         exclude("*", "*")
     }
+
+    paperweightDevelopmentBundle("io.papermc.paper:dev-bundle:$mcVersion-R0.1-SNAPSHOT")
 }
 
 tasks {
-    shadowJar {
-        dependsOn(":api:shadowJar")
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                groupId = rootProject.group.toString()
+                artifactId = project.name.lowercase()
+                version = rootProject.version.toString()
+
+                artifact(reobfJar)
+            }
+        }
     }
 }

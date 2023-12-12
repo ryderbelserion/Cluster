@@ -1,0 +1,13 @@
+[versions]
+adventure4 = "4.14.0"
+
+[plugins]
+paperweight = { id = "io.papermc.paperweight.userdev", version = "1.5.9" }
+shadowjar = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
+
+[libraries]
+adventure4 = { module = "net.kyori:adventure-api", version.ref = "adventure4" }
+minimessage4 = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure4" }
+
+[bundles]
+adventure = ["adventure4", "minimessage4"]

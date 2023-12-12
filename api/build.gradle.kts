@@ -1,17 +1,19 @@
-plugins {
-    id("root-plugin")
-}
-
-base {
-    archivesName.set("${rootProject.name.lowercase()}-${project.name}")
-}
-
-project.version = rootProject.version
-
 dependencies {
-    compileOnly("net.kyori", "adventure-text-minimessage", "4.14.0")
+    compileOnly(libs.bundles.adventure)
+}
 
-    compileOnly("com.google.code.gson", "gson", "2.10.1")
+val component: SoftwareComponent = components["java"]
 
-    compileOnly("net.kyori", "adventure-api", "4.14.0")
+tasks {
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                groupId = rootProject.group.toString()
+                artifactId = project.name.lowercase()
+                version = rootProject.version.toString()
+
+                from(component)
+            }
+        }
+    }
 }
