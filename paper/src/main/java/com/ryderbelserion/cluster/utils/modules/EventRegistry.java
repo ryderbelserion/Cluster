@@ -1,6 +1,6 @@
-package com.ryderbelserion.cluster.paper.modules;
+package com.ryderbelserion.cluster.utils.modules;
 
-import com.ryderbelserion.cluster.paper.ClusterService;
+import com.ryderbelserion.cluster.ClusterService;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;

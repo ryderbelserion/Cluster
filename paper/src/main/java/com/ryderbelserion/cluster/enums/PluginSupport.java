@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.paper.enums;
+package com.ryderbelserion.cluster.enums;
 
 import org.bukkit.plugin.java.JavaPlugin;
 

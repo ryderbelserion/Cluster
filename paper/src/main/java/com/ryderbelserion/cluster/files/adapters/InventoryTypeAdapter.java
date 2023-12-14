@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.paper.files.adapters;
+package com.ryderbelserion.cluster.files.adapters;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.ryderbelserion.cluster.paper.ClusterService;
+import com.ryderbelserion.cluster.ClusterService;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;

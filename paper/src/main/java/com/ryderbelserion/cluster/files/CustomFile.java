@@ -1,6 +1,6 @@
-package com.ryderbelserion.cluster.paper.files;
+package com.ryderbelserion.cluster.files;
 
-import com.ryderbelserion.cluster.paper.ClusterFactory;
+import com.ryderbelserion.cluster.ClusterFactory;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;

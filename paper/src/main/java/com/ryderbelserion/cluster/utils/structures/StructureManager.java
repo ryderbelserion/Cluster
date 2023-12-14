@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.paper.utils.structures;
+package com.ryderbelserion.cluster.utils.structures;
 
 import com.google.common.collect.Lists;
 import org.bukkit.Location;

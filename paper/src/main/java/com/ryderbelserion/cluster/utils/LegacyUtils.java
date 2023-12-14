@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.paper.utils;
+package com.ryderbelserion.cluster.utils;
 
 import org.bukkit.ChatColor;
 import java.util.regex.Matcher;

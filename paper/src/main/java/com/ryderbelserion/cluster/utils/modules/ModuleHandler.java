@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.paper.modules;
+package com.ryderbelserion.cluster.utils.modules;
 
 import org.bukkit.event.Listener;
 

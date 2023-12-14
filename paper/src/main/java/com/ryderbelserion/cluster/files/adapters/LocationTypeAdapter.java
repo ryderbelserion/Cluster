@@ -1,9 +1,9 @@
-package com.ryderbelserion.cluster.paper.files.adapters;
+package com.ryderbelserion.cluster.files.adapters;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.ryderbelserion.cluster.paper.ClusterService;
+import com.ryderbelserion.cluster.ClusterService;
 import org.bukkit.Location;
 import java.io.IOException;
 
