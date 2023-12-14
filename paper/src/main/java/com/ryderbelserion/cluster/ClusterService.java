@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.paper;
+package com.ryderbelserion.cluster;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
