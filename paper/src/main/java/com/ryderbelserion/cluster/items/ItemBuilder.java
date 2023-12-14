@@ -2,7 +2,7 @@ package com.ryderbelserion.cluster.items;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.ryderbelserion.cluster.ClusterService;
-import com.ryderbelserion.cluster.enums.PluginSupport;
+import com.ryderbelserion.cluster.api.enums.PluginSupport;
 import com.ryderbelserion.cluster.utils.DyeUtils;
 import io.th0rgal.oraxen.api.OraxenItems;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;

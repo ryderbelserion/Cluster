@@ -1,8 +1,8 @@
 package com.ryderbelserion.cluster;
 
 import com.ryderbelserion.cluster.api.AbstractPlugin;
-import com.ryderbelserion.cluster.enums.PluginSupport;
-import com.ryderbelserion.cluster.files.FileManager;
+import com.ryderbelserion.cluster.api.enums.PluginSupport;
+import com.ryderbelserion.cluster.api.files.FileManager;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.kyori.adventure.audience.Audience;
 import org.bukkit.command.CommandExecutor;
