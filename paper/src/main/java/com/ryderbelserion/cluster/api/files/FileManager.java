@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.files;
+package com.ryderbelserion.cluster.api.files;
 
 import com.ryderbelserion.cluster.ClusterFactory;
 import org.bukkit.configuration.file.FileConfiguration;

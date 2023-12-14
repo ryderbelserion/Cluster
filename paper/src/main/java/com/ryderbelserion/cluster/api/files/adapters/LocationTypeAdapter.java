@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.files.adapters;
+package com.ryderbelserion.cluster.api.files.adapters;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
