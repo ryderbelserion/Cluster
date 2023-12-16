@@ -5,16 +5,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class PluginService {
 
-    private static ClusterPlugin clusterPlugin = null;
+    private static ClusterPlugin plugin = null;
 
     public static @NotNull ClusterPlugin get() {
-        ClusterPlugin instance = PluginService.clusterPlugin;
+        ClusterPlugin instance = PluginService.plugin;
 
         if (instance == null) {
             throw new RuntimeException("The API has not been properly initialized!");
         }
 
-        return clusterPlugin;
+        return plugin;
     }
 
     @ApiStatus.Internal
@@ -23,20 +23,20 @@ public class PluginService {
     }
 
     @ApiStatus.Internal
-    public static void setService(ClusterPlugin clusterPlugin) {
-        if (PluginService.clusterPlugin != null) {
+    public static void setService(ClusterPlugin plugin) {
+        if (PluginService.plugin != null) {
             return;
         }
 
-        PluginService.clusterPlugin = clusterPlugin;
+        PluginService.plugin = plugin;
     }
 
     @ApiStatus.Internal
     public static void stopService() {
-        if (PluginService.clusterPlugin == null) {
+        if (PluginService.plugin == null) {
             return;
         }
 
-        PluginService.clusterPlugin = null;
+        PluginService.plugin = null;
     }
 }

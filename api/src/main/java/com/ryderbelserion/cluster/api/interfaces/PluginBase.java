@@ -11,14 +11,6 @@ import java.util.logging.Logger;
 
 public interface PluginBase {
 
-    void copyResource(Path directory, String folder, String fileName);
-
-    InputStream getResource(String path);
-
-    String convertList(List<String> list);
-
-    @NotNull Component parse(String message);
-
     Logger getLogger();
 
     File getDataFolder();
