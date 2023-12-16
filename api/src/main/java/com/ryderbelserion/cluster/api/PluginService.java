@@ -5,16 +5,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class PluginService {
 
-    private static AbstractPlugin abstractPlugin = null;
+    private static ClusterPlugin clusterPlugin = null;
 
-    public static @NotNull AbstractPlugin get() {
-        AbstractPlugin instance = PluginService.abstractPlugin;
+    public static @NotNull ClusterPlugin get() {
+        ClusterPlugin instance = PluginService.clusterPlugin;
 
         if (instance == null) {
-            throw new RuntimeException("The API has not been properly initialized! Likely did not use the setService method.");
+            throw new RuntimeException("The API has not been properly initialized!");
         }
 
-        return abstractPlugin;
+        return clusterPlugin;
     }
 
     @ApiStatus.Internal
@@ -23,20 +23,20 @@ public class PluginService {
     }
 
     @ApiStatus.Internal
-    public static void setService(AbstractPlugin abstractPlugin) {
-        if (PluginService.abstractPlugin != null) {
+    public static void setService(ClusterPlugin clusterPlugin) {
+        if (PluginService.clusterPlugin != null) {
             return;
         }
 
-        PluginService.abstractPlugin = abstractPlugin;
+        PluginService.clusterPlugin = clusterPlugin;
     }
 
     @ApiStatus.Internal
     public static void stopService() {
-        if (PluginService.abstractPlugin == null) {
+        if (PluginService.clusterPlugin == null) {
             return;
         }
 
-        PluginService.abstractPlugin = null;
+        PluginService.clusterPlugin = null;
     }
 }

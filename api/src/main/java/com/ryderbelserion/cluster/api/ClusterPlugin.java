@@ -15,7 +15,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.logging.Level;
 
-public abstract class AbstractPlugin implements PluginBase {
+public abstract class ClusterPlugin implements PluginBase {
 
     public abstract boolean isLogging();
 

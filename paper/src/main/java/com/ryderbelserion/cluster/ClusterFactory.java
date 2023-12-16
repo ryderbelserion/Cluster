@@ -1,6 +1,6 @@
 package com.ryderbelserion.cluster;
 
-import com.ryderbelserion.cluster.api.AbstractPlugin;
+import com.ryderbelserion.cluster.api.ClusterPlugin;
 import com.ryderbelserion.cluster.api.enums.PluginSupport;
 import com.ryderbelserion.cluster.api.files.FileManager;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
@@ -12,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.logging.Logger;
 
-public class ClusterFactory extends AbstractPlugin {
+public class ClusterFactory extends ClusterPlugin {
 
     private final boolean isLogging;
 
