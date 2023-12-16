@@ -19,12 +19,12 @@ public abstract class ClusterPlugin implements PluginBase {
 
     public abstract boolean isLogging();
 
-    public void enable() {
+    public void start() {
         // Start the root service.
         PluginService.setService(this);
     }
 
-    public void disable() {
+    public void stop() {
         // Stop the root service.
         PluginService.stopService();
     }

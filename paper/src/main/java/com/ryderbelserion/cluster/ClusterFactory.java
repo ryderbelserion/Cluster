@@ -36,7 +36,7 @@ public class ClusterFactory extends ClusterPlugin {
 
     @Override
     public void enable() {
-        super.enable();
+        super.start();
 
         if (!this.plugin.getDataFolder().exists()) {
             this.plugin.getDataFolder().mkdirs();
@@ -49,7 +49,7 @@ public class ClusterFactory extends ClusterPlugin {
 
     @Override
     public void disable() {
-        super.disable();
+        super.stop();
 
         // This must go last.
         ClusterService.stopService();
