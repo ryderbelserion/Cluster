@@ -1,4 +1,4 @@
-package com.ryderbelserion.cluster.api.builder;
+package com.ryderbelserion.cluster.api.builders;
 
 import com.ryderbelserion.cluster.utils.AdvUtils;
 import net.kyori.adventure.text.Component;
