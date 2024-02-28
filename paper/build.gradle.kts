@@ -1,22 +1,22 @@
 plugins {
     alias(libs.plugins.paperweight)
-    alias(libs.plugins.shadowjar)
+    alias(libs.plugins.shadow)
 }
 
-val mcVersion = rootProject.properties["minecraftVersion"] as String
+val mcVersion = providers.gradleProperty("mcVersion").get()
 
 dependencies {
     api(project(":api"))
 
-    compileOnly("com.github.LoneDev6", "API-ItemsAdder", "3.5.0b")
+    compileOnly(libs.itemsadder)
 
-    compileOnly("com.arcaniax", "HeadDatabase-API", "1.3.0")
+    compileOnly(libs.arcaniax)
 
-    compileOnly("com.github.oraxen", "oraxen", "1.160.0") {
+    compileOnly(libs.oraxen) {
         exclude("*", "*")
     }
 
-    paperweightDevelopmentBundle("io.papermc.paper:dev-bundle:$mcVersion-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("$mcVersion-R0.1-SNAPSHOT")
 }
 
 tasks {
