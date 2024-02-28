@@ -4,57 +4,57 @@ import com.ryderbelserion.cluster.api.PluginService;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.file.Path;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FileUtils {
 
-    public static void copyResource(Path directory, String folder, String name) {
+    public static void copyFile(Path directory, String folder, String name) {
         File file = directory.resolve(name).toFile();
 
         if (file.exists()) return;
 
         File dir = directory.toFile();
 
+        boolean isLogging = PluginService.get().isLogging();
+        Logger logger = PluginService.get().getLogger();
+
         if (!dir.exists()) {
-            dir.mkdirs();
+            if (dir.mkdirs()) {
+                if (isLogging) logger.warning("Created " + dir.getName() + " because we couldn't find it.");
+            }
         }
 
-        String path = folder + "/" + name;
+        ClassLoader loader = PluginService.get().getClass().getClassLoader();
 
-        InputStream resource = getResource(path);
+        String url = folder + "/" + name;
 
-        try (FileOutputStream stream = new FileOutputStream(file)) {
-            byte[] buffer = new byte[1024];
-            int amount;
+        URL resource = loader.getResource(url);
 
-            while ((amount = resource.read(buffer)) > 0) {
-                stream.write(buffer, 0, amount);
-            }
+        if (resource == null) {
+            if (isLogging) logger.severe("Failed to find file: " + url);
 
-            resource.close();
-        } catch (IOException exception) {
-            PluginService.get().getLogger().log(Level.SEVERE, "Could not save " + file.getName() + " to " + dir.getPath(), exception);
+            return;
+        }
+
+        try {
+            grab(resource.openStream(), file);
+        } catch (Exception exception) {
+            logger.log(Level.SEVERE, "Failed to copy file: " + url, exception);
         }
     }
 
-    public static InputStream getResource(String path) {
-        if (path == null) throw new IllegalArgumentException("Path cannot be null");
+    private static void grab(InputStream input, File output) throws Exception {
+        try (InputStream inputStream = input; FileOutputStream outputStream = new FileOutputStream(output)) {
+            byte[] buf = new byte[1024];
+            int i;
 
-        try {
-            URL url = FileUtils.class.getClassLoader().getResource(path);
-
-            if (url == null) return null;
-
-            URLConnection connection = url.openConnection();
-            connection.setUseCaches(false);
-            return connection.getInputStream();
-        } catch (IOException exception) {
-            return null;
+            while ((i = inputStream.read(buf)) != -1) {
+                outputStream.write(buf, 0, i);
+            }
         }
     }
 }
