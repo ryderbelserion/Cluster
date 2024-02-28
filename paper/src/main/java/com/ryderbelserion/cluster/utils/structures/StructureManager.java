@@ -23,8 +23,8 @@ public class StructureManager implements IStructureManager {
     private final JavaPlugin plugin;
     private final File file;
 
-    private final HashSet<Location> postStructurePasteBlocks = new HashSet<>();
-    private final HashSet<Location> preStructurePasteBlocks = new HashSet<>();
+    private final Set<Location> postStructurePasteBlocks = new HashSet<>();
+    private final Set<Location> preStructurePasteBlocks = new HashSet<>();
 
     private Structure structure;
 
@@ -49,6 +49,7 @@ public class StructureManager implements IStructureManager {
 
         // We don't need this as we don't have a structure.
         this.structure = null;
+
         this.file = null;
     }
 

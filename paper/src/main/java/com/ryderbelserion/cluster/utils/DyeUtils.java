@@ -4,13 +4,15 @@ import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import java.util.HashMap;
+import java.util.Map;
 
 public class DyeUtils {
 
-    private static final HashMap<String, Color> colors = createMap();
+    private static final Map<String, Color> colors = createMap();
 
-    private static HashMap<String, Color> createMap() {
-        HashMap<String, Color> map = new HashMap<>();
+    private static Map<String, Color> createMap() {
+        Map<String, Color> map = new HashMap<>();
+
         map.put("AQUA", Color.AQUA);
         map.put("BLACK", Color.BLACK);
         map.put("BLUE", Color.BLUE);
@@ -28,6 +30,7 @@ public class DyeUtils {
         map.put("TEAL", Color.TEAL);
         map.put("WHITE", Color.WHITE);
         map.put("YELLOW", Color.YELLOW);
+
         return map;
     }
 
