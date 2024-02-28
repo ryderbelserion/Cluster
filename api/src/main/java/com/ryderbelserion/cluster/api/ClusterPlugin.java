@@ -1,23 +1,23 @@
 package com.ryderbelserion.cluster.api;
 
-import com.ryderbelserion.cluster.api.interfaces.PluginBase;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.jetbrains.annotations.NotNull;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.logging.Level;
+import net.kyori.adventure.audience.Audience;
 
-public abstract class ClusterPlugin implements PluginBase {
+import java.io.File;
+import java.util.logging.Logger;
+
+public abstract class ClusterPlugin {
 
     public abstract boolean isLogging();
+
+    public abstract Logger getLogger();
+
+    public abstract File getDataFolder();
+
+    public abstract Audience getConsole();
+
+    public abstract void enable();
+
+    public abstract void disable();
 
     public void start() {
         // Start the root service.
