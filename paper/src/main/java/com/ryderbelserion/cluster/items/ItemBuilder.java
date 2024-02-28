@@ -3,6 +3,7 @@ package com.ryderbelserion.cluster.items;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.ryderbelserion.cluster.ClusterService;
 import com.ryderbelserion.cluster.api.enums.PluginSupport;
+import com.ryderbelserion.cluster.utils.AdvUtils;
 import com.ryderbelserion.cluster.utils.DyeUtils;
 import io.th0rgal.oraxen.api.OraxenItems;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
@@ -49,7 +50,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
-public class ItemBuilder {
+public abstract class ItemBuilder {
 
     private final JavaPlugin plugin = ClusterService.get().getPlugin();
 
@@ -219,7 +220,7 @@ public class ItemBuilder {
     public ItemBuilder() {}
 
     private Component parse(String message) {
-        return MiniMessage.miniMessage().deserialize(message).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
+        return AdvUtils.parse(message);
     }
 
     public ItemStack build() {
@@ -720,9 +721,9 @@ public class ItemBuilder {
     }
 
     private @NotNull OfflinePlayer getOfflinePlayer(String player) {
-        CompletableFuture<UUID> future = CompletableFuture.supplyAsync(() -> Bukkit.getServer().getOfflinePlayer(player)).thenApply(OfflinePlayer::getUniqueId);
+        CompletableFuture<UUID> future = CompletableFuture.supplyAsync(() -> this.plugin.getServer().getOfflinePlayer(player)).thenApply(OfflinePlayer::getUniqueId);
 
-        return Bukkit.getServer().getOfflinePlayer(future.join());
+        return this.plugin.getServer().getOfflinePlayer(future.join());
     }
 
     private Player getPlayer(String player) {
@@ -744,7 +745,7 @@ public class ItemBuilder {
             String[] split = stringPattern.split(":");
 
             for (PatternType pattern : PatternType.values()) {
-                if (split[0].equalsIgnoreCase(pattern.name()) || split[0].equalsIgnoreCase(pattern.getIdentifier())) {
+                if (split[0].equalsIgnoreCase(pattern.name()) || split[0].equalsIgnoreCase(pattern.getKey().getKey())) {
                     DyeColor color = DyeUtils.getDyeColor(split[1]);
 
                     if (color != null) {
