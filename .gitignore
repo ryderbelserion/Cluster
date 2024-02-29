@@ -6,3 +6,14 @@ jars
 
 paper/build
 paper/.gradle
+
+dev-plugin/build
+dev-plugin/.gradle
+
+dev-plugin/run
+!dev-plugin/run/config
+!dev-plugin/run/spigot.yml
+!dev-plugin/run/bukkit.yml
+!dev-plugin/run/eula.txt
+!dev-plugin/run/server.properties
+!dev-plugin/run/plugins
