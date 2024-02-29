@@ -1,3 +1,7 @@
+plugins {
+    id("root-plugin")
+}
+
 dependencies {
     compileOnly(libs.bundles.adventure)
 }

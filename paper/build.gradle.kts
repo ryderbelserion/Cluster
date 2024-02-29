@@ -1,12 +1,17 @@
 plugins {
-    alias(libs.plugins.paperweight)
-    alias(libs.plugins.shadow)
+    id("paper-plugin")
 }
 
 val mcVersion = providers.gradleProperty("mcVersion").get()
 
+repositories {
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+}
+
 dependencies {
     api(project(":api"))
+
+    compileOnly(libs.placeholderapi)
 
     compileOnly(libs.itemsadder)
 
@@ -15,8 +20,6 @@ dependencies {
     compileOnly(libs.oraxen) {
         exclude("*", "*")
     }
-
-    paperweight.paperDevBundle("$mcVersion-R0.1-SNAPSHOT")
 }
 
 tasks {

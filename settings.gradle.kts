@@ -25,6 +25,8 @@ dependencyResolutionManagement {
 
             library("minimessage4", "net.kyori", "adventure-api").versionRef("adventure4")
 
+            library("placeholderapi", "me.clip", "placeholderapi").version("2.11.5")
+
             library("arcaniax", "com.arcaniax", "HeadDatabase-API").version("1.3.0")
 
             library("oraxen", "io.th0rgal", "oraxen").version("1.164.0")
@@ -40,4 +42,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Cluster"
 
-include("paper", "api")
+include("paper", "api", "dev-plugin")
