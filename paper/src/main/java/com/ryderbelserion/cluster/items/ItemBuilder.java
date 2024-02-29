@@ -1,25 +1,24 @@
 package com.ryderbelserion.cluster.items;
 
+import com.google.common.collect.Multimap;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.ryderbelserion.cluster.ClusterFactory;
 import com.ryderbelserion.cluster.ClusterService;
 import com.ryderbelserion.cluster.api.enums.PluginSupport;
 import com.ryderbelserion.cluster.utils.AdvUtils;
 import com.ryderbelserion.cluster.utils.DyeUtils;
+import com.ryderbelserion.cluster.utils.ItemUtils;
 import io.th0rgal.oraxen.api.OraxenItems;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.minecraft.nbt.TagParser;
 import org.apache.commons.lang.WordUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Banner;
@@ -30,6 +29,7 @@ import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
@@ -44,15 +44,24 @@ import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public abstract class ItemBuilder {
 
-    private final JavaPlugin plugin = ClusterService.get().getPlugin();
+    @NotNull
+    private final ClusterFactory service = ClusterService.get();
+
+    @NotNull
+    private final JavaPlugin plugin = this.service.getPlugin();
+
+    @NotNull
+    private final Logger logger = this.service.getLogger();
+
+    private final boolean isLogging = this.service.isLogging();
 
     // Items
     private Material material = Material.STONE;
@@ -80,7 +89,7 @@ public abstract class ItemBuilder {
     private int potionAmplifier = 1;
 
     // Player Heads
-    private String player = "";
+    private UUID uuid = null;
     private boolean isHead = false;
 
     // Arrows
@@ -150,13 +159,45 @@ public abstract class ItemBuilder {
 
         this.isArmor = name.endsWith("_HELMET") || name.endsWith("_CHESTPLATE") || name.endsWith("_LEGGINGS") || name.endsWith("_BOOTS");
 
-        this.isTool = name.endsWith("_SWORD") || name.endsWith("_AXE") || name.endsWith("_SHOVEL") || name.endsWith("_SPADE");
+        this.isTool = name.endsWith("_SWORD") || name.endsWith("_AXE") || name.endsWith("_SHOVEL");
+
+        this.isBanner = name.endsWith("BANNER");
+    }
+
+    private Player target = null;
+
+    public ItemBuilder(Player target, ItemStack itemStack) {
+        this.target = target;
+
+        this.itemStack = itemStack;
+
+        this.material = itemStack.getType();
+
+        switch (this.material) {
+            case LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS, LEATHER_HORSE_ARMOR -> this.isLeatherArmor = true;
+            case POTION, SPLASH_POTION, LINGERING_POTION -> this.isPotion = true;
+            case FIREWORK_STAR -> this.isFireworkStar = true;
+            case TIPPED_ARROW -> this.isTippedArrow = true;
+            case FIREWORK_ROCKET -> this.isFirework = true;
+            case FILLED_MAP -> this.isMap = true;
+            case PLAYER_HEAD -> this.isHead = true;
+            case SPAWNER -> this.isSpawner = true;
+            case SHIELD -> this.isShield = true;
+        }
+
+        String name = this.material.name();
+
+        this.isArmor = name.endsWith("_HELMET") || name.endsWith("_CHESTPLATE") || name.endsWith("_LEGGINGS") || name.endsWith("_BOOTS");
+
+        this.isTool = name.endsWith("_SWORD") || name.endsWith("_AXE") || name.endsWith("_SHOVEL");
 
         this.isBanner = name.endsWith("BANNER");
     }
 
     // De-duplicate an item builder.
     public ItemBuilder(ItemBuilder itemBuilder) {
+        this.target = itemBuilder.target;
+
         this.material = itemBuilder.material;
         this.itemStack = itemBuilder.itemStack;
 
@@ -178,7 +219,7 @@ public abstract class ItemBuilder {
         this.potionDuration = itemBuilder.potionDuration;
         this.potionAmplifier = itemBuilder.potionAmplifier;
 
-        this.player = itemBuilder.player;
+        this.uuid = itemBuilder.uuid;
         this.isHead = itemBuilder.isHead;
 
         this.isTippedArrow = itemBuilder.isTippedArrow;
@@ -220,6 +261,10 @@ public abstract class ItemBuilder {
     public ItemBuilder() {}
 
     private Component parse(String message) {
+        if (PluginSupport.placeholderapi.isPluginEnabled(this.plugin) && this.target != null) {
+            return AdvUtils.parse(PlaceholderAPI.setPlaceholders(this.target, message));
+        }
+
         return AdvUtils.parse(message);
     }
 
@@ -234,7 +279,7 @@ public abstract class ItemBuilder {
             } else {
                 this.itemStack = new ItemStack(Material.STONE);
 
-                this.itemStack.editMeta(meta -> meta.displayName(parse("<red>An error has occurred with the item builder.")));
+                this.itemStack.editMeta(itemMeta -> itemMeta.displayName(parse("<red>An error has occurred with the item builder.")));
 
                 return this.itemStack;
             }
@@ -256,40 +301,41 @@ public abstract class ItemBuilder {
 
             getItemStack().setAmount(this.itemAmount);
 
-            getItemStack().editMeta(meta -> {
-                if (this.isHead && !this.player.isBlank()) {
-                    SkullMeta skullMeta = (SkullMeta) meta;
+            getItemStack().editMeta(itemMeta -> {
+                if (this.isHead && this.uuid != null) {
+                    SkullMeta skullMeta = (SkullMeta) itemMeta;
 
-                    OfflinePlayer person = getPlayer(this.player) != null ? getPlayer(this.player) : getOfflinePlayer(this.player);
+                    OfflinePlayer person = getPlayer(this.uuid) != null ? getPlayer(this.uuid) : getOfflinePlayer(this.uuid);
 
                     skullMeta.setOwningPlayer(person);
                 }
 
                 // Set the display name.
                 if (!this.displayName.equals(Component.empty())) {
-                    meta.displayName(this.displayName);
+                    itemMeta.displayName(this.displayName);
                 }
 
                 // Set the lore.
                 if (!this.displayLore.isEmpty()) {
-                    meta.lore(this.displayLore);
+                    itemMeta.lore(this.displayLore);
                 }
 
                 if (this.isSpawner) {
                     if (this.displayName.equals(Component.empty())) {
-                        meta.displayName(parse(WordUtils.capitalizeFully(this.entityType.getKey().getKey().replaceAll("_", " ")) + " Spawner"));
+                        itemMeta.displayName(parse(WordUtils.capitalizeFully(this.entityType.getKey().getKey().replaceAll("_", " ")) + " Spawner"));
                     }
 
-                    BlockStateMeta blockState = (BlockStateMeta) meta;
+                    BlockStateMeta blockState = (BlockStateMeta) itemMeta;
 
                     CreatureSpawner creatureSpawner = (CreatureSpawner) blockState.getBlockState();
 
                     creatureSpawner.setSpawnedType(this.entityType);
+
                     blockState.setBlockState(creatureSpawner);
                 }
 
                 // If the item is able to be damaged.
-                if (meta instanceof Damageable damageable) {
+                if (itemMeta instanceof Damageable damageable) {
                     if (this.itemDamage >= 1) {
                         if (this.itemDamage >= this.material.getMaxDurability()) {
                             damageable.setDamage(this.material.getMaxDurability());
@@ -301,14 +347,14 @@ public abstract class ItemBuilder {
 
                 if (this.isArmor) {
                     if (this.trimPattern != null && this.trimMaterial != null) {
-                        ArmorMeta armorMeta = (ArmorMeta) meta;
+                        ArmorMeta armorMeta = (ArmorMeta) itemMeta;
 
                         armorMeta.setTrim(new ArmorTrim(this.trimMaterial, this.trimPattern));
                     }
                 }
 
                 if (this.isMap) {
-                    MapMeta mapMeta = (MapMeta) meta;
+                    MapMeta mapMeta = (MapMeta) itemMeta;
 
                     mapMeta.setScaling(true);
 
@@ -317,7 +363,7 @@ public abstract class ItemBuilder {
 
                 // Check if is potion and apply potion related settings.
                 if (this.isPotion || this.isTippedArrow) {
-                    PotionMeta potionMeta = (PotionMeta) meta;
+                    PotionMeta potionMeta = (PotionMeta) itemMeta;
 
                     // Single potion effect.
                     if (this.potionType != null) {
@@ -334,18 +380,18 @@ public abstract class ItemBuilder {
                 }
 
                 if (this.isLeatherArmor && this.armorColor != null) {
-                    LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) meta;
+                    LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemMeta;
 
                     leatherArmorMeta.setColor(this.armorColor);
                 }
 
                 if (this.isBanner && !this.patterns.isEmpty()) {
-                    BannerMeta bannerMeta = (BannerMeta) meta;
+                    BannerMeta bannerMeta = (BannerMeta) itemMeta;
                     bannerMeta.setPatterns(this.patterns);
                 }
 
                 if (this.isShield && !this.patterns.isEmpty()) {
-                    BlockStateMeta shieldMeta = (BlockStateMeta) meta;
+                    BlockStateMeta shieldMeta = (BlockStateMeta) itemMeta;
 
                     Banner banner = (Banner) shieldMeta.getBlockState();
                     banner.setPatterns(this.patterns);
@@ -356,22 +402,27 @@ public abstract class ItemBuilder {
 
                 // If the item has model data.
                 if (this.hasCustomModelData) {
-                    meta.setCustomModelData(this.customModelData);
+                    itemMeta.setCustomModelData(this.customModelData);
                 }
 
-                this.itemFlags.forEach(meta::addItemFlags);
+                this.itemFlags.forEach(itemMeta::addItemFlags);
 
                 if (this.hideItemFlags) {
-                    meta.addItemFlags(ItemFlag.values());
+                    itemMeta.addItemFlags(ItemFlag.values());
                 }
 
-                meta.setUnbreakable(this.isUnbreakable);
+                itemMeta.setUnbreakable(this.isUnbreakable);
+
+                if (this.isGlowing) {
+                    if (!itemMeta.hasEnchants()) {
+                        itemMeta.addEnchant(Enchantment.LUCK, 1, false);
+                        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                    }
+                }
             });
         } else {
-            this.plugin.getLogger().warning("Material cannot be air or null.");
+            if (this.isLogging) this.logger.warning("Material cannot be air or null.");
         }
-
-        addGlow();
 
         return getItemStack();
     }
@@ -430,14 +481,14 @@ public abstract class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder setTrimMaterial(TrimMaterial trimMaterial) {
-        this.trimMaterial = trimMaterial;
+    public ItemBuilder setTrimMaterial(String trimMaterial) {
+        this.trimMaterial = ItemUtils.getTrimMaterial(trimMaterial);
 
         return this;
     }
 
-    public ItemBuilder setTrimPattern(TrimPattern trimPattern) {
-        this.trimPattern = trimPattern;
+    public ItemBuilder setTrimPattern(String trimPattern) {
+        this.trimPattern = ItemUtils.getTrimPattern(trimPattern);
 
         return this;
     }
@@ -521,8 +572,8 @@ public abstract class ItemBuilder {
     public ItemBuilder setEffect(List<FireworkEffect.Builder> effects) {
         if (effects.isEmpty()) return this;
 
-        getItemStack().editMeta(meta -> {
-            FireworkMeta fireworkMeta = (FireworkMeta) meta;
+        getItemStack().editMeta(itemMeta -> {
+            FireworkMeta fireworkMeta = (FireworkMeta) itemMeta;
 
             if (this.isFirework) {
                 effects.forEach(eff -> fireworkMeta.addEffects(eff.build()));
@@ -536,10 +587,16 @@ public abstract class ItemBuilder {
         return this;
     }
 
+    /**
+     * Set firework power if the item is a firework.
+     *
+     * @param power the power which is how high it flies.
+     * @return the ItemBuilder with updated data.
+     */
     public ItemBuilder setFireworkPower(int power) {
         if (this.isFirework) {
-            getItemStack().editMeta(meta -> {
-                FireworkMeta fireworkMeta = (FireworkMeta) meta;
+            getItemStack().editMeta(itemMeta -> {
+                FireworkMeta fireworkMeta = (FireworkMeta) itemMeta;
                 fireworkMeta.setPower(power);
             });
         }
@@ -547,41 +604,72 @@ public abstract class ItemBuilder {
         return this;
     }
 
+    /**
+     * Set item data which is used for NMS.
+     *
+     * @param itemData the item data to set.
+     * @return the ItemBuilder with updated data.
+     */
     public ItemBuilder setItemData(String itemData) {
         this.itemData = itemData;
 
         return this;
     }
 
+    /**
+     * Set entity type
+     *
+     * @param entityType the type to set.
+     * @return the ItemBuilder with updated data.
+     */
     public ItemBuilder setEntityType(EntityType entityType) {
         this.entityType = entityType;
 
         return this;
     }
 
-    // Set the material type.
+    /**
+     * Sets the material.
+     *
+     * @param material the material to use.
+     * @return the ItemBuilder with updated data.
+     */
     public ItemBuilder setMaterial(Material material) {
         this.material = material;
 
         if (this.itemStack != null) this.itemStack.setType(this.material); else this.itemStack = new ItemStack(this.material);
 
         this.isHead = material == Material.PLAYER_HEAD;
-        return this;
-    }
-
-    public ItemBuilder setPlayer(String player) {
-        this.player = player;
 
         return this;
     }
 
-    private final HeadDatabaseAPI api = ClusterService.get().getDatabaseAPI();
+    /**
+     * Sets the player uuid.
+     *
+     * @param uuid the uuid to set.
+     * @return the ItemBuilder with updated data.
+     */
+    public ItemBuilder setUUID(UUID uuid) {
+        this.uuid = uuid;
 
+        return this;
+    }
+
+    /**
+     * Set a player skull if HeadDatabase is enabled.
+     *
+     * @param skull the skull to use.
+     * @return the ItemBuilder with updated data.
+     */
     public ItemBuilder setSkull(String skull) {
-        if (!ClusterService.get().isHeadDatabaseEnabled()) {
-            this.plugin.getLogger().warning("HeadDatabase is not enabled, Cannot use skulls from minecraft-heads.com.");
+        if (this.service.isHeadDatabaseEnabled()) {
+            if (this.isLogging) this.logger.warning("HeadDatabase is not enabled, Cannot use skulls from minecraft-heads.com.");
+
             return this;
         }
+
+        HeadDatabaseAPI api = this.service.getDatabaseAPI();
 
         if (api.isHead(skull)) {
             this.itemStack = api.getItemHead(skull);
@@ -590,58 +678,148 @@ public abstract class ItemBuilder {
         return this;
     }
 
-    // Attributes
-    public ItemBuilder addAttribute(Attribute attribute, AttributeModifier modifier) {
-        if (this.isTool) {
-            this.plugin.getLogger().warning("The item is not a tool, Cannot modify attributes.");
+    /**
+     * Adds attributes to items.
+     *
+     * @param attribute the attribute to add.
+     * @return the ItemBuilder with updated data.
+     */
+    public ItemBuilder addAttribute(String attribute) {
+        if (!isTool()) {
+            if (this.isLogging) this.logger.warning("The item is not a tool, Cannot modify attributes.");
+
             return this;
         }
 
-        getItemStack().editMeta(meta -> meta.addAttributeModifier(attribute, modifier));
+        if (attribute == null || attribute.isEmpty() || attribute.isBlank()) {
+            if (this.isLogging) this.logger.warning("Attributes cannot be empty/blank/null");
+
+            return this;
+        }
+
+        String[] section = attribute.split(",");
+        Attribute modifier = ItemUtils.getAttribute(section[0]);
+
+        if (modifier == null || !isValidDouble(section[1])) return this;
+
+        double damage = Double.parseDouble(section[1]);
+
+        AttributeModifier.Operation operation = AttributeModifier.Operation.valueOf(section[2]);
+        EquipmentSlot equipmentSlot = EquipmentSlot.valueOf(section[3]);
+
+        getItemStack().editMeta(itemMeta -> {
+            AttributeModifier attributeModifier = new AttributeModifier(UUID.randomUUID(), modifier.getKey().value(), damage, operation, equipmentSlot);
+
+            itemMeta.addAttributeModifier(modifier, attributeModifier);
+        });
 
         return this;
     }
 
+    /**
+     * Set a hashmap of modifiers.
+     *
+     * @param modifiers the modifiers to set.
+     * @return the ItemBuilder with updated data.
+     */
+    public ItemBuilder addAttribute(Multimap<Attribute, AttributeModifier> modifiers) {
+        if (modifiers == null || modifiers.isEmpty()) {
+            if (this.isLogging) this.logger.warning("The multi map for attribute/attributemodifier is empty.");
+
+            return this;
+        }
+
+        getItemStack().editMeta(itemMeta -> itemMeta.setAttributeModifiers(modifiers));
+
+        return this;
+    }
+
+    /**
+     * @return true if a tool otherwise false.
+     */
     public boolean isTool() {
         return this.isTool;
     }
 
-    // Enchantments
-    public ItemBuilder addEnchantments(HashMap<Enchantment, Integer> enchantments, boolean unsafeEnchantments) {
+    /**
+     * Adds multiple enchantments to an item.
+     *
+     * @param enchantments the map of enchantments, String/Integer
+     * @param unsafeEnchantments if the enchantments are higher than the vanilla defaults.
+     * @return the ItemBuilder with updated data.
+     */
+    public ItemBuilder addEnchantments(Map<String, Integer> enchantments, boolean unsafeEnchantments) {
         enchantments.forEach((enchantment, level) -> addEnchantment(enchantment, level, unsafeEnchantments));
-        return this;
-    }
-
-    public ItemBuilder addEnchantment(Enchantment enchantment, int level, boolean unsafeEnchantments) {
-        getItemStack().editMeta(meta -> meta.addEnchant(enchantment, level, unsafeEnchantments));
 
         return this;
     }
 
-    public ItemBuilder removeEnchantment(Enchantment enchantment) {
-        getItemStack().editMeta(meta -> meta.removeEnchant(enchantment));
+    /**
+     * Adds a single enchantment to an item.
+     *
+     * @param type the type of enchantment.
+     * @param level the level of the enchantment.
+     * @param unsafeEnchantments if the enchantment is higher than the vanilla defaults.
+     * @return the ItemBuilder with updated data.
+     */
+    public ItemBuilder addEnchantment(String type, int level, boolean unsafeEnchantments) {
+        Enchantment enchantment = ItemUtils.getEnchantment(type);
+
+        if (enchantment == null || !isValidInteger(String.valueOf(level))) return this;
+
+        getItemStack().editMeta(itemMeta -> {
+            if (itemMeta.hasConflictingEnchant(enchantment)) {
+                if (this.isLogging) this.logger.warning("One of the enchants on the item may conflict with " + type + ", The item been enchanted anyway.");
+            }
+
+            itemMeta.addEnchant(enchantment, level, unsafeEnchantments);
+        });
 
         return this;
     }
 
-    public ItemBuilder setMaterial(String material) {
-        if (material == null || material.isEmpty()) {
+    /**
+     * Removes an enchantment.
+     *
+     * @param type the enchantment to remove.
+     * @return the ItemBuilder with updated data.
+     */
+    public ItemBuilder removeEnchantment(String type) {
+        Enchantment enchantment = ItemUtils.getEnchantment(type);
+
+        if (enchantment == null) return this;
+
+        getItemStack().editMeta(itemMeta -> itemMeta.removeEnchant(enchantment));
+
+        return this;
+    }
+
+    /**
+     * Sets a material based on a String which includes model data and other information.
+     *
+     * @param type the string to break down to what we need.
+     * @return the ItemBuilder with updated data.
+     */
+    public ItemBuilder setMaterial(String type) {
+        if (type == null || type.isEmpty()) {
             List.of(
-                    "Material cannot be null or empty, Output: " + material + ".",
+                    "Material cannot be null or empty, Output: " + type + ".",
                     "Please take a screenshot of this before asking for support."
-            ).forEach(line -> this.plugin.getLogger().warning(line));
+            ).forEach(line -> {
+                if (this.isLogging) this.logger.warning(line);
+            });
 
             return this;
         }
 
         String metaData;
 
-        this.customMaterial = material;
+        this.customMaterial = type;
 
-        if (material.contains(":")) {
-            String[] section = material.split(":");
+        if (type.contains(":")) {
+            String[] section = type.split(":");
 
-            material = section[0];
+            type = section[0];
             metaData = section[1];
 
             if (metaData.contains("#")) {
@@ -658,31 +836,29 @@ public abstract class ItemBuilder {
             if (isValidInteger(metaData)) {
                 this.itemDamage = Integer.parseInt(metaData);
             } else {
-                try {
-                    this.potionType = Registry.POTION_EFFECT_TYPE.get(NamespacedKey.minecraft(metaData));
-                } catch (Exception exception) {
-                    this.plugin.getLogger().log(Level.WARNING, "Failed to set potion type " + metaData + ".", exception);
-                }
+                this.potionType = ItemUtils.getPotionEffect(metaData);
 
                 this.potionColor = DyeUtils.getColor(metaData);
                 this.armorColor = DyeUtils.getColor(metaData);
                 this.mapColor = DyeUtils.getColor(metaData);
                 this.fireworkColor = DyeUtils.getColor(metaData);
             }
-        } else if (material.contains("#")) {
-            String[] type = material.split("#");
-            material = type[0];
+        } else if (type.contains("#")) {
+            String[] section = type.split("#");
+            type = section[0];
 
-            if (isValidInteger(type[1])) {
+            String modelData = section[1];
+
+            if (isValidInteger(modelData)) {
                 this.hasCustomModelData = true;
-                this.customModelData = Integer.parseInt(type[1]);
+                this.customModelData = Integer.parseInt(modelData);
             }
         }
 
-        Material matchedMaterial = Material.matchMaterial(material);
+        Material material = ItemUtils.getMaterial(type);
 
-        if (matchedMaterial != null) {
-            this.itemStack = new ItemStack(matchedMaterial);
+        if (material != null) {
+            this.itemStack = new ItemStack(material);
 
             this.material = this.itemStack.getType();
         }
@@ -703,66 +879,92 @@ public abstract class ItemBuilder {
 
         this.isArmor = name.endsWith("_HELMET") || name.endsWith("_CHESTPLATE") || name.endsWith("_LEGGINGS") || name.endsWith("_BOOTS");
 
-        this.isTool = name.endsWith("_SWORD") || name.endsWith("_AXE") || name.endsWith("_SHOVEL") || name.endsWith("_SPADE");
+        this.isTool = name.endsWith("_SWORD") || name.endsWith("_AXE") || name.endsWith("_SHOVEL");
 
         this.isBanner = name.endsWith("BANNER");
 
         return this;
     }
 
+    /**
+     * Check if a string is a valid integer.
+     *
+     * @param value the string to check.
+     * @return true or false.
+     */
     private boolean isValidInteger(String value) {
         try {
             Integer.parseInt(value);
         } catch (NumberFormatException exception) {
+            if (this.isLogging) this.logger.warning(value + " is not a valid number.");
+
             return false;
         }
 
         return true;
     }
 
-    private @NotNull OfflinePlayer getOfflinePlayer(String player) {
-        CompletableFuture<UUID> future = CompletableFuture.supplyAsync(() -> this.plugin.getServer().getOfflinePlayer(player)).thenApply(OfflinePlayer::getUniqueId);
-
-        return this.plugin.getServer().getOfflinePlayer(future.join());
-    }
-
-    private Player getPlayer(String player) {
-        return Bukkit.getServer().getPlayer(player);
-    }
-
-    private void addGlow() {
-        if (this.isGlowing) {
-            if (getItemStack().getItemMeta().hasEnchants()) return;
-
-            getItemStack().addEnchantment(Enchantment.LUCK, 1);
-
-            getItemStack().editMeta(meta -> meta.addItemFlags(ItemFlag.HIDE_ENCHANTS));
-        }
-    }
-
-    private void addPatterns(String stringPattern) {
+    /**
+     * Check if a string is a valid double.
+     *
+     * @param value the string to check.
+     * @return true or false.
+     */
+    private boolean isValidDouble(String value) {
         try {
-            String[] split = stringPattern.split(":");
+            Double.parseDouble(value);
+        } catch (NumberFormatException exception) {
+            if (this.isLogging) this.logger.warning(value + " is not a valid dpuble.");
 
-            for (PatternType pattern : PatternType.values()) {
-                if (split[0].equalsIgnoreCase(pattern.name()) || split[0].equalsIgnoreCase(pattern.getKey().getKey())) {
-                    DyeColor color = DyeUtils.getDyeColor(split[1]);
-
-                    if (color != null) {
-                        addPattern(new Pattern(color, pattern));
-                    }
-
-                    break;
-                }
-            }
-        } catch (Exception ignored) {}
-    }
-
-    private ItemFlag getFlag(String flagString) {
-        for (ItemFlag flag : ItemFlag.values()) {
-            if (flag.name().equalsIgnoreCase(flagString)) return flag;
+            return false;
         }
 
-        return null;
+        return true;
+    }
+
+    /**
+     * Get an offline player.
+     *
+     * @param uuid the uuid of the offline player.
+     * @return the offline player.
+     */
+    private @NotNull OfflinePlayer getOfflinePlayer(UUID uuid) {
+        return this.plugin.getServer().getOfflinePlayer(uuid);
+    }
+
+    /**
+     * Get an online player by UUID.
+     *
+     * @param uuid the uuid of the player.
+     * @return a player object.
+     */
+    private Player getPlayer(UUID uuid) {
+        return this.plugin.getServer().getPlayer(uuid);
+    }
+
+    /**
+     * Adds patterns to items from the registry.
+     *
+     * @param pattern the string to break down to make the pattern.
+     */
+    private void addPatterns(String pattern) {
+        String[] section = pattern.split(":");
+
+        PatternType type = ItemUtils.getPatternType(section[0]);
+        DyeColor color = DyeUtils.getDyeColor(section[1]);
+
+        if (type == null || color == null) return;
+
+        addPattern(new Pattern(color, type));
+    }
+
+    /**
+     * Gets an item flag.
+     *
+     * @param flag the flag to check.
+     * @return the itemflag.
+     */
+    private ItemFlag getFlag(String flag) {
+        return ItemFlag.valueOf(flag);
     }
 }

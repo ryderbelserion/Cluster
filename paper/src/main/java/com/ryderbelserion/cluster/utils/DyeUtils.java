@@ -1,5 +1,7 @@
 package com.ryderbelserion.cluster.utils;
 
+import com.ryderbelserion.cluster.ClusterFactory;
+import com.ryderbelserion.cluster.ClusterService;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -73,7 +75,13 @@ public class DyeUtils {
     }
 
     public static DyeColor getDyeColor(String color) {
-        if (color == null || color.isBlank()) return null;
+        if (color == null || color.isBlank()) {
+            ClusterFactory service = ClusterService.get();
+
+            if (service.isLogging()) service.getLogger().warning(color + " is not a valid color.");
+
+            return null;
+        }
 
         try {
             return DyeColor.valueOf(color.toUpperCase());

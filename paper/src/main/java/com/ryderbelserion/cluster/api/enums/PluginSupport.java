@@ -4,6 +4,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public enum PluginSupport {
 
+    placeholderapi("PlaceholderAPI"),
     oraxen("Oraxen"),
     headdatabase("HeadDatabase"),
     items_adder("ItemsAdder");

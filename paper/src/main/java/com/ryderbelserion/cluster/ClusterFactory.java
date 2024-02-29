@@ -17,7 +17,7 @@ public class ClusterFactory extends ClusterPlugin {
     private final boolean isLogging;
 
     private HeadDatabaseAPI databaseAPI;
-    private boolean headDatabaseEnabled;
+    private boolean isHeadDatabaseEnabled;
 
     private FileManager fileManager;
     private JavaPlugin plugin;
@@ -42,7 +42,7 @@ public class ClusterFactory extends ClusterPlugin {
             this.plugin.getDataFolder().mkdirs();
         }
 
-        this.headDatabaseEnabled = PluginSupport.headdatabase.isPluginEnabled(this.plugin);
+        this.isHeadDatabaseEnabled = PluginSupport.headdatabase.isPluginEnabled(this.plugin);
 
         ClusterService.setService(this);
     }
@@ -89,7 +89,7 @@ public class ClusterFactory extends ClusterPlugin {
         // If the plugin is already registered,
         // return as we don't want it registered again.
         if (this.plugin != null) {
-            this.plugin.getLogger().warning("The plugin variable is already set. You cannot override it.");
+            if (isLogging()) getLogger().warning("The plugin variable is already set. You cannot override it.");
 
             return;
         }
@@ -101,8 +101,9 @@ public class ClusterFactory extends ClusterPlugin {
     }
 
     public void setDatabaseAPI(HeadDatabaseAPI databaseAPI) {
-        if (!this.headDatabaseEnabled) {
-            this.plugin.getLogger().warning("HeadDatabase is not enabled, Cannot use custom skulls.");
+        if (isHeadDatabaseEnabled()) {
+            if (isLogging()) getLogger().warning("HeadDatabase is not enabled, Cannot use custom skulls.");
+
             return;
         }
 
@@ -110,12 +111,13 @@ public class ClusterFactory extends ClusterPlugin {
     }
 
     public boolean isHeadDatabaseEnabled() {
-        return this.headDatabaseEnabled;
+        return !this.isHeadDatabaseEnabled;
     }
 
     public HeadDatabaseAPI getDatabaseAPI() {
-        if (!this.headDatabaseEnabled) {
+        if (isHeadDatabaseEnabled()) {
             this.plugin.getLogger().warning("HeadDatabase is not enabled, Cannot use custom skulls.");
+
             return null;
         }
 
