@@ -3,7 +3,7 @@ package com.ryderbelserion.cluster.api.files.adapters;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.ryderbelserion.cluster.v1.ClusterService;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import java.io.IOException;
 
@@ -12,12 +12,14 @@ public class LocationTypeAdapter extends TypeAdapter<Location> {
     @Override
     public void write(JsonWriter out, Location location) throws IOException {
         out.beginObject();
+
         out.name("world").value(location.getWorld().getName());
         out.name("x").value(location.getX());
         out.name("y").value(location.getY());
         out.name("z").value(location.getZ());
         out.name("yaw").value(location.getYaw());
         out.name("pitch").value(location.getPitch());
+
         out.endObject();
     }
 
@@ -46,6 +48,7 @@ public class LocationTypeAdapter extends TypeAdapter<Location> {
         reader.endObject();
 
         assert worldName != null;
-        return new Location(ClusterService.get().getPlugin().getServer().getWorld(worldName), x, y, z, yaw, pitch);
+
+        return new Location(Bukkit.getServer().getWorld(worldName), x, y, z, yaw, pitch);
     }
 }
