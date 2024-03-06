@@ -2,6 +2,10 @@ plugins {
     id("paper-plugin")
 }
 
+base {
+    archivesName.set(rootProject.name)
+}
+
 val mcVersion = providers.gradleProperty("mcVersion").get()
 
 repositories {

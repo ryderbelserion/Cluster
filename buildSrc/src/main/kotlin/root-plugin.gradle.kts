@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.support.uppercaseFirstChar
-
 plugins {
     id("com.github.johnrengelman.shadow")
 
@@ -37,6 +35,8 @@ tasks {
     }
 
     shadowJar {
+        archiveFileName.set("${rootProject.name}-${rootProject.version}.jar")
+
         archiveClassifier.set("")
 
         exclude("META-INF/**")

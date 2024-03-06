@@ -2,7 +2,6 @@ package com.ryderbelserion.cluster;
 
 import com.ryderbelserion.cluster.items.ItemBuilder;
 import com.ryderbelserion.cluster.items.ParentBuilder;
-import com.ryderbelserion.cluster.v1.ClusterFactory;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.entity.Player;
@@ -17,8 +16,8 @@ public class ClusterPlugin extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        ClusterFactory factory = new ClusterFactory(this, true);
-        factory.enable();
+        //ClusterFactory factory = new ClusterFactory(this, true);
+        //factory.enable();
 
         getServer().getPluginManager().registerEvents(this, this);
     }
