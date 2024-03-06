@@ -2,6 +2,7 @@ package com.ryderbelserion.cluster;
 
 import com.ryderbelserion.cluster.items.ItemBuilder;
 import com.ryderbelserion.cluster.items.ParentBuilder;
+import com.ryderbelserion.cluster.v1.ClusterFactory;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.entity.Player;

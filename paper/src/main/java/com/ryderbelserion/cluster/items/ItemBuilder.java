@@ -2,9 +2,10 @@ package com.ryderbelserion.cluster.items;
 
 import com.google.common.collect.Multimap;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.ryderbelserion.cluster.ClusterFactory;
-import com.ryderbelserion.cluster.ClusterService;
-import com.ryderbelserion.cluster.api.enums.PluginSupport;
+import com.ryderbelserion.cluster.Cluster;
+import com.ryderbelserion.cluster.ClusterPackage;
+import com.ryderbelserion.cluster.ClusterProvider;
+import com.ryderbelserion.cluster.platform.ClusterServer;
 import com.ryderbelserion.cluster.utils.AdvUtils;
 import com.ryderbelserion.cluster.utils.DyeUtils;
 import com.ryderbelserion.cluster.utils.ItemUtils;
@@ -14,6 +15,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.minecraft.nbt.TagParser;
 import org.apache.commons.lang.WordUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
@@ -36,7 +38,6 @@ import org.bukkit.inventory.meta.*;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -53,15 +54,15 @@ import java.util.logging.Logger;
 public abstract class ItemBuilder {
 
     @NotNull
-    private final ClusterFactory service = ClusterService.get();
+    private final Cluster provider = ClusterProvider.get();
 
     @NotNull
-    private final JavaPlugin plugin = this.service.getPlugin();
+    private final ClusterServer server = this.provider.getServer();
+
+    private final boolean isLogging = this.server.isLogging();
 
     @NotNull
-    private final Logger logger = this.service.getLogger();
-
-    private final boolean isLogging = this.service.isLogging();
+    private final Logger logger = this.server.getLogger();
 
     // Items
     private Material material = Material.STONE;
@@ -261,7 +262,7 @@ public abstract class ItemBuilder {
     public ItemBuilder() {}
 
     private Component parse(String message) {
-        if (PluginSupport.placeholderapi.isPluginEnabled(this.plugin) && this.target != null) {
+        if (this.server.isPapiEnabled() && this.target != null) {
             return AdvUtils.parse(PlaceholderAPI.setPlaceholders(this.target, message));
         }
 
@@ -270,7 +271,7 @@ public abstract class ItemBuilder {
 
     public ItemStack build() {
         if (this.itemStack == null) {
-            if (PluginSupport.oraxen.isPluginEnabled(this.plugin)) {
+            if (this.server.isOraxenEnabled()) {
                 io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
 
                 if (oraxenItem != null) {
@@ -293,7 +294,7 @@ public abstract class ItemBuilder {
                 try {
                     nmsItem.setTag(TagParser.parseTag(this.itemData));
                 } catch (CommandSyntaxException exception) {
-                    this.plugin.getLogger().log(Level.WARNING, "Failed to set nms tag.", exception);
+                    this.logger.log(Level.WARNING, "Failed to set nms tag.", exception);
                 }
 
                 return CraftItemStack.asBukkitCopy(nmsItem);
@@ -662,14 +663,12 @@ public abstract class ItemBuilder {
      * @param skull the skull to use.
      * @return the ItemBuilder with updated data.
      */
-    public ItemBuilder setSkull(String skull) {
-        if (this.service.isHeadDatabaseEnabled()) {
-            if (this.isLogging) this.logger.warning("HeadDatabase is not enabled, Cannot use skulls from minecraft-heads.com.");
+    public ItemBuilder setSkull(String skull, HeadDatabaseAPI api) {
+        if (api == null) {
+            if (this.isLogging) this.logger.warning("HeadDatabaseAPI is not loaded.");
 
             return this;
         }
-
-        HeadDatabaseAPI api = this.service.getDatabaseAPI();
 
         if (api.isHead(skull)) {
             this.itemStack = api.getItemHead(skull);
@@ -929,7 +928,7 @@ public abstract class ItemBuilder {
      * @return the offline player.
      */
     private @NotNull OfflinePlayer getOfflinePlayer(UUID uuid) {
-        return this.plugin.getServer().getOfflinePlayer(uuid);
+        return Bukkit.getServer().getOfflinePlayer(uuid);
     }
 
     /**
@@ -939,7 +938,7 @@ public abstract class ItemBuilder {
      * @return a player object.
      */
     private Player getPlayer(UUID uuid) {
-        return this.plugin.getServer().getPlayer(uuid);
+        return Bukkit.getServer().getPlayer(uuid);
     }
 
     /**

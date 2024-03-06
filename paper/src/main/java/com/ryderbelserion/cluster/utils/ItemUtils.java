@@ -1,6 +1,7 @@
 package com.ryderbelserion.cluster.utils;
 
-import com.ryderbelserion.cluster.ClusterService;
+import com.ryderbelserion.cluster.ClusterProvider;
+import com.ryderbelserion.cluster.platform.ClusterServer;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
@@ -10,15 +11,14 @@ import org.bukkit.block.banner.PatternType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import java.util.logging.Logger;
 
 public class ItemUtils {
 
-    private static final JavaPlugin plugin = ClusterService.get().getPlugin();
-    private static final Logger logger = plugin.getLogger();
+    private static final ClusterServer server = ClusterProvider.get().getServer();
+    private static final Logger logger = server.getLogger();
 
     public static Material getMaterial(String value) {
         try {

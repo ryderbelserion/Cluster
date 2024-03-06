@@ -1,6 +1,6 @@
 package com.ryderbelserion.cluster.api.builders;
 
-import com.ryderbelserion.cluster.ClusterService;
+import com.ryderbelserion.cluster.v1.ClusterService;
 import com.ryderbelserion.cluster.utils.AdvUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;

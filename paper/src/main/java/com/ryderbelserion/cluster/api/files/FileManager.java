@@ -1,9 +1,11 @@
 package com.ryderbelserion.cluster.api.files;
 
-import com.ryderbelserion.cluster.ClusterFactory;
+import com.ryderbelserion.cluster.Cluster;
+import com.ryderbelserion.cluster.ClusterProvider;
+import com.ryderbelserion.cluster.platform.ClusterServer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -13,49 +15,56 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FileManager {
 
-    private final JavaPlugin javaPlugin;
-    private final ClusterFactory plugin;
+    @NotNull
+    private final Cluster provider = ClusterProvider.get();
 
-    public FileManager(ClusterFactory plugin, JavaPlugin javaPlugin) {
-        this.plugin = plugin;
+    @NotNull
+    private final ClusterServer server = this.provider.getServer();
 
-        this.javaPlugin = javaPlugin;
-    }
+    private final boolean isLogging = this.server.isLogging();
 
-    private final HashSet<String> folders = new HashSet<>();
-    private final HashSet<String> staticFiles = new HashSet<>();
-    private final HashSet<CustomFile> customFiles = new HashSet<>();
-    private final HashMap<String, String> dynamicFiles = new HashMap<>();
-    private final HashMap<String, FileConfiguration> configurations = new HashMap<>();
+    @NotNull
+    private final File dataFolder = this.server.getFolder();
+    @NotNull
+    private final Logger logger = this.server.getLogger();
+
+    private final Map<String, FileConfiguration> configurations = new HashMap<>();
+    private final Map<String, String> dynamicFiles = new HashMap<>();
+    private final Set<CustomFile> customFiles = new HashSet<>();
+    private final Set<String> staticFiles = new HashSet<>();
+    private final Set<String> folders = new HashSet<>();
 
     public void create() {
-        if (!this.plugin.getDataFolder().exists()) this.plugin.getDataFolder().mkdirs();
+        if (!this.dataFolder.exists()) this.dataFolder.mkdirs();
 
         this.configurations.clear();
         this.customFiles.clear();
 
         // If folders is empty, return.
         if (this.folders.isEmpty()) {
-            this.plugin.getLogger().warning("I seem to not have any folders to work with.");
+            this.logger.warning("I seem to not have any folders to work with.");
+
             return;
         }
 
         for (String file : this.staticFiles) {
-            File newFile = new File(this.plugin.getDataFolder(), file);
+            File newFile = new File(this.dataFolder, file);
 
-            if (this.plugin.isLogging()) this.plugin.getLogger().info("Loading static file: " + newFile.getName());
+            if (this.isLogging) this.logger.info("Loading static file: " + newFile.getName());
 
             if (!newFile.exists()) {
                 try {
-                    this.javaPlugin.saveResource(file, false);
+                    this.server.saveResource(file, false);
+
                     YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
 
                     this.configurations.put(file, configuration);
                 } catch (Exception exception) {
-                    this.plugin.getLogger().log(Level.SEVERE, "Failed to load: " + newFile.getName(), exception);
+                    this.logger.log(Level.SEVERE, "Failed to load: " + newFile.getName(), exception);
 
                     continue;
                 }
@@ -65,12 +74,12 @@ public class FileManager {
                 this.configurations.put(file, configuration);
             }
 
-            if (this.plugin.isLogging()) this.plugin.getLogger().fine("Successfully loaded: " + newFile.getName());
+            if (this.isLogging) this.logger.fine("Successfully loaded: " + newFile.getName());
         }
 
         // Loop through folders hash-set and create folders.
         for (String folder : this.folders) {
-            File newFolder = new File(this.plugin.getDataFolder(), "/" + folder);
+            File newFolder = new File(dataFolder, "/" + folder);
 
             // Check if the directory exists.
             if (newFolder.exists()) {
@@ -78,48 +87,49 @@ public class FileManager {
 
                 if (list != null) {
                     for (File file : list) {
-                        CustomFile customFile = new CustomFile(this.plugin, file.getName(), folder);
+                        CustomFile customFile = new CustomFile(file.getName(), folder);
 
                         if (customFile.exists()) {
-                            if (this.plugin.isLogging()) this.plugin.getLogger().info("Loading custom file: " + file.getName());
+                            if (this.isLogging) this.logger.info("Loading custom file: " + file.getName());
 
                             addDynamicFile(customFile);
                         }
                     }
                 }
             } else if (newFolder.mkdir()) {
-                if (this.plugin.isLogging()) this.plugin.getLogger().info("Created " + newFolder.getName() + " because it did not exist.");
+                if (this.isLogging) this.logger.info("Created " + newFolder.getName() + " because it did not exist.");
 
                 for (String fileName : this.dynamicFiles.keySet()) {
                     if (this.dynamicFiles.get(fileName).equalsIgnoreCase(folder)) {
                         folder = this.dynamicFiles.get(fileName);
 
                         try {
-                            File newFile = new File(this.plugin.getDataFolder(), folder + "/" + fileName);
+                            File newFile = new File(dataFolder, folder + "/" + fileName);
 
-                            this.javaPlugin.saveResource(folder + "/" + fileName, false);
+                            this.server.saveResource(folder + "/" + fileName, false);
 
                             if (newFile.getName().toLowerCase().endsWith(".yml")) {
-                                CustomFile customFile = new CustomFile(this.plugin,  newFile.getName(), folder);
+                                CustomFile customFile = new CustomFile(newFile.getName(), folder);
 
                                 addDynamicFile(customFile);
                             }
 
-                            if (this.plugin.isLogging()) this.plugin.getLogger().info("Created default file: " + newFile.getPath() + ".");
+                            if (this.isLogging) this.logger.info("Created default file: " + newFile.getPath() + ".");
                         } catch (Exception exception) {
-                            this.plugin.getLogger().log(Level.SEVERE, "Failed to create default file: " + folder + "/" + fileName + "!", exception);
+                            this.logger.log(Level.SEVERE, "Failed to create default file: " + folder + "/" + fileName + "!", exception);
                         }
                     }
                 }
             }
         }
 
-        if (this.plugin.isLogging()) this.plugin.getLogger().info("Finished loading custom files.");
+        if (this.isLogging) this.logger.info("Finished loading custom files.");
     }
 
     public FileManager addFolder(String folder) {
         if (this.folders.contains(folder)) {
-            this.plugin.getLogger().warning("The folder named: " + folder + " already exists.");
+            this.logger.warning("The folder named: " + folder + " already exists.");
+
             return this;
         }
 
@@ -130,7 +140,8 @@ public class FileManager {
 
     public void removeFolder(String folder) {
         if (!this.folders.contains(folder)) {
-            this.plugin.getLogger().warning("The folder named: " + folder + " is not known to me.");
+            this.logger.warning("The folder named: " + folder + " is not known to me.");
+
             return;
         }
 
@@ -152,16 +163,17 @@ public class FileManager {
         CustomFile customFile = getDynamicFile(file);
 
         if (customFile == null) {
-            if (this.plugin.isLogging()) this.plugin.getLogger().warning("The file " + file + ".yml could not be found!");
+            if (this.isLogging) this.logger.warning("The file " + file + ".yml could not be found!");
+
             return;
         }
 
         try {
-            File newFile = new File(this.plugin.getDataFolder(), customFile.getFolder() + "/" + customFile.getFileName());
+            File newFile = new File(this.dataFolder, customFile.getFolder() + "/" + customFile.getFileName());
 
             customFile.getConfiguration().save(newFile);
         } catch (IOException exception) {
-            this.plugin.getLogger().log(Level.SEVERE, "Could not save " + customFile.getFileName() + "!", exception);
+            this.logger.log(Level.SEVERE, "Could not save " + customFile.getFileName() + "!", exception);
         }
     }
 
@@ -173,20 +185,21 @@ public class FileManager {
         CustomFile customFile = getDynamicFile(file);
 
         if (customFile == null) {
-            if (this.plugin.isLogging()) this.plugin.getLogger().warning("The file " + file + ".yml could not be found!");
+            if (this.isLogging) this.logger.warning("The file " + file + ".yml could not be found!");
+
             return;
         }
 
         try {
-            File newFile = new File(this.plugin.getDataFolder(), customFile.getFolder() + "/" + customFile.getFileName());
+            File newFile = new File(this.dataFolder, customFile.getFolder() + "/" + customFile.getFileName());
 
             YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
 
             customFile.setConfiguration(configuration);
 
-            if (this.plugin.isLogging()) this.plugin.getLogger().info("Successfully reloaded " + customFile.getFileName() + ".");
+            if (this.isLogging) this.logger.info("Successfully reloaded " + customFile.getFileName() + ".");
         } catch (Exception exception) {
-            this.plugin.getLogger().log(Level.SEVERE, "Could not save " + customFile.getFileName() + "!", exception);
+            this.logger.log(Level.SEVERE, "Could not save " + customFile.getFileName() + "!", exception);
         }
     }
 
@@ -219,26 +232,26 @@ public class FileManager {
 
     public void saveStaticFile(String file) {
         try {
-            File newFile = new File(this.plugin.getDataFolder(), "/" + file);
+            File newFile = new File(this.dataFolder, "/" + file);
 
             this.configurations.get(file).save(newFile);
         } catch (IOException exception) {
-            this.plugin.getLogger().log(Level.SEVERE, "Failed to save " + file + "!", exception);
+            this.logger.log(Level.SEVERE, "Failed to save " + file + "!", exception);
         }
     }
 
     public void saveStaticFile(String folder, String file) {
         try {
-            File newFile = new File(this.plugin.getDataFolder(), folder + "/" + file);
+            File newFile = new File(this.dataFolder, folder + "/" + file);
 
             this.configurations.get(file).save(newFile);
         } catch (IOException exception) {
-            this.plugin.getLogger().log(Level.SEVERE, "Failed to save " + folder + "/" + file + "!", exception);
+            this.logger.log(Level.SEVERE, "Failed to save " + folder + "/" + file + "!", exception);
         }
     }
 
     public void reloadStaticFile(String folder, String file) {
-        File newFile = new File(this.plugin.getDataFolder(), folder + "/" + file);
+        File newFile = new File(this.dataFolder, folder + "/" + file);
 
         YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
 
@@ -246,7 +259,7 @@ public class FileManager {
     }
 
     public void reloadStaticFile(String file) {
-        File newFile = new File(this.plugin.getDataFolder(), "/" + file);
+        File newFile = new File(this.dataFolder, "/" + file);
 
         YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
 

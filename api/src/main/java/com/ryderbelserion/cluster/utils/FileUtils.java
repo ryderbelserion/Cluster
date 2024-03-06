@@ -1,6 +1,8 @@
 package com.ryderbelserion.cluster.utils;
 
-import com.ryderbelserion.cluster.api.PluginService;
+import com.ryderbelserion.cluster.Cluster;
+import com.ryderbelserion.cluster.ClusterProvider;
+import com.ryderbelserion.cluster.platform.ClusterServer;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,8 +21,12 @@ public class FileUtils {
 
         File dir = directory.toFile();
 
-        boolean isLogging = PluginService.get().isLogging();
-        Logger logger = PluginService.get().getLogger();
+        Cluster provider = ClusterProvider.get();
+
+        ClusterServer server = provider.getServer();
+
+        boolean isLogging = server.isLogging();
+        Logger logger = server.getLogger();
 
         if (!dir.exists()) {
             if (dir.mkdirs()) {
@@ -28,7 +34,7 @@ public class FileUtils {
             }
         }
 
-        ClassLoader loader = PluginService.get().getClass().getClassLoader();
+        ClassLoader loader = provider.getClass().getClassLoader();
 
         String url = folder + "/" + name;
 

@@ -3,7 +3,7 @@ package com.ryderbelserion.cluster.api.files.adapters;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.ryderbelserion.cluster.ClusterService;
+import com.ryderbelserion.cluster.v1.ClusterService;
 import org.bukkit.Location;
 import java.io.IOException;
 
