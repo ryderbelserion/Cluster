@@ -20,6 +20,12 @@ public class ItemUtils {
     private static final ClusterServer server = ClusterProvider.get().getServer();
     private static final Logger logger = server.getLogger();
 
+    /**
+     * Get a material from the registry.
+     * 
+     * @param value the value to check.
+     * @return the material or null if not found.
+     */
     public static Material getMaterial(String value) {
         try {
             return Registry.MATERIAL.get(getKey(value));
@@ -30,6 +36,12 @@ public class ItemUtils {
         }
     }
 
+    /**
+     * Get an enchantment from the registry.
+     *
+     * @param value the value to check.
+     * @return the enchantment or null if not found.
+     */
     public static Enchantment getEnchantment(String value) {
         try {
             return Registry.ENCHANTMENT.get(getKey(value));
@@ -40,6 +52,12 @@ public class ItemUtils {
         }
     }
 
+    /**
+     * Get a trim pattern from the registry.
+     *
+     * @param value the value to check.
+     * @return the trim pattern or null if not found.
+     */
     public static TrimPattern getTrimPattern(String value) {
         try {
             return Registry.TRIM_PATTERN.get(getKey(value));
@@ -50,6 +68,12 @@ public class ItemUtils {
         }
     }
 
+    /**
+     * Get a trim material from the registry.
+     *
+     * @param value the value to check.
+     * @return the trim material or null if not found.
+     */
     public static TrimMaterial getTrimMaterial(String value) {
         try {
             return Registry.TRIM_MATERIAL.get(getKey(value));
@@ -60,6 +84,12 @@ public class ItemUtils {
         }
     }
 
+    /**
+     * Get a potion type from the registry.
+     *
+     * @param value the value to check.
+     * @return the potion type or null if not found.
+     */
     public static PotionType getPotionType(String value) {
         try {
             return Registry.POTION.get(getKey(value));
@@ -70,6 +100,12 @@ public class ItemUtils {
         }
     }
 
+    /**
+     * Get a potion effect type from the registry.
+     *
+     * @param value the value to check.
+     * @return the potion effect type or null if not found.
+     */
     public static PotionEffectType getPotionEffect(String value) {
         try {
             return Registry.POTION_EFFECT_TYPE.get(getKey(value));
@@ -80,6 +116,12 @@ public class ItemUtils {
         }
     }
 
+    /**
+     * Get a particle type from the registry.
+     *
+     * @param value the value to check.
+     * @return the particle type or null if not found.
+     */
     public static Particle getParticleType(String value) {
         try {
             return Registry.PARTICLE_TYPE.get(getKey(value));
@@ -90,6 +132,12 @@ public class ItemUtils {
         }
     }
 
+    /**
+     * Get a banner pattern from the registry.
+     *
+     * @param value the value to check.
+     * @return the banner pattern or null if not found.
+     */
     public static PatternType getPatternType(String value) {
         try {
             return Registry.BANNER_PATTERN.get(getKey(value));
@@ -100,6 +148,12 @@ public class ItemUtils {
         }
     }
 
+    /**
+     * Get an attribute from the registry.
+     *
+     * @param value the value to check.
+     * @return the attribute or null if not found.
+     */
     public static Attribute getAttribute(String value) {
         try {
             return Registry.ATTRIBUTE.get(getKey(value));
@@ -110,6 +164,12 @@ public class ItemUtils {
         }
     }
 
+    /**
+     * Check the namespace key
+     *
+     * @param value the value to check.
+     * @return the namespace key.
+     */
     private static NamespacedKey getKey(String value) {
         return NamespacedKey.minecraft(value);
     }

@@ -4,6 +4,12 @@ import org.bukkit.entity.Player;
 
 public class MiscUtils {
 
+    /**
+     * Takes experience from a player.
+     *
+     * @param player the player to check.
+     * @param amount the amount to take.
+     */
     public static void takeTotalExperience(Player player, int amount) {
         int total = getTotalExperience(player) - amount;
 
@@ -23,6 +29,12 @@ public class MiscUtils {
         player.setExp(xp);
     }
 
+    /**
+     * Calculates the total experience a player has.
+     *
+     * @param player the player to check.
+     * @return the total experience.
+     */
     public static int getTotalExperience(Player player) {
         int experience;
         int level = player.getLevel();
