@@ -35,8 +35,6 @@ tasks {
     }
 
     shadowJar {
-        archiveFileName.set("${rootProject.name}-${rootProject.version}.jar")
-
         archiveClassifier.set("")
 
         exclude("META-INF/**")

@@ -1,8 +1,8 @@
 package com.ryderbelserion.cluster;
 
+import com.ryderbelserion.cluster.api.files.FileManager;
 import com.ryderbelserion.cluster.items.ItemBuilder;
 import com.ryderbelserion.cluster.items.ParentBuilder;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.entity.Player;
@@ -11,18 +11,23 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class ClusterPlugin extends JavaPlugin implements Listener {
 
     private ClusterPackage clusterPackage;
 
+    private FileManager fileManager;
+
     @Override
     public void onEnable() {
         this.clusterPackage = new ClusterPackage(this);
-        this.clusterPackage.setLogging(true);
+        this.clusterPackage.getCluster().getServer().setLogging(true);
 
-        this.clusterPackage.getFileManager().addStaticFile("config.yml").create();
+        this.fileManager = this.clusterPackage.getFileManager();
+
+        this.fileManager.addStaticFile("config.yml").create();
 
         getServer().getPluginManager().registerEvents(this, this);
     }
@@ -70,5 +75,10 @@ public class ClusterPlugin extends JavaPlugin implements Listener {
         ItemBuilder potionBuilder = ParentBuilder.of(Registry.MATERIAL.get(NamespacedKey.minecraft("diamond_helmet")));
 
         player.getInventory().addItem(itemStack);
+    }
+
+    @NotNull
+    public FileManager getFileManager() {
+        return this.fileManager;
     }
 }

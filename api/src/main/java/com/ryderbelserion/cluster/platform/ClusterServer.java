@@ -5,6 +5,8 @@ import java.util.logging.Logger;
 
 public interface ClusterServer {
 
+    void setLogging(boolean value);
+
     boolean isLogging();
 
     boolean isPapiEnabled();

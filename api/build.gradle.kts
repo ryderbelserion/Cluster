@@ -9,7 +9,7 @@ repositories {
 dependencies {
     compileOnlyApi(libs.simpleyaml)
 
-    compileOnly(libs.bundles.adventure)
+    compileOnlyApi(libs.bundles.adventure)
 }
 
 val component: SoftwareComponent = components["java"]
