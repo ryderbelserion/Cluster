@@ -18,6 +18,7 @@ public final class ClusterProvider {
 
     static void register(final Cluster instance) {
         if (ClusterProvider.instance != null) {
+            instance.getServer().getLogger().warning("Cluster is already enabled.");
             return;
         }
 
