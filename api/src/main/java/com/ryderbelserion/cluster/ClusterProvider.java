@@ -10,7 +10,7 @@ public final class ClusterProvider {
 
     public static Cluster get() {
         if (instance == null) {
-            throw new IllegalStateException("CrazyAuctions is not loaded.");
+            throw new IllegalStateException("Cluster is not loaded.");
         }
 
         return instance;
