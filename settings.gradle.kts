@@ -22,6 +22,8 @@ dependencyResolutionManagement {
             library("adventure4", "net.kyori", "adventure-text-minimessage").versionRef("adventure4")
             library("minimessage4", "net.kyori", "adventure-api").versionRef("adventure4")
 
+            library("simpleyaml", "com.github.Carleslc.Simple-YAML", "Simple-Yaml").version("1.8.4")
+
             library("itemsadder", "com.github.LoneDev6", "api-itemsadder").version("3.6.1")
             library("oraxen", "io.th0rgal", "oraxen").version("1.164.0")
 

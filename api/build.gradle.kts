@@ -2,7 +2,13 @@ plugins {
     id("root-plugin")
 }
 
+repositories {
+    maven("https://jitpack.io/")
+}
+
 dependencies {
+    compileOnlyApi(libs.simpleyaml)
+
     compileOnly(libs.bundles.adventure)
 }
 

@@ -15,6 +15,8 @@ repositories {
 dependencies {
     api(project(":api"))
 
+    api(libs.simpleyaml)
+
     compileOnly(libs.placeholderapi)
 
     compileOnly(libs.itemsadder)

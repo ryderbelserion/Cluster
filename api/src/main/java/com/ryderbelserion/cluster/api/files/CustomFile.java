@@ -2,8 +2,9 @@ package com.ryderbelserion.cluster.api.files;
 
 import com.ryderbelserion.cluster.Cluster;
 import com.ryderbelserion.cluster.ClusterProvider;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import com.ryderbelserion.cluster.platform.ClusterServer;
+import org.simpleyaml.configuration.file.FileConfiguration;
+import org.simpleyaml.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
@@ -14,15 +15,17 @@ public class CustomFile {
 
     private final Cluster provider = ClusterProvider.get();
 
-    private final boolean isLogging = this.provider.getServer().isLogging();
-    private final File dataFolder = this.provider.getServer().getFolder();
-    private final Logger logger = this.provider.getServer().getLogger();
+    private final ClusterServer server = this.provider.getServer();
+
+    private final boolean isLogging = this.server.isLogging();
+    private final File dataFolder = this.server.getFolder();
+    private final Logger logger = this.server.getLogger();
 
     private final String strippedName;
     private final String fileName;
     private final String folder;
 
-    private FileConfiguration configuration;
+    private YamlConfiguration configuration;
 
     public CustomFile(String fileName, String folder) {
         this.strippedName = fileName.replace(".yml", "");
@@ -45,7 +48,15 @@ public class CustomFile {
         File newFile = new File(this.dataFolder, this.folder + "/" + this.fileName);
 
         if (newFile.exists()) {
-            this.configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
+            this.configuration = CompletableFuture.supplyAsync(() -> {
+                try {
+                    return YamlConfiguration.loadConfiguration(newFile);
+                } catch (IOException exception) {
+                    this.logger.log(Level.WARNING, "Failed to load " + newFile.getName() + ".", exception);
+                }
+
+                return null;
+            }).join();
 
             return;
         }
@@ -69,7 +80,7 @@ public class CustomFile {
         return this.configuration;
     }
 
-    public void setConfiguration(FileConfiguration configuration) {
+    public void setConfiguration(YamlConfiguration configuration) {
         this.configuration = configuration;
     }
 

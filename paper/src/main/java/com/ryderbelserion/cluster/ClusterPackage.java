@@ -2,9 +2,11 @@ package com.ryderbelserion.cluster;
 
 import com.ryderbelserion.cluster.api.enums.PluginSupport;
 import com.ryderbelserion.cluster.api.files.FileManager;
+import com.ryderbelserion.cluster.platform.ClusterPaperServer;
 import com.ryderbelserion.cluster.platform.ClusterServer;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.logging.Logger;
 
@@ -13,11 +15,11 @@ public class ClusterPackage implements ClusterServer {
     private final boolean isOraxenEnabled, isPapiEnabled, isItemsAdderEnabled;
     private final FileManager fileManager;
     private final JavaPlugin plugin;
-
-    private boolean isLogging;
+    private final Cluster cluster;
 
     private boolean isHeadDatabaseEnabled;
     private HeadDatabaseAPI api;
+    private boolean isLogging;
 
     /**
      * Initializes the framework.
@@ -39,6 +41,10 @@ public class ClusterPackage implements ClusterServer {
 
         this.isOraxenEnabled = PluginSupport.oraxen.isPluginEnabled(plugin);
         this.isItemsAdderEnabled = PluginSupport.items_adder.isPluginEnabled(plugin);
+
+        ClusterPaperServer server = new ClusterPaperServer(this);
+
+        this.cluster = new Cluster(server);
 
         this.fileManager = new FileManager();
     }
@@ -126,6 +132,7 @@ public class ClusterPackage implements ClusterServer {
     /**
      * @return instance of the FileManager.
      */
+    @NotNull
     public FileManager getFileManager() {
         return this.fileManager;
     }
@@ -141,5 +148,10 @@ public class ClusterPackage implements ClusterServer {
         }
 
         return this.api;
+    }
+
+    @NotNull
+    public Cluster getCluster() {
+        return this.cluster;
     }
 }

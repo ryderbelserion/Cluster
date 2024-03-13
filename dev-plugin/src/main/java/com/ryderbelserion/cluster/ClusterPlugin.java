@@ -2,6 +2,7 @@ package com.ryderbelserion.cluster;
 
 import com.ryderbelserion.cluster.items.ItemBuilder;
 import com.ryderbelserion.cluster.items.ParentBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.entity.Player;
@@ -14,17 +15,24 @@ import java.util.List;
 
 public class ClusterPlugin extends JavaPlugin implements Listener {
 
+    private ClusterPackage clusterPackage;
+
     @Override
     public void onEnable() {
-        //ClusterFactory factory = new ClusterFactory(this, true);
-        //factory.enable();
+        this.clusterPackage = new ClusterPackage(this);
+        this.clusterPackage.setLogging(true);
+
+        this.clusterPackage.getFileManager().addStaticFile("config.yml").create();
 
         getServer().getPluginManager().registerEvents(this, this);
     }
 
     @Override
     public void onDisable() {
+        super.onDisable();
 
+        // Disable cluster provider.
+        this.clusterPackage.getCluster().disable();
     }
 
     @EventHandler(ignoreCancelled = true)

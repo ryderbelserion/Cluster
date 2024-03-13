@@ -3,9 +3,9 @@ package com.ryderbelserion.cluster.api.files;
 import com.ryderbelserion.cluster.Cluster;
 import com.ryderbelserion.cluster.ClusterProvider;
 import com.ryderbelserion.cluster.platform.ClusterServer;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
+import org.simpleyaml.configuration.file.FileConfiguration;
+import org.simpleyaml.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -44,13 +44,6 @@ public class FileManager {
         this.configurations.clear();
         this.customFiles.clear();
 
-        // If folders is empty, return.
-        if (this.folders.isEmpty()) {
-            this.logger.warning("I seem to not have any folders to work with.");
-
-            return;
-        }
-
         for (String file : this.staticFiles) {
             File newFile = new File(this.dataFolder, file);
 
@@ -60,21 +53,24 @@ public class FileManager {
                 try {
                     this.server.saveResource(file, false);
 
-                    YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
-
-                    this.configurations.put(file, configuration);
+                    loadFile(file, newFile);
                 } catch (Exception exception) {
                     this.logger.log(Level.SEVERE, "Failed to load: " + newFile.getName(), exception);
 
                     continue;
                 }
             } else {
-                YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
-
-                this.configurations.put(file, configuration);
+                loadFile(file, newFile);
             }
 
             if (this.isLogging) this.logger.fine("Successfully loaded: " + newFile.getName());
+        }
+
+        // If folders is empty, return.
+        if (this.folders.isEmpty()) {
+            this.logger.warning("I seem to not have any folders to work with.");
+
+            return;
         }
 
         // Loop through folders hash-set and create folders.
@@ -124,6 +120,20 @@ public class FileManager {
         }
 
         if (this.isLogging) this.logger.info("Finished loading custom files.");
+    }
+
+    private void loadFile(String file, File newFile) {
+        YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> {
+            try {
+                return YamlConfiguration.loadConfiguration(newFile);
+            } catch (IOException exception) {
+                this.logger.log(Level.WARNING, "Failed to load " + newFile.getName() + ".", exception);
+            }
+
+            return null;
+        }).join();
+
+        this.configurations.put(file, configuration);
     }
 
     public FileManager addFolder(String folder) {
@@ -193,7 +203,15 @@ public class FileManager {
         try {
             File newFile = new File(this.dataFolder, customFile.getFolder() + "/" + customFile.getFileName());
 
-            YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
+            YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> {
+                try {
+                    return YamlConfiguration.loadConfiguration(newFile);
+                } catch (IOException exception) {
+                    this.logger.log(Level.WARNING, "Failed to load " + newFile.getName() + ".", exception);
+                }
+
+                return null;
+            }).join();
 
             customFile.setConfiguration(configuration);
 
@@ -253,17 +271,13 @@ public class FileManager {
     public void reloadStaticFile(String folder, String file) {
         File newFile = new File(this.dataFolder, folder + "/" + file);
 
-        YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
-
-        this.configurations.put(file, configuration);
+        loadFile(file, newFile);
     }
 
     public void reloadStaticFile(String file) {
         File newFile = new File(this.dataFolder, "/" + file);
 
-        YamlConfiguration configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(newFile)).join();
-
-        this.configurations.put(file, configuration);
+        loadFile(file, newFile);
     }
 
     public void clearStaticFiles() {

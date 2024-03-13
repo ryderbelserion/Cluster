@@ -17,7 +17,7 @@ public final class ClusterProvider {
     }
 
     static void register(final Cluster instance) {
-        if (get() != null) {
+        if (ClusterProvider.instance != null) {
             return;
         }
 
