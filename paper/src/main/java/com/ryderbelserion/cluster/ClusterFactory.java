@@ -1,19 +1,30 @@
-package com.ryderbelserion.cluster.platform;
+package com.ryderbelserion.cluster;
 
 import com.ryderbelserion.cluster.api.enums.PluginSupport;
+import com.ryderbelserion.cluster.api.files.FileManager;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.logging.Logger;
 
-public class ClusterPaperServer implements ClusterServer {
+public class ClusterFactory extends Cluster {
+
+    private final FileManager fileManager;
 
     private final boolean isOraxenEnabled, isPapiEnabled, isItemsAdderEnabled, isHeadDatabaseEnabled;
     private final JavaPlugin plugin;
     private HeadDatabaseAPI api;
     private boolean isLogging;
 
-    public ClusterPaperServer(JavaPlugin plugin) {
+    /**
+     * Initializes the framework.
+     *
+     * @param plugin the instance of the plugin using the framework.
+     */
+    public ClusterFactory(JavaPlugin plugin) {
+        super();
+
         this.isHeadDatabaseEnabled = PluginSupport.headdatabase.isPluginEnabled(plugin);
 
         if (this.isHeadDatabaseEnabled) {
@@ -25,12 +36,13 @@ public class ClusterPaperServer implements ClusterServer {
         this.isPapiEnabled = PluginSupport.placeholderapi.isPluginEnabled(plugin);
 
         this.plugin = plugin;
+
+        this.fileManager = new FileManager();
     }
 
     /**
      * @return true or false.
      */
-    @Override
     public boolean isLogging() {
         return this.isLogging;
     }
@@ -38,7 +50,6 @@ public class ClusterPaperServer implements ClusterServer {
     /**
      * @return true or false.
      */
-    @Override
     public boolean isPapiEnabled() {
         return this.isPapiEnabled;
     }
@@ -46,7 +57,6 @@ public class ClusterPaperServer implements ClusterServer {
     /**
      * @return true or false.
      */
-    @Override
     public boolean isOraxenEnabled() {
         return this.isOraxenEnabled;
     }
@@ -54,7 +64,6 @@ public class ClusterPaperServer implements ClusterServer {
     /**
      * @return true or false.
      */
-    @Override
     public boolean isItemsAdderEnabled() {
         return this.isItemsAdderEnabled;
     }
@@ -69,24 +78,22 @@ public class ClusterPaperServer implements ClusterServer {
      * @throws IllegalArgumentException if the resource path is null, empty,
      *     or points to a nonexistent resource.
      */
-    @Override
     public void saveResource(String resourcePath, boolean replace) {
         this.plugin.saveResource(resourcePath, replace);
     }
+
     /**
      * Sets whether we log or not.
      *
-     * @param value true or false.
+     * @param isLogging true or false.
      */
-    @Override
-    public void setLogging(boolean value) {
-        this.isLogging = value;
+    public void setLogging(boolean isLogging) {
+        this.isLogging = isLogging;
     }
 
     /**
      * @return the plugin logger.
      */
-    @Override
     public Logger getLogger() {
         return this.plugin.getLogger();
     }
@@ -94,7 +101,6 @@ public class ClusterPaperServer implements ClusterServer {
     /**
      * @return the plugin datafolder.
      */
-    @Override
     public File getFolder() {
         return this.plugin.getDataFolder();
     }
@@ -102,7 +108,6 @@ public class ClusterPaperServer implements ClusterServer {
     /**
      * @return true or false
      */
-    @Override
     public boolean isHeadDatabaseEnabled() {
         return this.isHeadDatabaseEnabled;
     }
@@ -118,5 +123,13 @@ public class ClusterPaperServer implements ClusterServer {
         }
 
         return this.api;
+    }
+
+    /**
+     * @return instance of the FileManager.
+     */
+    @NotNull
+    public FileManager getFileManager() {
+        return this.fileManager;
     }
 }

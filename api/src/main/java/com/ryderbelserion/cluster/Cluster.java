@@ -1,14 +1,11 @@
 package com.ryderbelserion.cluster;
 
-import com.ryderbelserion.cluster.platform.ClusterServer;
+import java.io.File;
+import java.util.logging.Logger;
 
-public class Cluster {
+public abstract class Cluster {
 
-    private final ClusterServer server;
-
-    public Cluster(ClusterServer server) {
-        this.server = server;
-
+    public Cluster() {
         // Register provider.
         ClusterProvider.register(this);
     }
@@ -18,7 +15,15 @@ public class Cluster {
         ClusterProvider.unregister();
     }
 
-    public ClusterServer getServer() {
-        return this.server;
-    }
+    public abstract boolean isLogging();
+
+    public abstract boolean isPapiEnabled();
+
+    public abstract boolean isOraxenEnabled();
+
+    public abstract void saveResource(String file, boolean overwrite);
+
+    public abstract Logger getLogger();
+
+    public abstract File getFolder();
 }

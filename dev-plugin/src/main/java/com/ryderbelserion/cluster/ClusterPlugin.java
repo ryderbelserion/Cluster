@@ -16,16 +16,16 @@ import java.util.List;
 
 public class ClusterPlugin extends JavaPlugin implements Listener {
 
-    private ClusterPackage clusterPackage;
+    private ClusterFactory clusterFactory;
 
     private FileManager fileManager;
 
     @Override
     public void onEnable() {
-        this.clusterPackage = new ClusterPackage(this);
-        this.clusterPackage.getCluster().getServer().setLogging(true);
+        this.clusterFactory = new ClusterFactory(this);
+        this.clusterFactory.setLogging(true);
 
-        this.fileManager = this.clusterPackage.getFileManager();
+        this.fileManager = this.clusterFactory.getFileManager();
 
         this.fileManager.addStaticFile("config.yml").create();
 
@@ -36,8 +36,7 @@ public class ClusterPlugin extends JavaPlugin implements Listener {
     public void onDisable() {
         super.onDisable();
 
-        // Disable cluster provider.
-        this.clusterPackage.getCluster().disable();
+        this.clusterFactory.disable();
     }
 
     @EventHandler(ignoreCancelled = true)

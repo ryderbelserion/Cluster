@@ -1,7 +1,7 @@
 package com.ryderbelserion.cluster.utils;
 
+import com.ryderbelserion.cluster.Cluster;
 import com.ryderbelserion.cluster.ClusterProvider;
-import com.ryderbelserion.cluster.platform.ClusterServer;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -76,7 +76,7 @@ public class DyeUtils {
 
     public static DyeColor getDyeColor(String color) {
         if (color == null || color.isBlank()) {
-            ClusterServer server = ClusterProvider.get().getServer();
+            Cluster server = ClusterProvider.get();
 
             if (server.isLogging()) server.getLogger().warning(color + " is not a valid color.");
 

@@ -2,8 +2,7 @@ package com.ryderbelserion.cluster.utils;
 
 import com.ryderbelserion.cluster.Cluster;
 import com.ryderbelserion.cluster.ClusterProvider;
-import com.ryderbelserion.cluster.platform.ClusterServer;
-
+import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -21,12 +20,11 @@ public class FileUtils {
 
         File dir = directory.toFile();
 
-        Cluster provider = ClusterProvider.get();
+        @NotNull Cluster provider = ClusterProvider.get();
 
-        ClusterServer server = provider.getServer();
+        @NotNull Logger logger = provider.getLogger();
 
-        boolean isLogging = server.isLogging();
-        Logger logger = server.getLogger();
+        boolean isLogging = provider.isLogging();
 
         if (!dir.exists()) {
             if (dir.mkdirs()) {

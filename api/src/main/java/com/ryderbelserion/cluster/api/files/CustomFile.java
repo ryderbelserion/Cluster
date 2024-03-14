@@ -2,7 +2,7 @@ package com.ryderbelserion.cluster.api.files;
 
 import com.ryderbelserion.cluster.Cluster;
 import com.ryderbelserion.cluster.ClusterProvider;
-import com.ryderbelserion.cluster.platform.ClusterServer;
+import org.jetbrains.annotations.NotNull;
 import org.simpleyaml.configuration.file.FileConfiguration;
 import org.simpleyaml.configuration.file.YamlConfiguration;
 import java.io.File;
@@ -13,13 +13,13 @@ import java.util.logging.Logger;
 
 public class CustomFile {
 
-    private final Cluster provider = ClusterProvider.get();
+    private final @NotNull Cluster provider = ClusterProvider.get();
 
-    private final ClusterServer server = this.provider.getServer();
+    private final @NotNull File dataFolder = this.provider.getFolder();
 
-    private final boolean isLogging = this.server.isLogging();
-    private final File dataFolder = this.server.getFolder();
-    private final Logger logger = this.server.getLogger();
+    private final @NotNull Logger logger = this.provider.getLogger();
+
+    private final boolean isLogging = this.provider.isLogging();
 
     private final String strippedName;
     private final String fileName;

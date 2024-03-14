@@ -2,7 +2,6 @@ package com.ryderbelserion.cluster.api.files;
 
 import com.ryderbelserion.cluster.Cluster;
 import com.ryderbelserion.cluster.ClusterProvider;
-import com.ryderbelserion.cluster.platform.ClusterServer;
 import org.jetbrains.annotations.NotNull;
 import org.simpleyaml.configuration.file.FileConfiguration;
 import org.simpleyaml.configuration.file.YamlConfiguration;
@@ -19,18 +18,13 @@ import java.util.logging.Logger;
 
 public class FileManager {
 
-    @NotNull
-    private final Cluster provider = ClusterProvider.get();
+    private final @NotNull Cluster provider = ClusterProvider.get();
 
-    @NotNull
-    private final ClusterServer server = this.provider.getServer();
+    private final @NotNull File dataFolder = this.provider.getFolder();
 
-    private final boolean isLogging = this.server.isLogging();
+    private final @NotNull Logger logger = this.provider.getLogger();
 
-    @NotNull
-    private final File dataFolder = this.server.getFolder();
-    @NotNull
-    private final Logger logger = this.server.getLogger();
+    private final boolean isLogging = this.provider.isLogging();
 
     private final Map<String, FileConfiguration> configurations = new HashMap<>();
     private final Map<String, String> dynamicFiles = new HashMap<>();
@@ -51,7 +45,7 @@ public class FileManager {
 
             if (!newFile.exists()) {
                 try {
-                    this.server.saveResource(file, false);
+                    this.provider.saveResource(file, false);
 
                     loadFile(file, newFile);
                 } catch (Exception exception) {
@@ -102,7 +96,7 @@ public class FileManager {
                         try {
                             File newFile = new File(dataFolder, folder + "/" + fileName);
 
-                            this.server.saveResource(folder + "/" + fileName, false);
+                            this.provider.saveResource(folder + "/" + fileName, false);
 
                             if (newFile.getName().toLowerCase().endsWith(".yml")) {
                                 CustomFile customFile = new CustomFile(newFile.getName(), folder);

@@ -1,7 +1,7 @@
 package com.ryderbelserion.cluster.utils;
 
+import com.ryderbelserion.cluster.Cluster;
 import com.ryderbelserion.cluster.ClusterProvider;
-import com.ryderbelserion.cluster.platform.ClusterServer;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 public class ItemUtils {
 
-    private static final ClusterServer server = ClusterProvider.get().getServer();
+    private static final Cluster server = ClusterProvider.get();
     private static final Logger logger = server.getLogger();
 
     /**

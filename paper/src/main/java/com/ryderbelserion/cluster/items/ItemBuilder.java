@@ -3,9 +3,8 @@ package com.ryderbelserion.cluster.items;
 import com.google.common.collect.Multimap;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.ryderbelserion.cluster.Cluster;
-import com.ryderbelserion.cluster.ClusterPackage;
 import com.ryderbelserion.cluster.ClusterProvider;
-import com.ryderbelserion.cluster.platform.ClusterServer;
+import com.ryderbelserion.cluster.api.enums.PluginSupport;
 import com.ryderbelserion.cluster.utils.AdvUtils;
 import com.ryderbelserion.cluster.utils.DyeUtils;
 import com.ryderbelserion.cluster.utils.ItemUtils;
@@ -45,6 +44,7 @@ import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -56,13 +56,10 @@ public abstract class ItemBuilder {
     @NotNull
     private final Cluster provider = ClusterProvider.get();
 
-    @NotNull
-    private final ClusterServer server = this.provider.getServer();
-
-    private final boolean isLogging = this.server.isLogging();
+    private final boolean isLogging = this.provider.isLogging();
 
     @NotNull
-    private final Logger logger = this.server.getLogger();
+    private final Logger logger = this.provider.getLogger();
 
     // Items
     private Material material = Material.STONE;
@@ -75,12 +72,12 @@ public abstract class ItemBuilder {
     // Display
     private Component displayName = Component.empty();
     private List<Component> displayLore = new ArrayList<>();
-    private int itemDamage = this.material.getMaxDurability();
+    private int itemDamage = 0;
 
     // Model Data
     private boolean hasCustomModelData = false;
     private int customModelData = 0;
-    private String customMaterial;
+    private String customMaterial = "";
 
     // Potions
     private boolean isPotion = false;
@@ -91,6 +88,7 @@ public abstract class ItemBuilder {
 
     // Player Heads
     private UUID uuid = null;
+    private boolean isLink = false;
     private boolean isHead = false;
 
     // Arrows
@@ -117,11 +115,11 @@ public abstract class ItemBuilder {
     private Color mapColor = Color.RED;
 
     // Fireworks
-    private boolean isFirework;
-    private boolean isFireworkStar;
-    private Color fireworkColor;
-    private List<Color> fireworkColors;
-    private int fireworkPower;
+    private boolean isFirework = false;
+    private boolean isFireworkStar = false;
+    private Color fireworkColor = Color.RED;
+    private List<Color> fireworkColors = new ArrayList<>();
+    private int fireworkPower = 1;
 
     // Enchantments or ItemFlags
     private boolean isUnbreakable = false;
@@ -135,8 +133,11 @@ public abstract class ItemBuilder {
     private EntityType entityType = EntityType.BAT;
 
     // Attributes
-
     private boolean isTool = false;
+
+    // Placeholders
+    private Map<String, String> namePlaceholders = new HashMap<>();
+    private Map<String, String> lorePlaceholders = new HashMap<>();
 
     // Create a new item.
     public ItemBuilder(ItemStack itemStack) {
@@ -257,12 +258,15 @@ public abstract class ItemBuilder {
         this.entityType = itemBuilder.entityType;
 
         this.isTool = itemBuilder.isTool;
+
+        this.namePlaceholders = new HashMap<>(itemBuilder.namePlaceholders);
+        this.lorePlaceholders = new HashMap<>(itemBuilder.lorePlaceholders);
     }
 
     public ItemBuilder() {}
 
     private Component parse(String message) {
-        if (this.server.isPapiEnabled() && this.target != null) {
+        if (this.provider.isPapiEnabled() && this.target != null) {
             return AdvUtils.parse(PlaceholderAPI.setPlaceholders(this.target, message));
         }
 
@@ -270,17 +274,23 @@ public abstract class ItemBuilder {
     }
 
     public ItemStack build() {
-        if (this.itemStack == null) {
-            if (this.server.isOraxenEnabled()) {
-                io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
+        // Check if oraxen is enabled.
+        if (this.provider.isOraxenEnabled()) {
+            // Get the item.
+            io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
 
-                if (oraxenItem != null) {
-                    this.itemStack = oraxenItem.build();
+            if (oraxenItem != null) {
+                // If the item isn't null, we don't need to re-build.
+                if (this.itemStack != null) {
+                    this.material = this.itemStack.getType();
+
+                    return this.itemStack;
                 }
-            } else {
-                this.itemStack = new ItemStack(Material.STONE);
 
-                this.itemStack.editMeta(itemMeta -> itemMeta.displayName(parse("<red>An error has occurred with the item builder.")));
+                // This is just here in case it is null for whatever reason.
+                this.itemStack = oraxenItem.build();
+
+                this.material = this.itemStack.getType();
 
                 return this.itemStack;
             }
