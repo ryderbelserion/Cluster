@@ -5,19 +5,28 @@ import com.ryderbelserion.cluster.ClusterProvider;
 import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 public class FileUtils {
 
+    public static boolean isEmpty(Path directory) throws IOException {
+        if (Files.isDirectory(directory)) {
+            try (Stream<Path> entries = Files.list(directory)) {
+                return entries.findFirst().isEmpty();
+            }
+        }
+
+        return false;
+    }
+
     public static void copyFile(Path directory, String folder, String name) {
-        File file = directory.resolve(name).toFile();
-
-        if (file.exists()) return;
-
         File dir = directory.toFile();
 
         @NotNull Cluster provider = ClusterProvider.get();
@@ -31,6 +40,18 @@ public class FileUtils {
                 if (isLogging) logger.warning("Created " + dir.getName() + " because we couldn't find it.");
             }
         }
+
+        try {
+            if (isEmpty(directory)) {
+                return;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        File file = directory.resolve(name).toFile();
+
+        if (file.exists()) return;
 
         ClassLoader loader = provider.getClass().getClassLoader();
 
