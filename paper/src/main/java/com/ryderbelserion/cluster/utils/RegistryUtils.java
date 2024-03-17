@@ -6,14 +6,13 @@ import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import java.util.logging.Logger;
 
-public class ItemUtils {
+public class RegistryUtils {
 
     private static final Cluster server = ClusterProvider.get();
     private static final Logger logger = server.getLogger();

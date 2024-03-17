@@ -4,10 +4,9 @@ import com.google.common.collect.Multimap;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.ryderbelserion.cluster.Cluster;
 import com.ryderbelserion.cluster.ClusterProvider;
-import com.ryderbelserion.cluster.api.enums.PluginSupport;
 import com.ryderbelserion.cluster.utils.AdvUtils;
 import com.ryderbelserion.cluster.utils.DyeUtils;
-import com.ryderbelserion.cluster.utils.ItemUtils;
+import com.ryderbelserion.cluster.utils.RegistryUtils;
 import io.th0rgal.oraxen.api.OraxenItems;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -493,13 +492,13 @@ public abstract class ItemBuilder {
     }
 
     public ItemBuilder setTrimMaterial(String trimMaterial) {
-        this.trimMaterial = ItemUtils.getTrimMaterial(trimMaterial);
+        this.trimMaterial = RegistryUtils.getTrimMaterial(trimMaterial);
 
         return this;
     }
 
     public ItemBuilder setTrimPattern(String trimPattern) {
-        this.trimPattern = ItemUtils.getTrimPattern(trimPattern);
+        this.trimPattern = RegistryUtils.getTrimPattern(trimPattern);
 
         return this;
     }
@@ -707,7 +706,7 @@ public abstract class ItemBuilder {
         }
 
         String[] section = attribute.split(",");
-        Attribute modifier = ItemUtils.getAttribute(section[0]);
+        Attribute modifier = RegistryUtils.getAttribute(section[0]);
 
         if (modifier == null || !isValidDouble(section[1])) return this;
 
@@ -772,7 +771,7 @@ public abstract class ItemBuilder {
      * @return the ItemBuilder with updated data.
      */
     public ItemBuilder addEnchantment(String type, int level, boolean unsafeEnchantments) {
-        Enchantment enchantment = ItemUtils.getEnchantment(type);
+        Enchantment enchantment = RegistryUtils.getEnchantment(type);
 
         if (enchantment == null || !isValidInteger(String.valueOf(level))) return this;
 
@@ -794,7 +793,7 @@ public abstract class ItemBuilder {
      * @return the ItemBuilder with updated data.
      */
     public ItemBuilder removeEnchantment(String type) {
-        Enchantment enchantment = ItemUtils.getEnchantment(type);
+        Enchantment enchantment = RegistryUtils.getEnchantment(type);
 
         if (enchantment == null) return this;
 
@@ -845,7 +844,7 @@ public abstract class ItemBuilder {
             if (isValidInteger(metaData)) {
                 this.itemDamage = Integer.parseInt(metaData);
             } else {
-                this.potionType = ItemUtils.getPotionEffect(metaData);
+                this.potionType = RegistryUtils.getPotionEffect(metaData);
 
                 this.potionColor = DyeUtils.getColor(metaData);
                 this.armorColor = DyeUtils.getColor(metaData);
@@ -864,7 +863,7 @@ public abstract class ItemBuilder {
             }
         }
 
-        Material material = ItemUtils.getMaterial(type);
+        Material material = RegistryUtils.getMaterial(type);
 
         if (material != null) {
             this.itemStack = new ItemStack(material);
@@ -959,7 +958,7 @@ public abstract class ItemBuilder {
     private void addPatterns(String pattern) {
         String[] section = pattern.split(":");
 
-        PatternType type = ItemUtils.getPatternType(section[0]);
+        PatternType type = RegistryUtils.getPatternType(section[0]);
         DyeColor color = DyeUtils.getDyeColor(section[1]);
 
         if (type == null || color == null) return;
