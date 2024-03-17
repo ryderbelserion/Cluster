@@ -2,10 +2,7 @@ package com.ryderbelserion.cluster.utils;
 
 import com.ryderbelserion.cluster.Cluster;
 import com.ryderbelserion.cluster.ClusterProvider;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Particle;
-import org.bukkit.Registry;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.enchantments.Enchantment;
@@ -32,6 +29,22 @@ public class ItemUtils {
             return Registry.MATERIAL.get(getKey(value));
         } catch (Exception exception) {
             logger.warning(value + " is an invalid material.");
+
+            return null;
+        }
+    }
+
+    /**
+     * Get a sound from the registry.
+     *
+     * @param value the value to check.
+     * @return the sound or null if not found.
+     */
+    public static Sound getSound(String value) {
+        try {
+            return Registry.SOUNDS.get(getKey(value));
+        } catch (Exception exception) {
+            logger.warning(value + " is an invalid sound.");
 
             return null;
         }
