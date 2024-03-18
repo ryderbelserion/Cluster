@@ -28,8 +28,8 @@ public class CustomFile {
     private YamlConfiguration configuration;
 
     public CustomFile(String fileName, String folder) {
-        this.strippedName = fileName.replace(".yml", "");
         this.fileName = fileName;
+        this.strippedName = fileName.replace(".yml", "");
 
         this.folder = folder;
 
