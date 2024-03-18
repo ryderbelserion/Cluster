@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
-public class FileUtils {
+public class FileUtil {
 
     public static boolean isEmpty(Path directory) throws IOException {
         if (Files.isDirectory(directory)) {

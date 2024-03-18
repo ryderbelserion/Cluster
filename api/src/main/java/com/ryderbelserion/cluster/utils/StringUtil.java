@@ -6,7 +6,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
 
-public class StringUtils {
+public class StringUtil {
 
     /**
      * Loops through a string-list and returns a string builder

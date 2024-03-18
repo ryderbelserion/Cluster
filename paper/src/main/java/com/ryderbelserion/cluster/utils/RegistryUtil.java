@@ -12,7 +12,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import java.util.logging.Logger;
 
-public class RegistryUtils {
+public class RegistryUtil {
 
     private static final Cluster server = ClusterProvider.get();
     private static final Logger logger = server.getLogger();

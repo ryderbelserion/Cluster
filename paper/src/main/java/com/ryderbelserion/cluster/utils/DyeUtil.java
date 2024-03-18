@@ -8,7 +8,7 @@ import org.bukkit.DyeColor;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DyeUtils {
+public class DyeUtil {
 
     private static final Map<String, Color> colors = createMap();
 
