@@ -1,16 +1,12 @@
 package com.ryderbelserion.cluster;
 
 import com.ryderbelserion.cluster.api.enums.PluginSupport;
-import com.ryderbelserion.cluster.api.files.FileManager;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.logging.Logger;
 
 public class ClusterFactory extends Cluster {
-
-    private final FileManager fileManager;
 
     private final boolean isOraxenEnabled, isPapiEnabled, isItemsAdderEnabled, isHeadDatabaseEnabled;
     private final JavaPlugin plugin;
@@ -36,8 +32,6 @@ public class ClusterFactory extends Cluster {
         this.isPapiEnabled = PluginSupport.placeholderapi.isPluginEnabled(plugin);
 
         this.plugin = plugin;
-
-        this.fileManager = new FileManager();
     }
 
     /**
@@ -123,13 +117,5 @@ public class ClusterFactory extends Cluster {
         }
 
         return this.api;
-    }
-
-    /**
-     * @return instance of the FileManager.
-     */
-    @NotNull
-    public FileManager getFileManager() {
-        return this.fileManager;
     }
 }

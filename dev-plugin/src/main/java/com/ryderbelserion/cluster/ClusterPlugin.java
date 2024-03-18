@@ -25,7 +25,7 @@ public class ClusterPlugin extends JavaPlugin implements Listener {
         this.clusterFactory = new ClusterFactory(this);
         this.clusterFactory.setLogging(true);
 
-        this.fileManager = this.clusterFactory.getFileManager();
+        this.fileManager = new FileManager();
 
         this.fileManager.addStaticFile("config.yml").create();
 
