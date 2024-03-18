@@ -6,13 +6,16 @@ import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.logging.Logger;
 
-public class RegistryUtil {
+public class RegistryUtils {
 
     private static final Cluster server = ClusterProvider.get();
     private static final Logger logger = server.getLogger();
@@ -156,6 +159,16 @@ public class RegistryUtil {
             return Registry.BANNER_PATTERN.get(getKey(value));
         } catch (Exception exception) {
             logger.warning(value + " is an invalid banner type.");
+
+            return null;
+        }
+    }
+
+    public static EntityType getEntity(String value) {
+        try {
+            return Registry.ENTITY_TYPE.get(getKey(value));
+        } catch (Exception exception) {
+            logger.warning(value + " is an invalid entity type.");
 
             return null;
         }

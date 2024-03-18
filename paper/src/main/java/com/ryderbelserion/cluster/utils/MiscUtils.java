@@ -2,7 +2,7 @@ package com.ryderbelserion.cluster.utils;
 
 import org.bukkit.entity.Player;
 
-public class MiscUtil {
+public class MiscUtils {
 
     /**
      * Takes experience from a player.

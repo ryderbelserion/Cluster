@@ -1,6 +1,6 @@
 package com.ryderbelserion.cluster.api.builders;
 
-import com.ryderbelserion.cluster.utils.AdvUtil;
+import com.ryderbelserion.cluster.utils.AdvUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -37,7 +37,7 @@ public class ComponentBuilder {
      * @return the Builder object with updated information.
      */
     public ComponentBuilder hover(String text) {
-        this.builder.hoverEvent(HoverEvent.showText(AdvUtil.parse(text)));
+        this.builder.hoverEvent(HoverEvent.showText(AdvUtils.parse(text)));
 
         return this;
     }
@@ -60,7 +60,7 @@ public class ComponentBuilder {
      */
     @NotNull
     public TextComponent getComponent() {
-        Component message = AdvUtil.parse(this.value);
+        Component message = AdvUtils.parse(this.value);
 
         return this.builder.append(message).build();
     }

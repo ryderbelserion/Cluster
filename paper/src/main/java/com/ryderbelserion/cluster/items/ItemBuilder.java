@@ -4,9 +4,9 @@ import com.google.common.collect.Multimap;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.ryderbelserion.cluster.Cluster;
 import com.ryderbelserion.cluster.ClusterProvider;
-import com.ryderbelserion.cluster.utils.AdvUtil;
-import com.ryderbelserion.cluster.utils.DyeUtil;
-import com.ryderbelserion.cluster.utils.RegistryUtil;
+import com.ryderbelserion.cluster.utils.AdvUtils;
+import com.ryderbelserion.cluster.utils.DyeUtils;
+import com.ryderbelserion.cluster.utils.RegistryUtils;
 import io.th0rgal.oraxen.api.OraxenItems;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -266,10 +266,10 @@ public abstract class ItemBuilder {
 
     private Component parse(String message) {
         if (this.provider.isPapiEnabled() && this.target != null) {
-            return AdvUtil.parse(PlaceholderAPI.setPlaceholders(this.target, message));
+            return AdvUtils.parse(PlaceholderAPI.setPlaceholders(this.target, message));
         }
 
-        return AdvUtil.parse(message);
+        return AdvUtils.parse(message);
     }
 
     public ItemStack build() {
@@ -492,13 +492,13 @@ public abstract class ItemBuilder {
     }
 
     public ItemBuilder setTrimMaterial(String trimMaterial) {
-        this.trimMaterial = RegistryUtil.getTrimMaterial(trimMaterial);
+        this.trimMaterial = RegistryUtils.getTrimMaterial(trimMaterial);
 
         return this;
     }
 
     public ItemBuilder setTrimPattern(String trimPattern) {
-        this.trimPattern = RegistryUtil.getTrimPattern(trimPattern);
+        this.trimPattern = RegistryUtils.getTrimPattern(trimPattern);
 
         return this;
     }
@@ -706,7 +706,7 @@ public abstract class ItemBuilder {
         }
 
         String[] section = attribute.split(",");
-        Attribute modifier = RegistryUtil.getAttribute(section[0]);
+        Attribute modifier = RegistryUtils.getAttribute(section[0]);
 
         if (modifier == null || !isValidDouble(section[1])) return this;
 
@@ -771,7 +771,7 @@ public abstract class ItemBuilder {
      * @return the ItemBuilder with updated data.
      */
     public ItemBuilder addEnchantment(String type, int level, boolean unsafeEnchantments) {
-        Enchantment enchantment = RegistryUtil.getEnchantment(type);
+        Enchantment enchantment = RegistryUtils.getEnchantment(type);
 
         if (enchantment == null || !isValidInteger(String.valueOf(level))) return this;
 
@@ -793,7 +793,7 @@ public abstract class ItemBuilder {
      * @return the ItemBuilder with updated data.
      */
     public ItemBuilder removeEnchantment(String type) {
-        Enchantment enchantment = RegistryUtil.getEnchantment(type);
+        Enchantment enchantment = RegistryUtils.getEnchantment(type);
 
         if (enchantment == null) return this;
 
@@ -844,12 +844,12 @@ public abstract class ItemBuilder {
             if (isValidInteger(metaData)) {
                 this.itemDamage = Integer.parseInt(metaData);
             } else {
-                this.potionType = RegistryUtil.getPotionEffect(metaData);
+                this.potionType = RegistryUtils.getPotionEffect(metaData);
 
-                this.potionColor = DyeUtil.getColor(metaData);
-                this.armorColor = DyeUtil.getColor(metaData);
-                this.mapColor = DyeUtil.getColor(metaData);
-                this.fireworkColor = DyeUtil.getColor(metaData);
+                this.potionColor = DyeUtils.getColor(metaData);
+                this.armorColor = DyeUtils.getColor(metaData);
+                this.mapColor = DyeUtils.getColor(metaData);
+                this.fireworkColor = DyeUtils.getColor(metaData);
             }
         } else if (type.contains("#")) {
             String[] section = type.split("#");
@@ -863,7 +863,7 @@ public abstract class ItemBuilder {
             }
         }
 
-        Material material = RegistryUtil.getMaterial(type);
+        Material material = RegistryUtils.getMaterial(type);
 
         if (material != null) {
             this.itemStack = new ItemStack(material);
@@ -958,8 +958,8 @@ public abstract class ItemBuilder {
     private void addPatterns(String pattern) {
         String[] section = pattern.split(":");
 
-        PatternType type = RegistryUtil.getPatternType(section[0]);
-        DyeColor color = DyeUtil.getDyeColor(section[1]);
+        PatternType type = RegistryUtils.getPatternType(section[0]);
+        DyeColor color = DyeUtils.getDyeColor(section[1]);
 
         if (type == null || color == null) return;
 

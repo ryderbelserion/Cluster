@@ -1,6 +1,6 @@
 package com.ryderbelserion.cluster.api.builders;
 
-import com.ryderbelserion.cluster.utils.AdvUtil;
+import com.ryderbelserion.cluster.utils.AdvUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -20,7 +20,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
         this.player = player;
         this.size = size;
 
-        this.inventory = Bukkit.getServer().createInventory(this, this.size, AdvUtil.parse(this.title));
+        this.inventory = Bukkit.getServer().createInventory(this, this.size, AdvUtils.parse(this.title));
     }
 
     public abstract InventoryBuilder build();
