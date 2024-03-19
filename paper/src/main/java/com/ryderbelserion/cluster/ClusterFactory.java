@@ -107,6 +107,13 @@ public class ClusterFactory extends Cluster {
     }
 
     /**
+     * @return the plugin instance
+     */
+    public JavaPlugin getPlugin() {
+        return this.plugin;
+    }
+
+    /**
      * @return instance of HeadDatabaseAPI.
      */
     public HeadDatabaseAPI getHeadDatabaseAPI() {

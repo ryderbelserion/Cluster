@@ -1,5 +1,7 @@
 package com.ryderbelserion.cluster.items;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
+import com.destroystokyo.paper.profile.ProfileProperty;
 import com.google.common.collect.Multimap;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.ryderbelserion.cluster.Cluster;
@@ -13,12 +15,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.minecraft.nbt.TagParser;
 import org.apache.commons.lang.WordUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Banner;
@@ -36,6 +33,8 @@ import org.bukkit.inventory.meta.*;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -52,13 +51,11 @@ import java.util.logging.Logger;
 
 public abstract class ItemBuilder {
 
-    @NotNull
-    private final Cluster provider = ClusterProvider.get();
+    private final @NotNull Cluster provider = ClusterProvider.get();
+
+    private final @NotNull Logger logger = this.provider.getLogger();
 
     private final boolean isLogging = this.provider.isLogging();
-
-    @NotNull
-    private final Logger logger = this.provider.getLogger();
 
     // Items
     private Material material = Material.STONE;
@@ -81,13 +78,14 @@ public abstract class ItemBuilder {
     // Potions
     private boolean isPotion = false;
     private Color potionColor = Color.RED;
-    private PotionEffectType potionType = null;
+    private PotionEffectType potionEffectType = null;
+    private PotionType potionType = null;
     private int potionDuration = -1;
     private int potionAmplifier = 1;
 
     // Player Heads
     private UUID uuid = null;
-    private boolean isLink = false;
+    private String texture = "";
     private boolean isHead = false;
 
     // Arrows
@@ -135,8 +133,7 @@ public abstract class ItemBuilder {
     private boolean isTool = false;
 
     // Placeholders
-    private Map<String, String> namePlaceholders = new HashMap<>();
-    private Map<String, String> lorePlaceholders = new HashMap<>();
+    private Map<String, String> placeholders = new HashMap<>();
 
     // Create a new item.
     public ItemBuilder(ItemStack itemStack) {
@@ -155,6 +152,12 @@ public abstract class ItemBuilder {
             case SPAWNER -> this.isSpawner = true;
             case SHIELD -> this.isShield = true;
         }
+
+        this.itemStack.editMeta(itemMeta -> {
+            if (itemMeta.hasDisplayName()) this.displayName = itemMeta.displayName();
+
+            if (itemMeta.hasLore()) this.displayLore = itemMeta.lore();
+        });
 
         String name = this.material.name();
 
@@ -186,6 +189,12 @@ public abstract class ItemBuilder {
             case SHIELD -> this.isShield = true;
         }
 
+        this.itemStack.editMeta(itemMeta -> {
+            if (itemMeta.hasDisplayName()) this.displayName = itemMeta.displayName();
+
+            if (itemMeta.hasLore()) this.displayLore = itemMeta.lore();
+        });
+
         String name = this.material.name();
 
         this.isArmor = name.endsWith("_HELMET") || name.endsWith("_CHESTPLATE") || name.endsWith("_LEGGINGS") || name.endsWith("_BOOTS");
@@ -216,11 +225,13 @@ public abstract class ItemBuilder {
 
         this.isPotion = itemBuilder.isPotion;
         this.potionColor = itemBuilder.potionColor;
+        this.potionEffectType = itemBuilder.potionEffectType;
         this.potionType = itemBuilder.potionType;
         this.potionDuration = itemBuilder.potionDuration;
         this.potionAmplifier = itemBuilder.potionAmplifier;
 
         this.uuid = itemBuilder.uuid;
+        this.texture = itemBuilder.texture;
         this.isHead = itemBuilder.isHead;
 
         this.isTippedArrow = itemBuilder.isTippedArrow;
@@ -258,13 +269,18 @@ public abstract class ItemBuilder {
 
         this.isTool = itemBuilder.isTool;
 
-        this.namePlaceholders = new HashMap<>(itemBuilder.namePlaceholders);
-        this.lorePlaceholders = new HashMap<>(itemBuilder.lorePlaceholders);
+        this.placeholders = new HashMap<>(itemBuilder.placeholders);
     }
 
     public ItemBuilder() {}
 
     private Component parse(String message) {
+        if (!this.placeholders.isEmpty()) {
+            for (String placeholder : this.placeholders.keySet()) {
+                message = message.replace(placeholder, this.placeholders.get(placeholder)).replace(placeholder.toLowerCase(), this.placeholders.get(placeholder));
+            }
+        }
+
         if (this.provider.isPapiEnabled() && this.target != null) {
             return AdvUtils.parse(PlaceholderAPI.setPlaceholders(this.target, message));
         }
@@ -312,12 +328,26 @@ public abstract class ItemBuilder {
             getItemStack().setAmount(this.itemAmount);
 
             getItemStack().editMeta(itemMeta -> {
-                if (this.isHead && this.uuid != null) {
-                    SkullMeta skullMeta = (SkullMeta) itemMeta;
+                if (this.isHead) {
+                    if (this.uuid != null) {
+                        SkullMeta skullMeta = (SkullMeta) itemMeta;
 
-                    OfflinePlayer person = getPlayer(this.uuid) != null ? getPlayer(this.uuid) : getOfflinePlayer(this.uuid);
+                        OfflinePlayer person = getPlayer(this.uuid) != null ? getPlayer(this.uuid) : getOfflinePlayer(this.uuid);
 
-                    skullMeta.setOwningPlayer(person);
+                        skullMeta.setOwningPlayer(person);
+                    } else {
+                        if (this.texture.isBlank() || this.texture.isEmpty()) {
+                            this.logger.warning("The texture you are trying to put on the texture is blank.");
+                        } else {
+                            SkullMeta skullMeta = (SkullMeta) itemMeta;
+
+                            PlayerProfile profile = Bukkit.createProfile(UUID.randomUUID());
+
+                            profile.setProperty(new ProfileProperty("textures", this.texture));
+
+                            skullMeta.setPlayerProfile(profile);
+                        }
+                    }
                 }
 
                 // Set the display name.
@@ -377,11 +407,11 @@ public abstract class ItemBuilder {
 
                     // Single potion effect.
                     if (this.potionType != null) {
-                        PotionEffect effect = new PotionEffect(this.potionType, this.potionDuration, this.potionAmplifier);
+                        PotionEffect effect = new PotionEffect(this.potionEffectType, this.potionDuration, this.potionAmplifier);
 
                         potionMeta.addCustomEffect(effect, true);
 
-                        potionMeta.setBasePotionData(new PotionData(PotionType.valueOf(effect.getType().getName())));
+                        potionMeta.setBasePotionType(this.potionType);
                     }
 
                     if (this.potionColor != null) {
@@ -445,14 +475,49 @@ public abstract class ItemBuilder {
         return this.itemStack;
     }
 
-    // Name
     public ItemBuilder setDisplayName(String displayName) {
         if (displayName.isEmpty()) {
             this.displayName = parse(this.material.name());
+
             return this;
         }
 
         this.displayName = parse(displayName);
+
+        return this;
+    }
+
+    /**
+     * @param placeholders the placeholders that will be used.
+     * @return the ItemBuilder with updated placeholders.
+     */
+    public ItemBuilder setNamePlaceholders(Map<String, String> placeholders) {
+        this.placeholders = placeholders;
+
+        return this;
+    }
+
+    /**
+     * Add a placeholder to the name of the item.
+     *
+     * @param placeholder the placeholder that will be replaced.
+     * @param argument the argument you wish to replace the placeholder with.
+     * @return the ItemBuilder with updated info.
+     */
+    public ItemBuilder addNamePlaceholder(String placeholder, String argument) {
+        this.placeholders.put(placeholder, argument);
+
+        return this;
+    }
+
+    /**
+     * Remove a placeholder from the list.
+     *
+     * @param placeholder the placeholder you wish to remove.
+     * @return the ItemBuilder with updated info.
+     */
+    public ItemBuilder removeNamePlaceholder(String placeholder) {
+        this.placeholders.remove(placeholder);
 
         return this;
     }
@@ -654,6 +719,12 @@ public abstract class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder setTexture(String texture) {
+        this.texture = texture;
+
+        return this;
+    }
+
     /**
      * Sets the player uuid.
      *
@@ -817,12 +888,17 @@ public abstract class ItemBuilder {
                 if (this.isLogging) this.logger.warning(line);
             });
 
+            this.itemStack = new ItemStack(Material.STONE);
+            this.itemStack.editMeta(itemMeta -> itemMeta.displayName(parse("<red>An error has occurred with the item builder.")));
+
+            this.material = this.itemStack.getType();
+
             return this;
         }
 
-        String metaData;
-
         this.customMaterial = type;
+
+        String metaData;
 
         if (type.contains(":")) {
             String[] section = type.split(":");
@@ -844,7 +920,8 @@ public abstract class ItemBuilder {
             if (isValidInteger(metaData)) {
                 this.itemDamage = Integer.parseInt(metaData);
             } else {
-                this.potionType = RegistryUtils.getPotionEffect(metaData);
+                this.potionEffectType = RegistryUtils.getPotionEffect(metaData);
+                this.potionType = RegistryUtils.getPotionType(metaData);
 
                 this.potionColor = DyeUtils.getColor(metaData);
                 this.armorColor = DyeUtils.getColor(metaData);
@@ -869,6 +946,18 @@ public abstract class ItemBuilder {
             this.itemStack = new ItemStack(material);
 
             this.material = this.itemStack.getType();
+        } else {
+            if (this.provider.isOraxenEnabled()) {
+                io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
+
+                if (oraxenItem != null) {
+                    this.itemStack = oraxenItem.build();
+
+                    this.material = this.itemStack.getType();
+
+                    return this;
+                }
+            }
         }
 
         switch (this.material) {
@@ -883,6 +972,12 @@ public abstract class ItemBuilder {
             case SHIELD -> this.isShield = true;
         }
 
+        this.itemStack.editMeta(itemMeta -> {
+            if (itemMeta.hasDisplayName()) this.displayName = itemMeta.displayName();
+
+            if (itemMeta.hasLore()) this.displayLore = itemMeta.lore();
+        });
+
         String name = this.material.name();
 
         this.isArmor = name.endsWith("_HELMET") || name.endsWith("_CHESTPLATE") || name.endsWith("_LEGGINGS") || name.endsWith("_BOOTS");
@@ -892,6 +987,14 @@ public abstract class ItemBuilder {
         this.isBanner = name.endsWith("BANNER");
 
         return this;
+    }
+
+    /**
+     * @param plugin the plugin to use
+     * @return the nbt builder
+     */
+    public NbtBuilder getNbt(JavaPlugin plugin) {
+        return new NbtBuilder(plugin, this.itemStack);
     }
 
     /**

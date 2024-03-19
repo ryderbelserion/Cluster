@@ -17,10 +17,10 @@ public class NbtBuilder {
         this.itemStack = itemStack;
     }
 
-    public ItemStack setString(String key, String value) {
+    public NbtBuilder setString(String key, String value) {
         this.itemStack.editMeta(meta -> meta.getPersistentDataContainer().set(new NamespacedKey(this.plugin, key), PersistentDataType.STRING, value));
 
-        return this.itemStack;
+        return this;
     }
 
     public boolean hasString(String key) {
@@ -39,16 +39,16 @@ public class NbtBuilder {
         return meta.getPersistentDataContainer().get(new NamespacedKey(this.plugin, key), PersistentDataType.STRING);
     }
 
-    public ItemStack setBoolean(String key, boolean value) {
+    public NbtBuilder setBoolean(String key, boolean value) {
         this.itemStack.editMeta(meta -> meta.getPersistentDataContainer().set(new NamespacedKey(this.plugin, key), PersistentDataType.BOOLEAN, value));
 
-        return this.itemStack;
+        return this;
     }
 
-    public ItemStack removeTag(String key) {
+    public NbtBuilder removeTag(String key) {
         this.itemStack.editMeta(meta -> meta.getPersistentDataContainer().remove(new NamespacedKey(this.plugin, key)));
 
-        return this.itemStack;
+        return this;
     }
 
     public ItemStack getItemStack() {

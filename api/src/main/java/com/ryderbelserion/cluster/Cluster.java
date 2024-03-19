@@ -25,6 +25,10 @@ public abstract class Cluster {
         names.forEach(name -> copyFile(directory, folder, name));
     }
 
+    public void copyFile(Path directory, String folder, String name) {
+        copyFile(directory, folder + "/" + name);
+    }
+
     public void copyFile(Path directory, String name) {
         File file = directory.resolve(name).toFile();
 
@@ -57,26 +61,6 @@ public abstract class Cluster {
         } catch (Exception exception) {
             getLogger().log(Level.SEVERE, "Failed to copy file: " + name, exception);
         }
-    }
-
-    public void copyFile(Path directory, String folder, String name) {
-        File file = directory.resolve(name).toFile();
-
-        if (file.exists()) return;
-
-        File dir = directory.toFile();
-
-        if (!dir.exists()) {
-            if (dir.mkdirs()) {
-                if (isLogging()) getLogger().warning("Created " + dir.getName() + " because we couldn't find it.");
-            }
-        }
-
-        ClassLoader loader = getClass().getClassLoader();
-
-        String url = folder + "/" + name;
-
-        getResource(url, file, loader);
     }
 
     private void grab(InputStream input, File output) throws Exception {
