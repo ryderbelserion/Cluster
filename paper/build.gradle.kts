@@ -2,6 +2,10 @@ plugins {
     id("io.papermc.paperweight.userdev") version "1.5.11"
 }
 
+repositories {
+    maven("https://repo.papermc.io/repository/maven-public/")
+}
+
 val mcVersion = providers.gradleProperty("mcVersion").get()
 
 dependencies {
