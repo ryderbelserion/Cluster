@@ -4,7 +4,7 @@ plugins {
     `maven-publish`
 }
 
-allprojects {
+subprojects {
     apply(plugin = "java-library")
     apply(plugin = "maven-publish")
 
