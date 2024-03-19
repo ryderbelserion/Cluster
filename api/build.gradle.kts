@@ -1,15 +1,8 @@
-plugins {
-    id("root-plugin")
-}
-
-repositories {
-    maven("https://jitpack.io/")
-}
-
 dependencies {
-    compileOnlyApi(libs.simpleyaml)
+    compileOnlyApi("net.kyori", "adventure-text-minimessage", "4.16.0")
+    compileOnlyApi("net.kyori", "adventure-api", "4.16.0")
 
-    compileOnlyApi(libs.bundles.adventure)
+    compileOnlyApi("com.github.Carleslc.Simple-YAML", "Simple-Yaml", "1.8.4")
 }
 
 val component: SoftwareComponent = components["java"]
