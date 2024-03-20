@@ -6,3 +6,6 @@ paper/build
 
 buildSrc/.gradle
 buildSrc/build
+
+api/.gradle
+api/build
