@@ -1,24 +1,33 @@
 plugins {
-    id("io.papermc.paperweight.userdev") version "1.5.11"
+    `root-plugin`
+
+    id("io.papermc.paperweight.userdev")
+
+    alias(libs.plugins.run.paper)
+    alias(libs.plugins.shadow)
 }
 
 repositories {
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+
     maven("https://repo.papermc.io/repository/maven-public/")
+
+    maven("https://repo.triumphteam.dev/snapshots/")
+
+    maven("https://repo.oraxen.com/releases/")
 }
 
-val mcVersion = providers.gradleProperty("mcVersion").get()
-
 dependencies {
-    implementation(project(":api"))
+    paperweight.paperDevBundle(libs.versions.devBundle)
 
-    api("com.github.Carleslc.Simple-YAML", "Simple-Yaml", "1.8.4")
+    compileOnlyApi(libs.itemsadder.api)
+    compileOnlyApi(libs.oraxen.api)
+    compileOnlyApi(libs.placeholder.api)
+    compileOnlyApi(libs.head.database.api)
 
-    compileOnlyApi("com.github.LoneDev6", "api-itemsadder", "3.6.1")
-    compileOnlyApi("com.arcaniax", "HeadDatabase-API", "1.3.0")
-    compileOnlyApi("me.clip", "placeholderapi", "2.11.5")
-    compileOnlyApi("io.th0rgal", "oraxen", "1.164.0")
+    api(libs.simple.yaml)
 
-    paperweight.paperDevBundle("$mcVersion-R0.1-SNAPSHOT")
+    api(projects.api)
 }
 
 tasks {
@@ -29,9 +38,9 @@ tasks {
     publishing {
         publications {
             create<MavenPublication>("maven") {
-                groupId = rootProject.group.toString()
-                artifactId = project.name.lowercase()
-                version = rootProject.version.toString()
+                group = project.group
+                artifactId = project.name
+                version = project.version.toString()
 
                 artifact(reobfJar)
             }

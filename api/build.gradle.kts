@@ -1,8 +1,13 @@
-dependencies {
-    compileOnlyApi("net.kyori", "adventure-text-minimessage", "4.16.0")
-    compileOnlyApi("net.kyori", "adventure-api", "4.16.0")
+plugins {
+    `root-plugin`
+}
 
-    compileOnlyApi("com.github.Carleslc.Simple-YAML", "Simple-Yaml", "1.8.4")
+dependencies {
+    compileOnlyApi(libs.simple.yaml)
+
+    compileOnlyApi(libs.minimessage.api)
+
+    compileOnlyApi(libs.adventure.api)
 }
 
 val component: SoftwareComponent = components["java"]
@@ -11,9 +16,9 @@ tasks {
     publishing {
         publications {
             create<MavenPublication>("maven") {
-                groupId = rootProject.group.toString()
-                artifactId = project.name.lowercase()
-                version = rootProject.version.toString()
+                group = project.group
+                artifactId = project.name
+                version = project.version.toString()
 
                 from(component)
             }

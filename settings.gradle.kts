@@ -1,3 +1,5 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     repositories {
         maven("https://repo.papermc.io/repository/maven-public/")
@@ -9,4 +11,5 @@ pluginManagement {
 
 rootProject.name = "Cluster"
 
-include("paper", "api")
+include(":api")
+include(":paper")

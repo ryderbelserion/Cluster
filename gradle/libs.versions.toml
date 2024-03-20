@@ -1,0 +1,21 @@
+[plugins]
+run-paper = { id = "xyz.jpenilla.run-paper", version = "2.2.3" }
+shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
+
+[versions]
+indra = "3.1.3"
+kyori = "4.16.0"
+devBundle = "1.20.4-R0.1-SNAPSHOT"
+
+[libraries]
+simple-yaml = { group = "com.github.Carleslc.Simple-YAML", name = "Simple-Yaml", version = "1.8.4" }
+
+minimessage-api = { group = "net.kyori", name = "adventure-text-minimessage", version.ref = "kyori" }
+adventure-api = { group = "net.kyori", name = "adventure-api", version.ref = "kyori" }
+
+itemsadder-api = { group = "com.github.LoneDev6", name = "api-itemsadder", version = "3.6.1" }
+oraxen-api = { group = "io.th0rgal", name = "oraxen", version = "1.164.0" }
+placeholder-api = { group = "me.clip", name = "placeholderapi", version = "2.11.5" }
+head-database-api = { group = "com.arcaniax", name = "HeadDatabase-API", version = "1.3.0" }
+
+paperweight-userdev = { group = "io.papermc.paperweight.userdev", name = "io.papermc.paperweight.userdev.gradle.plugin", version = "1.5.11" }
