@@ -30,17 +30,17 @@ public abstract class Cluster {
     }
 
     public void copyFile(Path directory, String name) {
+        File dir = directory.toFile();
+
+        if (dir.exists()) return;
+
+        if (dir.mkdirs()) {
+            if (isLogging()) getLogger().warning("Created " + dir.getName() + " because we couldn't find it.");
+        }
+
         File file = directory.resolve(name).toFile();
 
         if (file.exists()) return;
-
-        File dir = directory.toFile();
-
-        if (!dir.exists()) {
-            if (dir.mkdirs()) {
-                if (isLogging()) getLogger().warning("Created " + dir.getName() + " because we couldn't find it.");
-            }
-        }
 
         ClassLoader loader = getClass().getClassLoader();
 

@@ -13,3 +13,4 @@ rootProject.name = "Cluster"
 
 include(":api")
 include(":paper")
+include(":test-plugin")

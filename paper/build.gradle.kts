@@ -3,18 +3,7 @@ plugins {
 
     id("io.papermc.paperweight.userdev")
 
-    alias(libs.plugins.run.paper)
     alias(libs.plugins.shadow)
-}
-
-repositories {
-    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-
-    maven("https://repo.papermc.io/repository/maven-public/")
-
-    maven("https://repo.triumphteam.dev/snapshots/")
-
-    maven("https://repo.oraxen.com/releases/")
 }
 
 dependencies {
