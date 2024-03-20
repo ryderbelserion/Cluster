@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 
 public class ClusterFactory extends Cluster {
 
-    private final boolean isOraxenEnabled, isPapiEnabled, isItemsAdderEnabled, isHeadDatabaseEnabled;
     private final JavaPlugin plugin;
     private HeadDatabaseAPI api;
     private boolean isLogging;
@@ -21,15 +20,9 @@ public class ClusterFactory extends Cluster {
     public ClusterFactory(JavaPlugin plugin) {
         super();
 
-        this.isHeadDatabaseEnabled = PluginSupport.headdatabase.isPluginEnabled(plugin);
-
-        if (this.isHeadDatabaseEnabled) {
+        if (PluginSupport.headdatabase.isPluginEnabled(plugin)) {
             this.api = new HeadDatabaseAPI();
         }
-
-        this.isItemsAdderEnabled = PluginSupport.items_adder.isPluginEnabled(plugin);
-        this.isOraxenEnabled = PluginSupport.oraxen.isPluginEnabled(plugin);
-        this.isPapiEnabled = PluginSupport.placeholderapi.isPluginEnabled(plugin);
 
         this.plugin = plugin;
     }
@@ -47,7 +40,7 @@ public class ClusterFactory extends Cluster {
      */
     @Override
     public boolean isPapiEnabled() {
-        return this.isPapiEnabled;
+        return PluginSupport.placeholderapi.isPluginEnabled(this.plugin);
     }
 
     /**
@@ -55,7 +48,7 @@ public class ClusterFactory extends Cluster {
      */
     @Override
     public boolean isOraxenEnabled() {
-        return this.isOraxenEnabled;
+        return PluginSupport.oraxen.isPluginEnabled(this.plugin);
     }
 
     /**
@@ -63,7 +56,7 @@ public class ClusterFactory extends Cluster {
      */
     @Override
     public boolean isItemsAdderEnabled() {
-        return this.isItemsAdderEnabled;
+        return PluginSupport.items_adder.isPluginEnabled(this.plugin);
     }
 
     /**
@@ -112,7 +105,7 @@ public class ClusterFactory extends Cluster {
      */
     @Override
     public boolean isHeadDatabaseEnabled() {
-        return this.isHeadDatabaseEnabled;
+        return PluginSupport.headdatabase.isPluginEnabled(plugin);
     }
 
     /**
