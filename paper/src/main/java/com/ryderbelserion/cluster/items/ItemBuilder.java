@@ -36,17 +36,11 @@ import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -171,43 +165,17 @@ public abstract class ItemBuilder {
 
     private Player target = null;
 
-    public ItemBuilder(Player target, ItemStack itemStack) {
+    public ItemBuilder setTarget(Player target) {
         this.target = target;
 
-        this.itemStack = itemStack;
-
-        this.material = itemStack.getType();
-
-        switch (this.material) {
-            case LEATHER_HELMET, LEATHER_CHESTPLATE, LEATHER_LEGGINGS, LEATHER_BOOTS, LEATHER_HORSE_ARMOR -> this.isLeatherArmor = true;
-            case POTION, SPLASH_POTION, LINGERING_POTION -> this.isPotion = true;
-            case FIREWORK_STAR -> this.isFireworkStar = true;
-            case TIPPED_ARROW -> this.isTippedArrow = true;
-            case FIREWORK_ROCKET -> this.isFirework = true;
-            case FILLED_MAP -> this.isMap = true;
-            case PLAYER_HEAD -> this.isHead = true;
-            case SPAWNER -> this.isSpawner = true;
-            case SHIELD -> this.isShield = true;
-        }
-
-        this.itemStack.editMeta(itemMeta -> {
-            if (itemMeta.hasDisplayName()) this.displayName = itemMeta.displayName();
-
-            if (itemMeta.hasLore()) this.displayLore = itemMeta.lore();
-        });
-
-        String name = this.material.name();
-
-        this.isArmor = name.endsWith("_HELMET") || name.endsWith("_CHESTPLATE") || name.endsWith("_LEGGINGS") || name.endsWith("_BOOTS");
-
-        this.isTool = name.endsWith("_SWORD") || name.endsWith("_AXE") || name.endsWith("_SHOVEL");
-
-        this.isBanner = name.endsWith("BANNER");
+        return this;
     }
 
     // De-duplicate an item builder.
     public ItemBuilder(ItemBuilder itemBuilder) {
         this.target = itemBuilder.target;
+
+        this.plugin = itemBuilder.plugin;
 
         this.material = itemBuilder.material;
         this.itemStack = itemBuilder.itemStack;
@@ -336,9 +304,9 @@ public abstract class ItemBuilder {
                 return CraftItemStack.asBukkitCopy(nmsItem);
             }
 
-            getItemStack().setAmount(this.itemAmount);
+            this.itemStack.setAmount(this.itemAmount);
 
-            getItemStack().editMeta(itemMeta -> {
+            this.itemStack.editMeta(itemMeta -> {
                 if (this.isHead) {
                     if (this.uuid != null) {
                         SkullMeta skullMeta = (SkullMeta) itemMeta;
@@ -398,57 +366,71 @@ public abstract class ItemBuilder {
 
                 if (this.isArmor) {
                     if (this.trimPattern != null && this.trimMaterial != null) {
-                        ArmorMeta armorMeta = (ArmorMeta) itemMeta;
-
-                        armorMeta.setTrim(new ArmorTrim(this.trimMaterial, this.trimPattern));
+                        if (itemMeta instanceof ArmorMeta armorMeta) {
+                            armorMeta.setTrim(new ArmorTrim(this.trimMaterial, this.trimPattern));
+                        }
                     }
                 }
 
                 if (this.isMap) {
-                    MapMeta mapMeta = (MapMeta) itemMeta;
+                    if (itemMeta instanceof MapMeta mapMeta) {
+                        mapMeta.setScaling(true);
 
-                    mapMeta.setScaling(true);
-
-                    if (this.mapColor != null) mapMeta.setColor(this.mapColor);
+                        if (this.mapColor != null) mapMeta.setColor(this.mapColor);
+                    }
                 }
 
                 // Check if is potion and apply potion related settings.
                 if (this.isPotion || this.isTippedArrow) {
-                    PotionMeta potionMeta = (PotionMeta) itemMeta;
+                    if (itemMeta instanceof PotionMeta potionMeta) {
 
-                    // Single potion effect.
-                    if (this.potionType != null) {
-                        PotionEffect effect = new PotionEffect(this.potionEffectType, this.potionDuration, this.potionAmplifier);
+                        // Single potion effect.
+                        if (this.potionType != null) {
+                            PotionEffect effect = new PotionEffect(this.potionEffectType, this.potionDuration, this.potionAmplifier);
 
-                        potionMeta.addCustomEffect(effect, true);
+                            potionMeta.addCustomEffect(effect, true);
 
-                        potionMeta.setBasePotionType(this.potionType);
-                    }
+                            potionMeta.setBasePotionType(this.potionType);
+                        }
 
-                    if (this.potionColor != null) {
-                        potionMeta.setColor(this.potionColor);
+                        if (this.potionColor != null) {
+                            potionMeta.setColor(this.potionColor);
+                        }
                     }
                 }
 
                 if (this.isLeatherArmor && this.armorColor != null) {
-                    LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemMeta;
-
-                    leatherArmorMeta.setColor(this.armorColor);
+                    if (itemMeta instanceof LeatherArmorMeta armorMeta) {
+                        armorMeta.setColor(this.armorColor);
+                    }
                 }
 
                 if (this.isBanner && !this.patterns.isEmpty()) {
-                    BannerMeta bannerMeta = (BannerMeta) itemMeta;
-                    bannerMeta.setPatterns(this.patterns);
+                    if (itemMeta instanceof BannerMeta bannerMeta) {
+                        bannerMeta.setPatterns(this.patterns);
+                    }
                 }
 
                 if (this.isShield && !this.patterns.isEmpty()) {
-                    BlockStateMeta shieldMeta = (BlockStateMeta) itemMeta;
+                    if (itemMeta instanceof BlockStateMeta shieldMeta) {
+                        Banner banner = (Banner) shieldMeta.getBlockState();
+                        banner.setPatterns(this.patterns);
+                        banner.update();
 
-                    Banner banner = (Banner) shieldMeta.getBlockState();
-                    banner.setPatterns(this.patterns);
-                    banner.update();
+                        shieldMeta.setBlockState(banner);
+                    }
+                }
 
-                    shieldMeta.setBlockState(banner);
+                if (itemMeta instanceof FireworkMeta fireworkMeta) {
+                    if (this.isFirework) {
+                        fireworkMeta.setPower(this.fireworkPower);
+
+                        effects.forEach(eff -> fireworkMeta.addEffects(eff.build()));
+                    }
+
+                    if (this.isFireworkStar) {
+                        fireworkMeta.addEffects(effects.get(0).build());
+                    }
                 }
 
                 // If the item has model data.
@@ -494,6 +476,68 @@ public abstract class ItemBuilder {
         }
 
         this.displayName = parse(displayName);
+
+        return this;
+    }
+
+    private JavaPlugin plugin;
+
+    public ItemBuilder setPlugin(JavaPlugin plugin) {
+        this.plugin = plugin;
+
+        return this;
+    }
+
+    public ItemBuilder setString(String key, String value) {
+        this.itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(new NamespacedKey(this.plugin, key), PersistentDataType.STRING, value));
+
+        return this;
+    }
+
+    public String getString(String key) {
+        if (!this.itemStack.hasItemMeta()) return "N/A";
+
+        return this.itemStack.getItemMeta().getPersistentDataContainer().getOrDefault(new NamespacedKey(this.plugin, key), PersistentDataType.STRING, "N/A");
+    }
+    
+    public ItemBuilder setDouble(NamespacedKey key, double value) {
+        this.itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(key, PersistentDataType.DOUBLE, value));
+        
+        return this;
+    }
+    
+    public double getDouble(NamespacedKey key) {
+        if (!this.itemStack.hasItemMeta()) return 0.0;
+        
+        return this.itemStack.getItemMeta().getPersistentDataContainer().getOrDefault(key, PersistentDataType.DOUBLE, 0.0);
+    }
+
+    public ItemBuilder setList(NamespacedKey key, List<String> values) {
+        this.itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(
+                key,
+                PersistentDataType.LIST.listTypeFrom(PersistentDataType.STRING),
+                values
+        ));
+
+        return this;
+    }
+    
+    public List<String> getList(NamespacedKey key) {
+        if (!this.itemStack.hasItemMeta()) return Collections.emptyList();
+
+        return this.itemStack.getItemMeta().getPersistentDataContainer().getOrDefault(key, PersistentDataType.LIST.strings(), Collections.emptyList());
+    }
+
+    public boolean hasKey(NamespacedKey key) {
+        if (!this.itemStack.hasItemMeta()) return false;
+
+        return this.itemStack.getItemMeta().getPersistentDataContainer().has(key);
+    }
+
+    public ItemBuilder removeKey(NamespacedKey key) {
+        if (!this.itemStack.hasItemMeta()) return this;
+
+        this.itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().remove(key));
 
         return this;
     }
@@ -631,14 +675,6 @@ public abstract class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder addFlag(String flag) {
-        ItemFlag value = getFlag(flag);
-
-        if (value != null) this.itemFlags.add(value);
-
-        return this;
-    }
-
     public ItemBuilder addItemFlags(List<String> flags) {
         for (String flag : flags) {
             try {
@@ -655,20 +691,12 @@ public abstract class ItemBuilder {
         return setEffect(Arrays.asList(effects));
     }
 
+    private List<FireworkEffect.Builder> effects;
+
     public ItemBuilder setEffect(List<FireworkEffect.Builder> effects) {
         if (effects.isEmpty()) return this;
 
-        getItemStack().editMeta(itemMeta -> {
-            FireworkMeta fireworkMeta = (FireworkMeta) itemMeta;
-
-            if (this.isFirework) {
-                effects.forEach(eff -> fireworkMeta.addEffects(eff.build()));
-            }
-
-            if (this.isFireworkStar) {
-                fireworkMeta.addEffects(effects.get(0).build());
-            }
-        });
+        this.effects = effects;
 
         return this;
     }
@@ -680,12 +708,7 @@ public abstract class ItemBuilder {
      * @return the ItemBuilder with updated data.
      */
     public ItemBuilder setFireworkPower(int power) {
-        if (this.isFirework) {
-            getItemStack().editMeta(itemMeta -> {
-                FireworkMeta fireworkMeta = (FireworkMeta) itemMeta;
-                fireworkMeta.setPower(power);
-            });
-        }
+        this.fireworkPower = power;
 
         return this;
     }
@@ -797,7 +820,7 @@ public abstract class ItemBuilder {
         AttributeModifier.Operation operation = AttributeModifier.Operation.valueOf(section[2]);
         EquipmentSlot equipmentSlot = EquipmentSlot.valueOf(section[3]);
 
-        getItemStack().editMeta(itemMeta -> {
+        this.itemStack.editMeta(itemMeta -> {
             AttributeModifier attributeModifier = new AttributeModifier(UUID.randomUUID(), modifier.getKey().value(), damage, operation, equipmentSlot);
 
             itemMeta.addAttributeModifier(modifier, attributeModifier);
@@ -819,7 +842,7 @@ public abstract class ItemBuilder {
             return this;
         }
 
-        getItemStack().editMeta(itemMeta -> itemMeta.setAttributeModifiers(modifiers));
+        this.itemStack.editMeta(itemMeta -> itemMeta.setAttributeModifiers(modifiers));
 
         return this;
     }
@@ -857,7 +880,7 @@ public abstract class ItemBuilder {
 
         if (enchantment == null || !isValidInteger(String.valueOf(level))) return this;
 
-        getItemStack().editMeta(itemMeta -> {
+        this.itemStack.editMeta(itemMeta -> {
             if (itemMeta.hasConflictingEnchant(enchantment)) {
                 if (this.isLogging) this.logger.warning("One of the enchants on the item may conflict with " + type + ", The item been enchanted anyway.");
             }
@@ -879,7 +902,7 @@ public abstract class ItemBuilder {
 
         if (enchantment == null) return this;
 
-        getItemStack().editMeta(itemMeta -> itemMeta.removeEnchant(enchantment));
+        this.itemStack.editMeta(itemMeta -> itemMeta.removeEnchant(enchantment));
 
         return this;
     }
@@ -1008,14 +1031,6 @@ public abstract class ItemBuilder {
         this.isBanner = name.endsWith("BANNER");
 
         return this;
-    }
-
-    /**
-     * @param plugin the plugin to use
-     * @return the nbt builder
-     */
-    public NbtBuilder getNbt(JavaPlugin plugin) {
-        return new NbtBuilder(plugin, this.itemStack);
     }
 
     /**
