@@ -37,6 +37,7 @@ public class ClusterFactory extends Cluster {
     /**
      * @return true or false.
      */
+    @Override
     public boolean isLogging() {
         return this.isLogging;
     }
@@ -44,6 +45,7 @@ public class ClusterFactory extends Cluster {
     /**
      * @return true or false.
      */
+    @Override
     public boolean isPapiEnabled() {
         return this.isPapiEnabled;
     }
@@ -51,6 +53,7 @@ public class ClusterFactory extends Cluster {
     /**
      * @return true or false.
      */
+    @Override
     public boolean isOraxenEnabled() {
         return this.isOraxenEnabled;
     }
@@ -58,6 +61,7 @@ public class ClusterFactory extends Cluster {
     /**
      * @return true or false.
      */
+    @Override
     public boolean isItemsAdderEnabled() {
         return this.isItemsAdderEnabled;
     }
@@ -72,6 +76,7 @@ public class ClusterFactory extends Cluster {
      * @throws IllegalArgumentException if the resource path is null, empty,
      *     or points to a nonexistent resource.
      */
+    @Override
     public void saveResource(String resourcePath, boolean replace) {
         this.plugin.saveResource(resourcePath, replace);
     }
@@ -81,6 +86,7 @@ public class ClusterFactory extends Cluster {
      *
      * @param isLogging true or false.
      */
+    @Override
     public void setLogging(boolean isLogging) {
         this.isLogging = isLogging;
     }
@@ -88,6 +94,7 @@ public class ClusterFactory extends Cluster {
     /**
      * @return the plugin logger.
      */
+    @Override
     public Logger getLogger() {
         return this.plugin.getLogger();
     }
@@ -95,6 +102,7 @@ public class ClusterFactory extends Cluster {
     /**
      * @return the plugin datafolder.
      */
+    @Override
     public File getFolder() {
         return this.plugin.getDataFolder();
     }
@@ -102,6 +110,7 @@ public class ClusterFactory extends Cluster {
     /**
      * @return true or false
      */
+    @Override
     public boolean isHeadDatabaseEnabled() {
         return this.isHeadDatabaseEnabled;
     }

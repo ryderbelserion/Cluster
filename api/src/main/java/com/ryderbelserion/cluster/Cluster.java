@@ -76,9 +76,15 @@ public abstract class Cluster {
 
     public abstract boolean isLogging();
 
+    public abstract void setLogging(boolean isLogging);
+
     public abstract boolean isPapiEnabled();
 
     public abstract boolean isOraxenEnabled();
+
+    public abstract boolean isItemsAdderEnabled();
+
+    public abstract boolean isHeadDatabaseEnabled();
 
     public abstract void saveResource(String file, boolean overwrite);
 

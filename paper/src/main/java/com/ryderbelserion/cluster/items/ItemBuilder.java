@@ -9,6 +9,7 @@ import com.ryderbelserion.cluster.ClusterProvider;
 import com.ryderbelserion.cluster.utils.AdvUtils;
 import com.ryderbelserion.cluster.utils.DyeUtils;
 import com.ryderbelserion.cluster.utils.RegistryUtils;
+import dev.lone.itemsadder.api.CustomStack;
 import io.th0rgal.oraxen.api.OraxenItems;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -296,14 +297,24 @@ public abstract class ItemBuilder {
 
             if (oraxenItem != null) {
                 // If the item isn't null, we don't need to re-build.
-                if (this.itemStack != null) {
+                /*if (this.itemStack != null) {
                     this.material = this.itemStack.getType();
 
                     return this.itemStack;
-                }
+                }*/
 
                 // This is just here in case it is null for whatever reason.
                 this.itemStack = oraxenItem.build();
+
+                this.material = this.itemStack.getType();
+
+                return this.itemStack;
+            }
+        } else if (this.provider.isItemsAdderEnabled()) {
+            CustomStack customStack = CustomStack.getInstance(this.customMaterial);
+
+            if (customStack != null) {
+                this.itemStack = customStack.getItemStack();
 
                 this.material = this.itemStack.getType();
 
@@ -952,6 +963,16 @@ public abstract class ItemBuilder {
 
                 if (oraxenItem != null) {
                     this.itemStack = oraxenItem.build();
+
+                    this.material = this.itemStack.getType();
+
+                    return this;
+                }
+            } else if (this.provider.isItemsAdderEnabled()) {
+                CustomStack customStack = CustomStack.getInstance(this.customMaterial);
+
+                if (customStack != null) {
+                    this.itemStack = customStack.getItemStack();
 
                     this.material = this.itemStack.getType();
 
