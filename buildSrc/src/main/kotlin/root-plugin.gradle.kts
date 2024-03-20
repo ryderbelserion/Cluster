@@ -27,7 +27,7 @@ tasks {
     publishing {
         repositories {
             maven {
-                if (project.version.toString().contains("-SNAPSHOT")) {
+                if (project.version.toString().contains("SNAPSHOT")) {
                     url = uri("https://repo.crazycrew.us/snapshots/")
                 } else {
                     url = uri("https://repo.crazycrew.us/releases/")

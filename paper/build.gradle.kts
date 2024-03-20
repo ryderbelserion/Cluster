@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    paperweight.paperDevBundle(libs.versions.devBundle)
+    paperweight.paperDevBundle(libs.versions.bundle)
 
     compileOnlyApi(libs.itemsadder.api)
     compileOnlyApi(libs.oraxen.api)
