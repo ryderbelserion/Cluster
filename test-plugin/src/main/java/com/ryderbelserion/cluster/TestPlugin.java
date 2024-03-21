@@ -6,6 +6,6 @@ public class TestPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        new ClusterFactory(this).copyFile(getDataFolder().toPath(), "config.yml");
+        new ClusterFactory(this).copyFile(getDataFolder().toPath(), "test", "config.yml");
     }
 }

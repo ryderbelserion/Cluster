@@ -16,9 +16,9 @@ tasks {
     publishing {
         publications {
             create<MavenPublication>("maven") {
-                group = project.group
+                group = rootProject.group
                 artifactId = project.name
-                version = project.version.toString()
+                version = "${rootProject.version}"
 
                 from(component)
             }

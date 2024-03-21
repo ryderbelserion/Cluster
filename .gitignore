@@ -9,3 +9,8 @@ buildSrc/build
 
 api/.gradle
 api/build
+
+!test-plugin/run/eula.txt
+test-plugin/run
+test-plugin/build
+test-plugin/.gradle
