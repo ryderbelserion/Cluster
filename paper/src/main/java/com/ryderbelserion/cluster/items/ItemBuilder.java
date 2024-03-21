@@ -425,11 +425,11 @@ public abstract class ItemBuilder {
                     if (this.isFirework) {
                         fireworkMeta.setPower(this.fireworkPower);
 
-                        effects.forEach(eff -> fireworkMeta.addEffects(eff.build()));
+                        this.effects.forEach(eff -> fireworkMeta.addEffects(eff.build()));
                     }
 
                     if (this.isFireworkStar) {
-                        fireworkMeta.addEffects(effects.get(0).build());
+                        this.effects.forEach(eff -> fireworkMeta.addEffects(eff.build()));
                     }
                 }
 
@@ -488,16 +488,16 @@ public abstract class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder setString(String key, String value) {
-        this.itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(new NamespacedKey(this.plugin, key), PersistentDataType.STRING, value));
+    public ItemBuilder setString(NamespacedKey key, String value) {
+        this.itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(key, PersistentDataType.STRING, value));
 
         return this;
     }
 
-    public String getString(String key) {
+    public String getString(NamespacedKey key) {
         if (!this.itemStack.hasItemMeta()) return "N/A";
 
-        return this.itemStack.getItemMeta().getPersistentDataContainer().getOrDefault(new NamespacedKey(this.plugin, key), PersistentDataType.STRING, "N/A");
+        return this.itemStack.getItemMeta().getPersistentDataContainer().getOrDefault(key, PersistentDataType.STRING, "N/A");
     }
     
     public ItemBuilder setDouble(NamespacedKey key, double value) {
@@ -507,9 +507,31 @@ public abstract class ItemBuilder {
     }
     
     public double getDouble(NamespacedKey key) {
-        if (!this.itemStack.hasItemMeta()) return 0.0;
+        if (!this.itemStack.hasItemMeta()) return 1.0;
         
-        return this.itemStack.getItemMeta().getPersistentDataContainer().getOrDefault(key, PersistentDataType.DOUBLE, 0.0);
+        return this.itemStack.getItemMeta().getPersistentDataContainer().getOrDefault(key, PersistentDataType.DOUBLE, 1.0);
+    }
+
+    public ItemBuilder setInteger(NamespacedKey key, int value) {
+        this.itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(
+                key,
+                PersistentDataType.INTEGER,
+                value
+        ));
+
+        return this;
+    }
+
+    public boolean isTrue(NamespacedKey key) {
+        if (!this.itemStack.hasItemMeta()) return true;
+
+        return this.itemStack.getItemMeta().getPersistentDataContainer().getOrDefault(key, PersistentDataType.BOOLEAN, true);
+    }
+
+    public int getInteger(NamespacedKey key) {
+        if (!this.itemStack.hasItemMeta()) return 1;
+
+        return this.itemStack.getItemMeta().getPersistentDataContainer().getOrDefault(key, PersistentDataType.INTEGER, 1);
     }
 
     public ItemBuilder setList(NamespacedKey key, List<String> values) {
