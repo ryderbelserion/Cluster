@@ -142,14 +142,16 @@ public class FileManager {
         return this;
     }
 
-    public void removeFolder(String folder) {
+    public FileManager removeFolder(String folder) {
         if (!this.folders.contains(folder)) {
             this.logger.warning("The folder named: " + folder + " is not known to me.");
 
-            return;
+            return this;
         }
 
         this.folders.remove(folder);
+
+        return this;
     }
 
     public Set<String> getFolders() {
@@ -163,13 +165,13 @@ public class FileManager {
         return this;
     }
 
-    public void saveDynamicFile(String file) {
+    public FileManager saveDynamicFile(String file) {
         CustomFile customFile = getDynamicFile(file);
 
         if (customFile == null) {
             if (this.isLogging) this.logger.warning("The file " + file + ".yml could not be found!");
 
-            return;
+            return this;
         }
 
         try {
@@ -179,19 +181,23 @@ public class FileManager {
         } catch (IOException exception) {
             this.logger.log(Level.SEVERE, "Could not save " + customFile.getFileName() + "!", exception);
         }
+
+        return this;
     }
 
-    public void reloadDynamicFiles() {
+    public FileManager reloadDynamicFiles() {
         this.customFiles.forEach(CustomFile::reload);
+
+        return this;
     }
 
-    public void reloadDynamicFile(String file) {
+    public FileManager reloadDynamicFile(String file) {
         CustomFile customFile = getDynamicFile(file);
 
         if (customFile == null) {
             if (this.isLogging) this.logger.warning("The file " + file + ".yml could not be found!");
 
-            return;
+            return this;
         }
 
         try {
@@ -213,6 +219,8 @@ public class FileManager {
         } catch (Exception exception) {
             this.logger.log(Level.SEVERE, "Could not save " + customFile.getFileName() + "!", exception);
         }
+
+        return this;
     }
 
     public CustomFile getDynamicFile(String file) {
@@ -224,8 +232,10 @@ public class FileManager {
     }
 
     // Adds already loaded files.
-    public void addDynamicFile(CustomFile customFile) {
+    public FileManager addDynamicFile(CustomFile customFile) {
         this.customFiles.add(customFile);
+
+        return this;
     }
 
     public Map<String, String> getDynamicFiles() {
@@ -242,7 +252,7 @@ public class FileManager {
         return this.configurations.get(file);
     }
 
-    public void saveStaticFile(String file) {
+    public FileManager saveStaticFile(String file) {
         try {
             File newFile = new File(this.dataFolder, "/" + file);
 
@@ -250,9 +260,11 @@ public class FileManager {
         } catch (IOException exception) {
             this.logger.log(Level.SEVERE, "Failed to save " + file + "!", exception);
         }
+
+        return this;
     }
 
-    public void saveStaticFile(String folder, String file) {
+    public FileManager saveStaticFile(String folder, String file) {
         try {
             File newFile = new File(this.dataFolder, folder + "/" + file);
 
@@ -260,21 +272,29 @@ public class FileManager {
         } catch (IOException exception) {
             this.logger.log(Level.SEVERE, "Failed to save " + folder + "/" + file + "!", exception);
         }
+
+        return this;
     }
 
-    public void reloadStaticFile(String folder, String file) {
+    public FileManager reloadStaticFile(String folder, String file) {
         File newFile = new File(this.dataFolder, folder + "/" + file);
 
         loadFile(file, newFile);
+
+        return this;
     }
 
-    public void reloadStaticFile(String file) {
+    public FileManager reloadStaticFile(String file) {
         File newFile = new File(this.dataFolder, "/" + file);
 
         loadFile(file, newFile);
+
+        return this;
     }
 
-    public void clearStaticFiles() {
+    public FileManager clearStaticFiles() {
         this.staticFiles.clear();
+
+        return this;
     }
 }
