@@ -12,12 +12,10 @@ import java.util.logging.Logger;
 public abstract class Cluster {
 
     public Cluster() {
-        // Register provider.
         ClusterProvider.register(this);
     }
 
     public void disable() {
-        // Unregister provider.
         ClusterProvider.unregister();
     }
 
