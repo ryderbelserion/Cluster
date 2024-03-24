@@ -199,6 +199,8 @@ public abstract class ItemBuilder {
         this.potionDuration = itemBuilder.potionDuration;
         this.potionAmplifier = itemBuilder.potionAmplifier;
 
+        this.effects = itemBuilder.effects;
+
         this.uuid = itemBuilder.uuid;
         this.texture = itemBuilder.texture;
         this.isHead = itemBuilder.isHead;
