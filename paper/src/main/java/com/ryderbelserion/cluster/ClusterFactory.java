@@ -1,12 +1,11 @@
 package com.ryderbelserion.cluster;
 
-import com.ryderbelserion.cluster.api.enums.PluginSupport;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.logging.Logger;
 
-public class ClusterFactory extends Cluster {
+public abstract class ClusterFactory extends Cluster {
 
     private final JavaPlugin plugin;
     private HeadDatabaseAPI api;
@@ -20,10 +19,6 @@ public class ClusterFactory extends Cluster {
     public ClusterFactory(JavaPlugin plugin) {
         super();
 
-        if (PluginSupport.headdatabase.isPluginEnabled(plugin)) {
-            this.api = new HeadDatabaseAPI();
-        }
-
         this.plugin = plugin;
     }
 
@@ -33,30 +28,6 @@ public class ClusterFactory extends Cluster {
     @Override
     public boolean isLogging() {
         return this.isLogging;
-    }
-
-    /**
-     * @return true or false.
-     */
-    @Override
-    public boolean isPapiEnabled() {
-        return PluginSupport.placeholderapi.isPluginEnabled(this.plugin);
-    }
-
-    /**
-     * @return true or false.
-     */
-    @Override
-    public boolean isOraxenEnabled() {
-        return PluginSupport.oraxen.isPluginEnabled(this.plugin);
-    }
-
-    /**
-     * @return true or false.
-     */
-    @Override
-    public boolean isItemsAdderEnabled() {
-        return PluginSupport.items_adder.isPluginEnabled(this.plugin);
     }
 
     /**
@@ -101,25 +72,32 @@ public class ClusterFactory extends Cluster {
     }
 
     /**
-     * @return true or false
-     */
-    @Override
-    public boolean isHeadDatabaseEnabled() {
-        return PluginSupport.headdatabase.isPluginEnabled(plugin);
-    }
-
-    /**
-     * @return the plugin instance
+     * @return the plugin instance.
      */
     public JavaPlugin getPlugin() {
         return this.plugin;
     }
 
     /**
+     * Set the instance of head database api.
+     *
+     * @param api instance of head database api.
+     */
+    public void setApi(HeadDatabaseAPI api) {
+        if (this.api != null) {
+            getLogger().warning("HeadDatabase is already enabled.");
+
+            return;
+        }
+
+        this.api = api;
+    }
+
+    /**
      * @return instance of HeadDatabaseAPI.
      */
     public HeadDatabaseAPI getHeadDatabaseAPI() {
-        if (isHeadDatabaseEnabled()) {
+        if (!isHeadDatabaseEnabled()) {
             getLogger().warning("HeadDatabase is not enabled, Custom Skulls cannot be used.");
 
             return null;
