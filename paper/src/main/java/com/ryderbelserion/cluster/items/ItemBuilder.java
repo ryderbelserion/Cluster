@@ -266,13 +266,6 @@ public abstract class ItemBuilder {
             io.th0rgal.oraxen.items.ItemBuilder oraxenItem = OraxenItems.getItemById(this.customMaterial);
 
             if (oraxenItem != null) {
-                // If the item isn't null, we don't need to re-build.
-                /*if (this.itemStack != null) {
-                    this.material = this.itemStack.getType();
-
-                    return this.itemStack;
-                }*/
-
                 // This is just here in case it is null for whatever reason.
                 this.itemStack = oraxenItem.build();
 
@@ -520,6 +513,12 @@ public abstract class ItemBuilder {
                 PersistentDataType.INTEGER,
                 value
         ));
+
+        return this;
+    }
+
+    public ItemBuilder setBoolean(NamespacedKey key, boolean value) {
+        this.itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(key, PersistentDataType.BOOLEAN, value));
 
         return this;
     }
@@ -1026,6 +1025,12 @@ public abstract class ItemBuilder {
                     return this;
                 }
             }
+
+            this.itemStack = new ItemStack(Material.STONE);
+
+            this.material = this.itemStack.getType();
+
+            return this;
         }
 
         switch (this.material) {
